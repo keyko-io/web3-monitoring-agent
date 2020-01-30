@@ -1,4 +1,4 @@
-name: Java CI
+name: W3M Agent Build
 
 on: [push]
 
