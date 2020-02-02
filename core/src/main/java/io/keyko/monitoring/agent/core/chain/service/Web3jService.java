@@ -1,25 +1,23 @@
 package io.keyko.monitoring.agent.core.chain.service;
 
+import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
+import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jBlock;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jTransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
+import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import io.keyko.monitoring.agent.core.chain.block.BlockListener;
-import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
-import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
-import io.keyko.monitoring.agent.core.service.AsyncTaskService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -109,12 +107,12 @@ public class Web3jService implements BlockchainService {
         final Disposable sub = flowable
 //                .doOnError(error -> )
                 .subscribe(theLog -> {
-            asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
-                log.debug("Dispatching log: {}", theLog);
-                eventListener.onEvent(
-                        eventDetailsFactory.createEventDetails(eventFilter, theLog));
-            });
-        }, error -> log.error("Flowable subscribe error: " + error.getMessage()));
+                    asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
+                        log.debug("Dispatching log: {}", theLog);
+                        eventListener.onEvent(
+                                eventDetailsFactory.createEventDetails(eventFilter, theLog));
+                    });
+                }, error -> log.error("Flowable subscribe error: " + error.getMessage()));
 
         if (sub.isDisposed()) {
             //There was an error subscribing

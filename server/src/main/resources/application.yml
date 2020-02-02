@@ -6,8 +6,8 @@ server:
 logging:
   level:
     org.springframework.web: ERROR
-    net.consensys: DEBUG
-    net.consensys.configs: ERROR
+    io.keyko: DEBUG
+    io.keyko.monitoring.agent.core.configs: ERROR
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"

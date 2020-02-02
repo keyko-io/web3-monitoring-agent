@@ -73,7 +73,7 @@
     </dependencies>
 
     <build>
-        <finalName>eventeum-server</finalName>
+        <finalName>web3-monitoring-agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

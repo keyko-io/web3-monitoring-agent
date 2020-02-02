@@ -1,7 +1,7 @@
 package io.keyko.monitoring.agent.core.dto.event.filter.correlationId;
 
-import lombok.NoArgsConstructor;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import lombok.NoArgsConstructor;
 
 /**
  * A CorrelationIdStrategy that considers the correlation id of a specific contract event

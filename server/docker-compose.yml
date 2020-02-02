@@ -26,8 +26,8 @@ services:
       - "8180:8180"
       - "8546:8546"
     volumes:
-      - $HOME/parity/data:/root/.local/share/io.parity.ethereum
-      - $HOME/parity/log:/data/parity-logs
+      - $HOME/.parity/data:/root/.local/share/io.parity.ethereum
+      - $HOME/.parity/log:/data/parity-logs
     tty: true
     networks:
       default:
@@ -39,7 +39,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - $HOME/mongodb/data/db:/data/db
+      - $HOME/.mongodb/data/db:/data/db
     networks:
       - default
 
