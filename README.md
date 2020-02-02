@@ -50,6 +50,7 @@ This provides a distinct separation of concerns and means that your microservice
 ![W3M Agent Build](https://github.com/keyko-io/eventeum/workflows/W3M%20Agent%20Build/badge.svg)
 
 ## Features
+
 * Dynamically Configurable - It exposes a REST api so that smart contract events can be dynamically subscribed / unsubscribed.
 
 * Highly Available - The instances communicate with each other to ensure that every instance is subscribed to the same collection of smart contract events.
@@ -88,13 +89,13 @@ a. If you have a running instance of MongoDB, Kafka, Zookeeper and an Ethereum n
 **Executable JAR:**
 
 ```sh
-$ cd server
-$ export SPRING_DATA_MONGODB_HOST=<mongodb-host:port>
-$ export ETHEREUM_NODE_URL=http://<node-host:port>
-$ export ZOOKEEPER_ADDRESS=<zookeeper-host:port>
-$ export KAFKA_ADDRESSES=<kafka-host:port>
+cd server
+export SPRING_DATA_MONGODB_HOST=<mongodb-host:port>
+export ETHEREUM_NODE_URL=http://<node-host:port>
+export ZOOKEEPER_ADDRESS=<zookeeper-host:port>
+export KAFKA_ADDRESSES=<kafka-host:port>
 
-$ java -jar target/eventeum-server.jar
+java -jar target/monitoring-agent-server.jar
 ```
 
 **Docker:**

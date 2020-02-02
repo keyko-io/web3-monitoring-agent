@@ -70,7 +70,7 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
 
     private void sendMessage(EventeumMessage message) {
         LOG.info("Sending message: " + JSON.stringify(message));
-        GenericRecord genericRecord = new GenericData.Record(net.consensys.eventeum.BlockEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.model.BlockEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", message.getDetails());

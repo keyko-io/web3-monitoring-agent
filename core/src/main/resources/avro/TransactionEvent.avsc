@@ -1,5 +1,5 @@
 {
-  "namespace": "net.consensys.eventeum",
+  "namespace": "io.keyko.monitoring.model",
   "type": "record",
   "name": "TransactionEvent",
   "fields": [

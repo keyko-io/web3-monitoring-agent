@@ -1,11 +1,11 @@
 package io.keyko.monitoring.agent.core.chain.service;
 
+import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
-import io.keyko.monitoring.agent.core.model.FilterSubscription;
-import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.model.FilterSubscription;
 
 import java.math.BigInteger;
 import java.util.Optional;

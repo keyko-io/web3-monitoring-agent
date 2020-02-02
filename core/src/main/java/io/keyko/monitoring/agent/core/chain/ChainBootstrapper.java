@@ -2,12 +2,12 @@ package io.keyko.monitoring.agent.core.chain;
 
 import io.keyko.monitoring.agent.core.chain.config.EventFilterConfiguration;
 import io.keyko.monitoring.agent.core.chain.config.TransactionFilterConfiguration;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.factory.ContractEventFilterFactory;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.service.SubscriptionService;
 import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
 import lombok.AllArgsConstructor;
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

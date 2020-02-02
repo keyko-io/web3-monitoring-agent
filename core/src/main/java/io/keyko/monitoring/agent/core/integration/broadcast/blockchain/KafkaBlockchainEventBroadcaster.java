@@ -58,11 +58,11 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         final EventeumMessage<BlockDetails> message = createBlockEventMessage(block);
         LOG.info("Sending block message: " + JSON.stringify(message));
 
-        net.consensys.eventeum.BlockDetails blockDetails = net.consensys.eventeum.BlockDetails.newBuilder()
+        io.keyko.monitoring.model.BlockDetails blockDetails = io.keyko.monitoring.model.BlockDetails.newBuilder()
                 .setHash(message.getDetails().getHash()).setNodeName(message.getDetails().getNodeName())
                 .setNumber(message.getDetails().getNumber().toString()).setTimestamp(message.getDetails().getTimestamp().toString()).build();
 
-        GenericRecord genericRecord = new GenericData.Record(net.consensys.eventeum.BlockEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.model.BlockEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", blockDetails);
@@ -76,16 +76,16 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     public void broadcastContractEvent(ContractEventDetails eventDetails) {
         final EventeumMessage<ContractEventDetails> message = createContractEventMessage(eventDetails);
         LOG.info("Sending contract event message: " + JSON.stringify(message));
-        net.consensys.eventeum.ContractEventDetails contractEventDetails = net.consensys.eventeum.ContractEventDetails.newBuilder()
+        io.keyko.monitoring.model.ContractEventDetails contractEventDetails = io.keyko.monitoring.model.ContractEventDetails.newBuilder()
                 .setAddress(message.getDetails().getAddress()).setBlockHash(message.getDetails().getBlockHash()).setBlockNumber(message.getDetails().getBlockNumber().toString())
                 .setEventSpecificationSignature(message.getDetails().getEventSpecificationSignature()).setFilterId(message.getDetails().getFilterId())
                 .setId(message.getDetails().getId()).setLogIndex(message.getDetails().getLogIndex().toString())
                 .setName(message.getDetails().getName()).setNetworkName(message.getDetails().getNetworkName()).setNodeName(message.getDetails().getNodeName())
                 .setNonIndexedParameters(convertParameters(message.getDetails().getNonIndexedParameters())).setIndexedParameters(convertParameters(message.getDetails().getIndexedParameters()))
-                .setStatus(net.consensys.eventeum.ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
+                .setStatus(io.keyko.monitoring.model.ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
                 .setTransactionHash(message.getDetails().getTransactionHash()).build();
 
-        GenericRecord genericRecord = new GenericData.Record(net.consensys.eventeum.ContractEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.model.ContractEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", contractEventDetails);
@@ -98,7 +98,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     public void broadcastTransaction(TransactionDetails transactionDetails) {
         final EventeumMessage<TransactionDetails> message = createTransactionEventMessage(transactionDetails);
         LOG.info("Sending transaction event message: " + JSON.stringify(message));
-        GenericRecord genericRecord = new GenericData.Record(net.consensys.eventeum.TransactionEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.model.TransactionEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", message.getDetails());
@@ -122,9 +122,9 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         List<Object> parametersConverted = new ArrayList<Object>();
         for (int i = 0; i < l.size(); i++) {
             if (l.get(i).getClass() == StringParameter.class) {
-                parametersConverted.add(new net.consensys.eventeum.StringParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
+                parametersConverted.add(new StringParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
             } else if (l.get(i).getClass() == NumberParameter.class) {
-                parametersConverted.add(new net.consensys.eventeum.NumberParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
+                parametersConverted.add(new io.keyko.monitoring.model.NumberParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
             }
         }
         return parametersConverted;

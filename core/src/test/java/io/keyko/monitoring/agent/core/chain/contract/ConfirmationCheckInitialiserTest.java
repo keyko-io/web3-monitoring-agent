@@ -1,4 +1,4 @@
-//package net.consensys.eventeum.chain.contract;
+//package net.consenio.keyko.monitoring.agent.core.chain.contract;
 //
 //import BlockListener;
 //import BlockchainService;

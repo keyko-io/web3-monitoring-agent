@@ -1,6 +1,6 @@
-FROM openjdk:8-jre
-ADD target/eventeum-server.jar eventeum-server.jar
-ADD docker-scripts/start-eventeum.sh start-eventeum.sh
+FROM openjdk:11-jre
+ADD target/monitoring-agent-server.jar monitoring-agent-server.jar
+ADD docker-scripts/start-monitoring-agent.sh start-monitoring-agent.sh
 ENV CONF ""
 EXPOSE 8060
-CMD chmod +x start-eventeum.sh && ./start-eventeum.sh
+CMD chmod +x start-monitoring-agent.sh && ./start-monitoring-agent.sh

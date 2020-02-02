@@ -1,7 +1,7 @@
 package io.keyko.monitoring.agent.core.server.config;
 
 import io.keyko.monitoring.agent.core.annotation.ConditionalOnKafkaRequired;
-import net.consensys.kafkadl.annotation.EnableKafkaDeadLetter;
+import io.keyko.monitoring.agent.kafkadl.annotation.EnableKafkaDeadLetter;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

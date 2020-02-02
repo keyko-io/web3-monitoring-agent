@@ -6,8 +6,8 @@ server:
 logging:
   level:
     org.springframework.web: ERROR
-    net.consensys: DEBUG
-    net.consensys.configs: ERROR
+    io.keyko: DEBUG
+    io.keyko.configs: ERROR
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"
@@ -16,7 +16,8 @@ logging:
 ethereum:
   nodes:
     - name: default
-      url: https://baklava-forno.celo-testnet.org
+      url: http://192.168.0.210:8545
+      #url: https://baklava-forno.celo-testnet.org
       pollingInterval: ${POLLING_INTERVAL:10000}
 
   healthcheck:

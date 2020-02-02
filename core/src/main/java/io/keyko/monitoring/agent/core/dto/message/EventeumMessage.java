@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.dto.message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import net.consensys.kafkadl.message.RetryableMessage;
+import io.keyko.monitoring.agent.kafkadl.message.RetryableMessage;
 
 /**
  * A message interface to be broadcast from the Eventeum application.

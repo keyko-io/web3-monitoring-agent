@@ -9,6 +9,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
+import org.springframework.stereotype.Component;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.Utils;
 import org.web3j.abi.datatypes.Type;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+//@Component
 public class DefaultContractEventDetailsFactory implements ContractEventDetailsFactory {
 
     private EventParameterConverter<Type> parameterConverter;

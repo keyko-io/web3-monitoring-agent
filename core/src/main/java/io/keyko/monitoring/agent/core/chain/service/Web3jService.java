@@ -1,24 +1,24 @@
 package io.keyko.monitoring.agent.core.chain.service;
 
+import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
+import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jBlock;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jTransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
+import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.model.FilterSubscription;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
 import io.reactivex.Flowable;
 import io.reactivex.disposables.Disposable;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import io.keyko.monitoring.agent.core.chain.block.BlockListener;
-import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
-import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
+import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -39,20 +39,17 @@ import java.util.Optional;
  * @author Craig Williams <craig.williams@consensys.net>
  */
 @Slf4j
+//@Service
+//@AllArgsConstructor
 public class Web3jService implements BlockchainService {
 
     private static final String EVENT_EXECUTOR_NAME = "EVENT";
-    @Getter
     private String nodeName;
-
-    @Getter
-    @Setter
     private Web3j web3j;
     private ContractEventDetailsFactory eventDetailsFactory;
     private EventBlockManagementService blockManagement;
-    private AsyncTaskService asyncTaskService;
-
     private BlockSubscriptionStrategy blockSubscriptionStrategy;
+    private AsyncTaskService asyncTaskService;
 
     public Web3jService(String nodeName,
                         Web3j web3j,
@@ -70,7 +67,15 @@ public class Web3jService implements BlockchainService {
 
     @Override
     public String getNodeName() {
-        return null;
+        return nodeName;
+    }
+
+    public Web3j getWeb3j() {
+        return web3j;
+    }
+
+    public void setWeb3j(Web3j web3j) {
+        this.web3j = web3j;
     }
 
     /**

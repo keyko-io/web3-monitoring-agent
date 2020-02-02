@@ -1,17 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
+
 #Thanks to Gregoire Jeanmart for this script
-echo "removing old containers"
-docker rm -f server_kafka_1
-docker rm -f server_zookeeper_1
-docker rm -f server_mongodb_1
-docker rm -f server_eventeum_1
-docker rm -f server_parity_1
+echo "Removing old containers"
+docker rm -f server_kafka_1 server_zookeeper_1 server_mongodb_1 server_eventeum_1 server_parity_1 || echo -e "Containers removed"
 docker-compose down
 
-echo "removing storage"
-sudo rm -rf $HOME/mongodb/data
-sudo rm -rf $HOME/parity/data:/root/
-sudo rm -rf $HOME/parity/log
+echo "Removing storage"
+rm -rf $HOME/.mongodb/data
+rm -rf $HOME/.parity/data
+rm -rf $HOME/.parity/log
 
 composescript="docker-compose.yml"
 
