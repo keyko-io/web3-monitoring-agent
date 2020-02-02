@@ -32,7 +32,7 @@ It listens for specified event emissions from the Ethereum network, and broadcas
 It's also prepared to ingest network blocks and transactions. 
 This provides a distinct separation of concerns and means that your microservices do not have to subscribe to events directly to an Ethereum node.
 
-![W3M Agent Build](https://github.com/keyko-io/eventeum/workflows/W3M%20Agent%20Build/badge.svg)
+![W3M Agent Build](https://github.com/keyko-io/web3-monitoring-agent/workflows/W3M%20Agent%20Build/badge.svg)
 
 ## Features
 
@@ -166,7 +166,7 @@ It can either be configured by:
 
 | Env Variable | Default | Description |
 | -------- | -------- | -------- |
-| SERVER_PORT | 8060 | The port for the eventeum instance. |
+| SERVER_PORT | 8060 | The port for the agent instance. |
 | ETHEREUM_BLOCKSTRATEGY | POLL | The strategy for obtaining block events from an ethereum node (POLL or PUBSUB). It will be overwritten by the specific node configuration. |
 | ETHEREUM_NODE_URL | http://localhost:8545 | The default ethereum node url. |
 | ETHEREUM_NODE_BLOCKSTRATEGY | POLL | The strategy for obtaining block events for the ethereum node (POLL or PUBSUB).
