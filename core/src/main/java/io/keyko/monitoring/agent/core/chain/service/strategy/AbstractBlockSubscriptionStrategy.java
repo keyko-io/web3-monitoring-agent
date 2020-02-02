@@ -1,15 +1,22 @@
 package io.keyko.monitoring.agent.core.chain.service.strategy;
 
+import io.keyko.monitoring.agent.core.chain.ChainBootstrapper;
 import io.keyko.monitoring.agent.core.model.LatestBlock;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.plugins.RxJavaPlugins;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.web3j.protocol.Web3j;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Slf4j
 public abstract class AbstractBlockSubscriptionStrategy<T> implements BlockSubscriptionStrategy {
 
+    private final Logger LOG = LoggerFactory.getLogger(AbstractBlockSubscriptionStrategy.class);
     protected static final String BLOCK_EXECUTOR_NAME = "BLOCK";
 
     protected Collection<BlockListener> blockListeners = new ConcurrentLinkedQueue<>();
@@ -34,6 +42,30 @@ public abstract class AbstractBlockSubscriptionStrategy<T> implements BlockSubsc
         this.nodeName = nodeName;
         this.eventStoreService = eventStoreService;
         this.asyncService = asyncService;
+
+        RxJavaPlugins.setErrorHandler(e -> {
+            if (e instanceof UndeliverableException) {
+                e = e.getCause();
+            }
+            if ((e instanceof IOException) || (e instanceof SocketException)) {
+                // fine, irrelevant network problem or API that throws on cancellation
+                return;
+            }
+            if (e instanceof InterruptedException) {
+                // fine, some blocking code was interrupted by a dispose call
+                return;
+            }
+            if ((e instanceof NullPointerException) || (e instanceof IllegalArgumentException)) {
+                // that's likely a bug in the application
+                LOG.error("Error application");
+                return;
+            }
+            if (e instanceof IllegalStateException) {
+                LOG.error("Error in RxJava or in a custom operator");
+                return;
+            }
+            LOG.warn("Undeliverable exception received, not sure what to do", e);
+        });
     }
 
     @Override
@@ -42,6 +74,7 @@ public abstract class AbstractBlockSubscriptionStrategy<T> implements BlockSubsc
             if (blockSubscription != null) {
                 blockSubscription.dispose();
             }
+        } catch (UndeliverableException ex) {
         } finally {
             blockSubscription = null;
         }

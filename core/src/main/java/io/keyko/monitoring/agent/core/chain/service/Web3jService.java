@@ -18,6 +18,8 @@ import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
@@ -104,13 +106,15 @@ public class Web3jService implements BlockchainService {
 
         final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
 
-        final Disposable sub = flowable.subscribe(theLog -> {
+        final Disposable sub = flowable
+//                .doOnError(error -> )
+                .subscribe(theLog -> {
             asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
                 log.debug("Dispatching log: {}", theLog);
                 eventListener.onEvent(
                         eventDetailsFactory.createEventDetails(eventFilter, theLog));
             });
-        });
+        }, error -> log.error("Flowable subscribe error: " + error.getMessage()));
 
         if (sub.isDisposed()) {
             //There was an error subscribing
