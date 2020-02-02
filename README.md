@@ -186,9 +186,9 @@ It can either be configured by:
 | BROADCASTER_ENABLE_BLOCK_NOTIFICATION | true | Boolean that indicates if want to receive block notifications or not. Set false to not receive that event. |
 | ZOOKEEPER_ADDRESS | localhost:2181 | The zookeeper address |
 | KAFKA_ADDRESSES | localhost:9092 | Comma seperated list of kafka addresses |
-| KAFKA_TOPIC_CONTRACT_EVENTS | contract-events | The topic name for broadcast contract event messages |
-| KAFKA_TOPIC_BLOCK_EVENTS | block-events | The topic name for broadcast block event messages |
-| KAFKA_TOPIC_TRANSACTION_EVENTS | transaction-events | The topic name for broadcast trasaction messages |
+| KAFKA_TOPIC_CONTRACT_EVENTS | w3m-contract-events | The topic name for broadcast contract event messages |
+| KAFKA_TOPIC_BLOCK_EVENTS | w3m-block-events | The topic name for broadcast block event messages |
+| KAFKA_TOPIC_TRANSACTION_EVENTS | w3m-transaction-events | The topic name for broadcast trasaction messages |
 | KAFKA_REQUEST_TIMEOUT_MS | 20000 | The duration after which a request timeouts |
 | KAFKA_ENDPOINT_IDENTIFICATION_ALGORITHM | null | The endpoint identification algorithm to validate server hostname using server certificate |
 | KAFKA_SASL_MECHANISM | PLAIN | The mechanism used for SASL authentication |
