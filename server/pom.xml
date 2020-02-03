@@ -2,20 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.consensys.eventeum</groupId>
-    <artifactId>eventeum-server</artifactId>
-    <version>0.7.1-SNAPSHOT</version>
+    <groupId>io.keyko.monitoring.agent</groupId>
+    <artifactId>server</artifactId>
+    <version>0.1.0</version>
 
     <parent>
-        <groupId>net.consensys.eventeum</groupId>
-        <artifactId>eventeum</artifactId>
-        <version>0.7.1-SNAPSHOT</version>
+        <groupId>io.keyko.monitoring</groupId>
+        <artifactId>agent</artifactId>
+        <version>0.1.0</version>
     </parent>
 
     <properties>
-        <java.version>1.8</java.version>
         <skipIntegrationTests>true</skipIntegrationTests>
-        <micrometer.version>1.1.0</micrometer.version>
     </properties>
 
     <dependencies>
@@ -28,9 +26,9 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.consensys.eventeum</groupId>
-            <artifactId>eventeum-core</artifactId>
-            <version>0.7.1-SNAPSHOT</version>
+            <groupId>io.keyko.monitoring.agent</groupId>
+            <artifactId>core</artifactId>
+            <version>0.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,17 +38,13 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
-            <version>2.2.0.RELEASE</version>
+            <version>${spring.kafka.version}</version>
         </dependency>
         <!-- Micrometer Prometheus registry  -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version> ${micrometer.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
@@ -67,7 +61,7 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
-            <version>2.2.0.RELEASE</version>
+            <version>${spring.kafka.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -79,7 +73,7 @@
     </dependencies>
 
     <build>
-        <finalName>eventeum-server</finalName>
+        <finalName>web3-monitoring-agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -110,42 +104,17 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <classesDirectory>${project.build.directory}/${artifactId}.jar.original</classesDirectory>
+                    <classesDirectory>${project.build.directory}/${project.artifactId}.jar.original</classesDirectory>
                     <skipITs>${skipIntegrationTests}</skipITs>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.web3j</groupId>-->
-                <!--<artifactId>web3j-maven-plugin</artifactId>-->
-                <!--<version>0.3.7</version>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>generate-sources</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>generate-sources</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<packageName>net.consensys.eventeumserver.integrationtest</packageName>-->
-                            <!--<sourceDestination>src/test/java</sourceDestination>-->
-                            <!--<nativeJavaType>true</nativeJavaType>-->
-                            <!--<outputFormat>java</outputFormat>-->
-                            <!--<soliditySourceFiles>-->
-                                <!--<directory>${basedir}/src/test/resources</directory>-->
-                                <!--<includes>-->
-                                    <!--<include>**/*.sol</include>-->
-                                <!--</includes>-->
-                            <!--</soliditySourceFiles>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
