@@ -101,12 +101,12 @@
         <dependency>
             <groupId>org.java-websocket</groupId>
             <artifactId>Java-WebSocket</artifactId>
-            <version>1.4.0</version>
+            <version>${java.websocket.version}</version>
         </dependency>
         <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
-            <version>1.3.8</version>
+            <version>${rxjava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>

@@ -29,6 +29,9 @@
         <spring.kafka.version>2.4.1.RELEASE</spring.kafka.version>
         <confluent.version>5.4.0</confluent.version>
         <kafka-deadletter.version>0.2.2-RELEASE</kafka-deadletter.version>
+        <java.websocket.version>1.4.0</java.websocket.version>
+        <rxjava.version>1.3.8</rxjava.version>
+
         <micrometer.version>1.3.3</micrometer.version>
     </properties>
 

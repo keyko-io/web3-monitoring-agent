@@ -161,7 +161,9 @@ You can find the complete API reference in the [API documentation page](doc/api.
 ## Configuration
 It can either be configured by:
 
-1. storing an `application.yml` next to the built JAR (copy one from `config-examples`). This overlays the defaults from `server/src/main/resources/application.yml`.
+1. Storing an `application.yml` next to the built JAR (copy one from `config-examples`). This overlays the defaults from `server/src/main/resources/application.yml`.
+   You can specify an independent `application.yml` file giving it as parameter to the application: 
+   `java -jar server/target/web3-monitoring-agent.jar --spring.config.location=file:./custom-config/`
 2. Setting the associated environment variables.
 
 | Env Variable | Default | Description |
