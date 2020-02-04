@@ -20,6 +20,10 @@ public class NumberParameter extends AbstractEventParameter<BigInteger> {
         super(type, value, name);
     }
 
+    public void setName(String name){
+        this.name= name;
+    }
+
     @Override
     public String getValueString() {
         return getValue().toString();
