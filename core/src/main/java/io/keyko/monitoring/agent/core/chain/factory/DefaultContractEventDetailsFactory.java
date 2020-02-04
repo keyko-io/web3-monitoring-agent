@@ -72,7 +72,9 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
 
     private void setNameParameters(List<EventParameter> parameterList, List<ParameterDefinition> parameterDefinitions) {
         for (int i = 0; i < parameterList.size(); i++) {
-            parameterList.get(i).setName(parameterDefinitions.get(i).getName());
+            if (parameterList.get(0) != null) {
+                parameterList.get(i).setName(parameterDefinitions.get(i).getName());
+            }
         }
     }
 
