@@ -19,10 +19,6 @@ public class StringParameter extends AbstractEventParameter<String> {
         super(type, value, name);
     }
 
-    public void setName(String name){
-        this.name= name;
-    }
-
     @Override
     public String getValueString() {
         return getValue();

@@ -26,9 +26,6 @@ public class ArrayParameter<T extends EventParameter<?>> extends AbstractEventPa
 
         initStringRepresentation();
     }
-    public void setName(String name){
-        this.name= name;
-    }
 
     @Override
     public String getValueString() {

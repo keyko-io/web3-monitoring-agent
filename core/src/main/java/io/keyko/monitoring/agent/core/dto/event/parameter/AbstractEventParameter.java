@@ -20,5 +20,5 @@ public abstract class AbstractEventParameter<T extends Serializable> implements 
 
     private T value;
 
-    public String name;
+    private String name;
 }
