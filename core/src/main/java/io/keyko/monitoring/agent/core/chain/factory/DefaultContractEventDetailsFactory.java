@@ -2,13 +2,13 @@ package io.keyko.monitoring.agent.core.chain.factory;
 
 import io.keyko.monitoring.agent.core.chain.converter.EventParameterConverter;
 import io.keyko.monitoring.agent.core.chain.settings.Node;
+import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
+import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
-import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
-import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
-import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.Utils;
 import org.web3j.abi.datatypes.Type;
@@ -41,6 +41,8 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
 
         final List<EventParameter> nonIndexed = typeListToParameterList(getNonIndexedParametersFromLog(eventSpec, log));
         final List<EventParameter> indexed = typeListToParameterList(getIndexedParametersFromLog(eventSpec, log));
+        setNameParameters(nonIndexed, eventSpec.getNonIndexedParameterDefinitions());
+        setNameParameters(indexed, eventSpec.getIndexedParameterDefinitions());
 
         final ContractEventDetails eventDetails = new ContractEventDetails();
         eventDetails.setName(eventSpec.getEventName());
@@ -66,6 +68,14 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
         }
 
         return eventDetails;
+    }
+
+    private void setNameParameters(List<EventParameter> parameterList, List<ParameterDefinition> parameterDefinitions) {
+        for (int i = 0; i < parameterList.size(); i++) {
+            if (parameterList.get(0) != null) {
+                parameterList.get(i).setName(parameterDefinitions.get(i).getName());
+            }
+        }
     }
 
     private List<EventParameter> typeListToParameterList(List<Type> typeList) {
