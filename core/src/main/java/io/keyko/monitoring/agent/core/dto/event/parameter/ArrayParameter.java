@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.dto.event.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.keyko.monitoring.agent.core.dto.parameter.AbstractParameter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 @Embeddable
 @Data
 @NoArgsConstructor
-public class ArrayParameter<T extends EventParameter<?>> extends AbstractEventParameter<ArrayList<T>> {
+public class ArrayParameter<T extends EventParameter<?>> extends AbstractParameter<ArrayList<T>> {
 
     @JsonIgnore
     private String stringRepresentation;

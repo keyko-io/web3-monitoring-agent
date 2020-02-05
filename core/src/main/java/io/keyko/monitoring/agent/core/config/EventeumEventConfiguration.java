@@ -1,13 +1,13 @@
 package io.keyko.monitoring.agent.core.config;
 
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.DoNothingEventeumEventBroadcaster;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.KafkaEventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.DoNothingEventeumMessageBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumMessageBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.KafkaEventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.integration.consumer.EventeumInternalEventConsumer;
 import io.keyko.monitoring.agent.core.integration.consumer.KafkaFilterEventConsumer;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
-import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.transactions.TransactionMonitoringService;
 import org.apache.avro.generic.GenericRecord;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +27,9 @@ public class EventeumEventConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "broadcaster.multiInstance", havingValue = "true")
-    public EventeumEventBroadcaster kafkaFilterEventBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
-                                                                KafkaSettings kafkaSettings) {
-        return new KafkaEventeumEventBroadcaster(kafkaTemplate, kafkaSettings);
+    public EventeumMessageBroadcaster kafkaFilterEventBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
+                                                                  KafkaSettings kafkaSettings) {
+        return new KafkaEventeumMessageBroadcaster(kafkaTemplate, kafkaSettings);
     }
 
     @Bean
@@ -42,7 +42,7 @@ public class EventeumEventConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "broadcaster.multiInstance", havingValue = "false")
-    public EventeumEventBroadcaster doNothingFilterEventBroadcaster() {
-        return new DoNothingEventeumEventBroadcaster();
+    public EventeumMessageBroadcaster doNothingFilterEventBroadcaster() {
+        return new DoNothingEventeumMessageBroadcaster();
     }
 }

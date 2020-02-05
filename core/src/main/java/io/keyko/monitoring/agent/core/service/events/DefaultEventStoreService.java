@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.events;
 
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.integration.eventstore.EventStore;

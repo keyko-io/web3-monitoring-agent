@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * Represents contract view specification, to be used when registering a new filter.
  *
- * @author Aitor Argomaniz <aitor@keyko.io></aitor@keyko.io>
  */
 @Embeddable
 @Data

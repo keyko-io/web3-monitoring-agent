@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.core.service;
 
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.integration.eventstore.EventStore;
+import io.keyko.monitoring.agent.core.service.events.DefaultEventStoreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

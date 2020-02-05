@@ -3,6 +3,7 @@ package io.keyko.monitoring.agent.core.service;
 import java.util.Collections;
 
 import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.service.events.DefaultSubscriptionService;
 import io.keyko.monitoring.agent.core.testutils.DummyAsyncTaskService;
 import io.reactivex.disposables.Disposable;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
@@ -13,7 +14,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterType;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
@@ -52,7 +53,7 @@ public class DefaultSubscriptionServiceTest {
     @Mock
     private ContractEventFilterRepository mockRepo;
     @Mock
-    private EventeumEventBroadcaster mockFilterBroadcaster;
+    private EventeumMessageBroadcaster mockFilterBroadcaster;
     @Mock
     private BlockListener mockBlockListener1;
     @Mock

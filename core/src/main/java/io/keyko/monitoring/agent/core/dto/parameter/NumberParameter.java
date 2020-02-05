@@ -1,5 +1,6 @@
-package io.keyko.monitoring.agent.core.dto.event.parameter;
+package io.keyko.monitoring.agent.core.dto.parameter;
 
+import io.keyko.monitoring.agent.core.dto.parameter.AbstractParameter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +15,7 @@ import java.math.BigInteger;
 @Embeddable
 @Data
 @NoArgsConstructor
-public class NumberParameter extends AbstractEventParameter<BigInteger> {
+public class NumberParameter extends AbstractParameter<BigInteger> {
 
     public NumberParameter(String type, BigInteger value, String name) {
         super(type, value, name);

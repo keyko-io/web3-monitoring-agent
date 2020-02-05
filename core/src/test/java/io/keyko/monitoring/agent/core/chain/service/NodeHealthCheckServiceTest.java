@@ -7,8 +7,8 @@ import io.keyko.monitoring.agent.core.chain.service.health.strategy.Reconnection
 import io.keyko.monitoring.agent.core.constant.Constants;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
 import io.keyko.monitoring.agent.core.monitoring.MicrometerValueMonitor;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 import org.junit.Before;
 import org.junit.Test;
 

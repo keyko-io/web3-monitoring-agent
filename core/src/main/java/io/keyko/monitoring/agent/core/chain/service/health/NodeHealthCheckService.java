@@ -5,8 +5,8 @@ import io.keyko.monitoring.agent.core.model.LatestBlock;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 
 import java.math.BigInteger;
 import java.util.concurrent.ScheduledThreadPoolExecutor;

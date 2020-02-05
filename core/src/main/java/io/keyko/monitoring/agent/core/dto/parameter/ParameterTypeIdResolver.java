@@ -1,9 +1,11 @@
-package io.keyko.monitoring.agent.core.dto.event.parameter;
+package io.keyko.monitoring.agent.core.dto.parameter;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.jsontype.impl.TypeIdResolverBase;
+import io.keyko.monitoring.agent.core.dto.event.parameter.ArrayParameter;
+import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
 
 public class ParameterTypeIdResolver extends TypeIdResolverBase {
 

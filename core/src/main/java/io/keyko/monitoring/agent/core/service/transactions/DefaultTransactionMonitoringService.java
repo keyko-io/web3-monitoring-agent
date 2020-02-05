@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.transactions;
 
 import io.keyko.monitoring.agent.core.chain.block.tx.TransactionMonitoringBlockListener;
 import io.keyko.monitoring.agent.core.chain.block.tx.criteria.TransactionMatchingCriteria;
@@ -7,7 +7,7 @@ import io.keyko.monitoring.agent.core.chain.factory.TransactionDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.BlockCache;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.repository.TransactionMonitoringSpecRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
@@ -27,7 +27,7 @@ public class DefaultTransactionMonitoringService implements TransactionMonitorin
 
     private BlockchainEventBroadcaster broadcaster;
 
-    private EventeumEventBroadcaster eventeumEventBroadcaster;
+    private EventeumMessageBroadcaster eventeumMessageBroadcaster;
 
     private TransactionDetailsFactory transactionDetailsFactory;
 
@@ -44,7 +44,7 @@ public class DefaultTransactionMonitoringService implements TransactionMonitorin
     @Autowired
     public DefaultTransactionMonitoringService(ChainServicesContainer chainServices,
                                                BlockchainEventBroadcaster broadcaster,
-                                               EventeumEventBroadcaster eventeumEventBroadcaster,
+                                               EventeumMessageBroadcaster eventeumMessageBroadcaster,
                                                TransactionDetailsFactory transactionDetailsFactory,
                                                TransactionMonitoringSpecRepository transactionMonitoringRepo,
                                                TransactionMonitoringBlockListener monitoringBlockListener,
@@ -52,7 +52,7 @@ public class DefaultTransactionMonitoringService implements TransactionMonitorin
                                                BlockCache blockCache) {
         this.chainServices = chainServices;
         this.broadcaster = broadcaster;
-        this.eventeumEventBroadcaster = eventeumEventBroadcaster;
+        this.eventeumMessageBroadcaster = eventeumMessageBroadcaster;
         this.transactionDetailsFactory = transactionDetailsFactory;
         this.transactionMonitoringRepo = transactionMonitoringRepo;
         this.monitoringBlockListener = monitoringBlockListener;
@@ -76,7 +76,7 @@ public class DefaultTransactionMonitoringService implements TransactionMonitorin
         saveTransactionMonitoringSpec(spec);
 
         if (broadcast) {
-            eventeumEventBroadcaster.broadcastTransactionMonitorAdded(spec);
+            eventeumMessageBroadcaster.broadcastTransactionMonitorAdded(spec);
         }
     }
 
@@ -98,7 +98,7 @@ public class DefaultTransactionMonitoringService implements TransactionMonitorin
         deleteTransactionMonitor(monitorId);
 
         if (broadcast) {
-            eventeumEventBroadcaster.broadcastTransactionMonitorRemoved(transactionMonitor.getSpec());
+            eventeumMessageBroadcaster.broadcastTransactionMonitorRemoved(transactionMonitor.getSpec());
         }
     }
 

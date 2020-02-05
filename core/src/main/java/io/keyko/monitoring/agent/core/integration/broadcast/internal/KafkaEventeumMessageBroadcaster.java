@@ -2,7 +2,7 @@ package io.keyko.monitoring.agent.core.integration.broadcast.internal;
 
 import io.keyko.monitoring.agent.core.BlockEvent;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
-import io.keyko.monitoring.agent.core.dto.message.*;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.dto.message.*;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
@@ -14,22 +14,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 
 /**
- * An EventeumEventBroadcaster that broadcasts the events to a Kafka queue.
+ * An EventeumMessageBroadcaster that broadcasts the events to a Kafka queue.
  * <p>
  * The topic name can be configured via the kafka.topic.eventeumEvents property.
  *
  * @author Craig Williams <craig.williams@consensys.net>
  */
-public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
+public class KafkaEventeumMessageBroadcaster implements EventeumMessageBroadcaster {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KafkaEventeumEventBroadcaster.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaEventeumMessageBroadcaster.class);
 
     private KafkaTemplate<String, GenericRecord> kafkaTemplate;
 
     private KafkaSettings kafkaSettings;
 
-    public KafkaEventeumEventBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
-                                         KafkaSettings kafkaSettings) {
+    public KafkaEventeumMessageBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
+                                           KafkaSettings kafkaSettings) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaSettings = kafkaSettings;
     }
@@ -42,6 +42,16 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
     @Override
     public void broadcastEventFilterRemoved(ContractEventFilter filter) {
         sendMessage(createContractEventFilterRemovedMessage(filter));
+    }
+
+    @Override
+    public void broadcastViewFilterAdded(ContractViewFilter filter) {
+        sendMessage(createContractViewFilterAddedMessage(filter));
+    }
+
+    @Override
+    public void broadcastViewFilterRemoved(ContractViewFilter filter) {
+        sendMessage(createContractViewFilterRemovedMessage(filter));
     }
 
     @Override
@@ -60,6 +70,14 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
 
     protected EventeumMessage createContractEventFilterRemovedMessage(ContractEventFilter filter) {
         return new ContractEventFilterRemoved(filter);
+    }
+
+    protected EventeumMessage createContractViewFilterAddedMessage(ContractViewFilter filter) {
+        return new ContractViewFilterAdded(filter);
+    }
+
+    protected EventeumMessage createContractViewFilterRemovedMessage(ContractViewFilter filter) {
+        return new ContractViewFilterRemoved(filter);
     }
 
     protected EventeumMessage createTransactionMonitorAddedMessage(TransactionMonitoringSpec spec) {

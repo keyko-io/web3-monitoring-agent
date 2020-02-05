@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.internal;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 
 /**
@@ -8,7 +9,7 @@ import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
  *
  * @author Craig Williams <craig.williams@consensys.net>
  */
-public interface EventeumEventBroadcaster {
+public interface EventeumMessageBroadcaster {
 
     /**
      * Broadcasts the details of a contract event filter that has been added to this Eventeum instance.
@@ -23,6 +24,20 @@ public interface EventeumEventBroadcaster {
      * @param filter the filter in question.
      */
     void broadcastEventFilterRemoved(ContractEventFilter filter);
+
+    /**
+     * Broadcasts the details of a contract view filter that has been added to this Eventeum instance.
+     *
+     * @param filter the filter in question.
+     */
+    void broadcastViewFilterAdded(ContractViewFilter filter);
+
+    /**
+     * Broadcasts the details of a contract view filter that has been removed from this Eventeum instance.
+     *
+     * @param filter the filter in question.
+     */
+    void broadcastViewFilterRemoved(ContractViewFilter filter);
 
     /**
      * Broadcasts the details of a transaction monitoring spec that has been added to this Eventeum instance.

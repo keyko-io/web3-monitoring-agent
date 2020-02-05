@@ -1,12 +1,9 @@
 package io.keyko.monitoring.agent.core.endpoint;
 
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
-import io.keyko.monitoring.agent.core.endpoint.response.AddEventFilterResponse;
 import io.keyko.monitoring.agent.core.endpoint.response.AddViewFilterResponse;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
-import io.keyko.monitoring.agent.core.service.ViewMonitoringService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
+import io.keyko.monitoring.agent.core.service.views.ViewSubscriptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +13,13 @@ import java.util.List;
 /**
  * A REST endpoint for adding a removing view filters.
  *
- * @author Aitor Argomaniz <aitor@keyko.io>
  */
 @RestController
 @RequestMapping(value = "/api/rest/v1/view-filter")
 @AllArgsConstructor
 public class ContractViewFilterEndpoint {
 
-    private ViewMonitoringService filterService;
+    private ViewSubscriptionService filterService;
 
     /**
      * Adds a view filter with the specification described in the ContractViewFilter.
@@ -62,7 +58,7 @@ public class ContractViewFilterEndpoint {
      */
     @RequestMapping(value = "/{filterId}", method = RequestMethod.DELETE)
     public void removeViewFilter(@PathVariable String filterId,
-                                  HttpServletResponse response) {
+                                 HttpServletResponse response) {
 
         try {
             filterService.unregisterContractViewFilter(filterId, true);

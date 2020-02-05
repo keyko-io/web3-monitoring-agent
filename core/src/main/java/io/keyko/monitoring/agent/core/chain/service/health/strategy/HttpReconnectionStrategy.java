@@ -2,7 +2,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 
 /**
  * An NodeFailureListener that reconnects the blockchain service and resubscribes to all

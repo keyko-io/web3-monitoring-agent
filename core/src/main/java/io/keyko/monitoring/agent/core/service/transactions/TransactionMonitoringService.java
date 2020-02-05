@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.transactions;
 
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;

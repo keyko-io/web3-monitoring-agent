@@ -8,7 +8,7 @@ import lombok.Setter;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainException;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;

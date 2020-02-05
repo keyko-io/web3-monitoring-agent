@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.events;
 
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
@@ -7,9 +7,11 @@ import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesConta
 import io.keyko.monitoring.agent.core.chain.service.container.NodeServices;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.model.FilterSubscription;
 import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
+import io.keyko.monitoring.agent.core.service.AbstractSubscriptionService;
+import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import io.keyko.monitoring.agent.core.utils.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -35,21 +37,19 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class DefaultSubscriptionService implements SubscriptionService {
+public class DefaultSubscriptionService extends AbstractSubscriptionService implements SubscriptionService {
 
     private ChainServicesContainer chainServices;
 
     private ContractEventFilterRepository eventFilterRepository;
 
-    private EventeumEventBroadcaster eventeumEventBroadcaster;
+    private EventeumMessageBroadcaster eventeumMessageBroadcaster;
 
     private AsyncTaskService asyncTaskService;
 
     private List<ContractEventListener> contractEventListeners;
 
     private List<BlockListener> blockListeners;
-
-    private Map<String, FilterSubscription> filterSubscriptions = new ConcurrentHashMap<>();
 
     private ApplicationContext applicationContext;
 
@@ -58,7 +58,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
     @Autowired
     public DefaultSubscriptionService(ChainServicesContainer chainServices,
                                       ContractEventFilterRepository eventFilterRepository,
-                                      EventeumEventBroadcaster eventeumEventBroadcaster,
+                                      EventeumMessageBroadcaster eventeumMessageBroadcaster,
                                       AsyncTaskService asyncTaskService,
                                       List<BlockListener> blockListeners,
                                       List<ContractEventListener> contractEventListeners,
@@ -67,7 +67,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
         this.chainServices = chainServices;
         this.asyncTaskService = asyncTaskService;
         this.eventFilterRepository = eventFilterRepository;
-        this.eventeumEventBroadcaster = eventeumEventBroadcaster;
+        this.eventeumMessageBroadcaster = eventeumMessageBroadcaster;
         this.blockListeners = blockListeners;
         this.retryTemplate = retryTemplate;
     }
@@ -215,12 +215,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
         }
     }
 
-    private void subscribeToNewBlockEvents(
-            BlockchainService blockchainService, List<BlockListener> blockListeners) {
-        blockListeners.forEach(listener -> blockchainService.addBlockListener(listener));
 
-        blockchainService.connect();
-    }
 
     private FilterSubscription registerContractEventFilter(ContractEventFilter filter, Map<String, FilterSubscription> allFilterSubscriptions) {
         log.info("Registering filter: " + JSON.stringify(filter));
@@ -265,20 +260,17 @@ public class DefaultSubscriptionService implements SubscriptionService {
     }
 
     private void broadcastContractEventFilterAdded(ContractEventFilter filter) {
-        eventeumEventBroadcaster.broadcastEventFilterAdded(filter);
+        eventeumMessageBroadcaster.broadcastEventFilterAdded(filter);
     }
 
     private void broadcastContractEventFilterRemoved(ContractEventFilter filter) {
-        eventeumEventBroadcaster.broadcastEventFilterRemoved(filter);
+        eventeumMessageBroadcaster.broadcastEventFilterRemoved(filter);
     }
 
-    private boolean isFilterRegistered(ContractEventFilter contractEventFilter) {
-        return (getFilterSubscription(contractEventFilter.getId()) != null);
+    private boolean isFilterRegistered(ContractEventFilter filter) {
+        return (getFilterSubscription(filter.getId()) != null);
     }
 
-    private FilterSubscription getFilterSubscription(String filterId) {
-        return filterSubscriptions.get(filterId);
-    }
 
     private List<FilterSubscription> getFilterSubscriptions() {
         return new ArrayList(filterSubscriptions.values());

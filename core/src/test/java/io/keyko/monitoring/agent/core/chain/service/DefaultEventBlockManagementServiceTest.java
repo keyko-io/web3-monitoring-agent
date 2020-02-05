@@ -8,7 +8,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterType;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
 import org.junit.Before;
 import org.junit.Test;
 

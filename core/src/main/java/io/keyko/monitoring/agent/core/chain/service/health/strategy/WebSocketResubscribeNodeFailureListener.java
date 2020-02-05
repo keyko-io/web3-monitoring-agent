@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.websocket.WebSocketReconnectionManager;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 import org.web3j.protocol.websocket.WebSocketClient;
 
 /**

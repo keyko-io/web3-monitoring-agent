@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionStatus;
-import io.keyko.monitoring.agent.core.integration.broadcast.internal.KafkaEventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.integration.broadcast.internal.KafkaEventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.model.TransactionIdentifierType;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 public class EventeumEventConsumingIT extends BaseKafkaIntegrationTest {
 
     @Autowired
-    private KafkaEventeumEventBroadcaster broadcaster;
+    private KafkaEventeumMessageBroadcaster broadcaster;
 
     @Autowired
     private ContractEventFilterRepository filterRepo;

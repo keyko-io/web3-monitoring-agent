@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.dto.event.parameter;
+package io.keyko.monitoring.agent.core.dto.view.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,10 +9,9 @@ import io.keyko.monitoring.agent.core.dto.parameter.ParameterTypeIdResolver;
 import java.io.Serializable;
 
 /**
- * A parameter included within an event.
+ * A parameter related with a view.
  *
- * @param <T> The java type that represents the value of the event.
- * @author Craig Williams <craig.williams@consensys.net>
+ * @param <T> The java type that represents the value of the view parameter.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(
@@ -21,7 +20,7 @@ import java.io.Serializable;
         property = "type",
         visible = true)
 @JsonTypeIdResolver(ParameterTypeIdResolver.class)
-public interface EventParameter<T extends Serializable> extends Serializable {
+public interface ViewParameter<T extends Serializable> extends Serializable {
     String getType();
 
     T getValue();

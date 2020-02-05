@@ -5,8 +5,8 @@ import io.keyko.monitoring.agent.core.chain.config.TransactionFilterConfiguratio
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.factory.ContractEventFilterFactory;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
-import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.transactions.TransactionMonitoringService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

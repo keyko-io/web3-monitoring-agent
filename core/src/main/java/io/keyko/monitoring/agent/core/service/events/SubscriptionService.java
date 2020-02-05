@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.events;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
@@ -6,7 +6,7 @@ import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import java.util.List;
 
 /**
- * A service for manageing contract event subscriptions within the Eventeum instance.
+ * A service for managing contract event subscriptions within the Eventeum instance.
  *
  * @author Craig Williams <craig.williams@consensys.net>
  */

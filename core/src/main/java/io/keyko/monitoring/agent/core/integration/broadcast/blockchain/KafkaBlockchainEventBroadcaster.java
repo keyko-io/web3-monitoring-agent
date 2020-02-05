@@ -119,9 +119,9 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     public List<Object> convertParameters(List<EventParameter> l) {
         List<Object> parametersConverted = new ArrayList<Object>();
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.StringParameter.class) {
+            if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.parameter.StringParameter.class) {
                 parametersConverted.add(new StringParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
-            } else if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter.class) {
+            } else if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.parameter.NumberParameter.class) {
                 parametersConverted.add(new NumberParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
             }
         }

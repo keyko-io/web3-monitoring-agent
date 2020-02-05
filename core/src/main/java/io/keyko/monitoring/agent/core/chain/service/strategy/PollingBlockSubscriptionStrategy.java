@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.model.LatestBlock;
 import io.reactivex.disposables.Disposable;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.methods.response.EthBlock;

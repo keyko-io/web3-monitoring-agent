@@ -2,7 +2,7 @@ package io.keyko.monitoring.agent.core.endpoint;
 
 import io.keyko.monitoring.agent.core.endpoint.response.MonitorTransactionsResponse;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
-import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
+import io.keyko.monitoring.agent.core.service.transactions.TransactionMonitoringService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.internal;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 
 /**
@@ -10,7 +11,7 @@ import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
  *
  * @author Craig Williams <craig.williams@consensys.net>
  */
-public class DoNothingEventeumEventBroadcaster implements EventeumEventBroadcaster {
+public class DoNothingEventeumMessageBroadcaster implements EventeumMessageBroadcaster {
 
     @Override
     public void broadcastEventFilterAdded(ContractEventFilter filter) {
@@ -19,6 +20,16 @@ public class DoNothingEventeumEventBroadcaster implements EventeumEventBroadcast
 
     @Override
     public void broadcastEventFilterRemoved(ContractEventFilter filter) {
+        //DO NOTHING!
+    }
+
+    @Override
+    public void broadcastViewFilterAdded(ContractViewFilter filter) {
+        //DO NOTHING!
+    }
+
+    @Override
+    public void broadcastViewFilterRemoved(ContractViewFilter filter) {
         //DO NOTHING!
     }
 

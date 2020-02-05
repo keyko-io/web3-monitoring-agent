@@ -4,7 +4,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.PublishProcessor;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
 import io.keyko.monitoring.agent.core.testutils.DummyAsyncTaskService;
 import org.junit.Before;
 import org.junit.Test;

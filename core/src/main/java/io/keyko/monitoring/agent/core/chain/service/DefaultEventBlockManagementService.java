@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
+import io.keyko.monitoring.agent.core.service.events.EventStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;

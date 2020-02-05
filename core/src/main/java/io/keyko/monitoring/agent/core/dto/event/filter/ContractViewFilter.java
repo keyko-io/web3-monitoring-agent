@@ -15,7 +15,6 @@ import java.math.BigInteger;
 /**
  * Represents the details of a contract view filter.
  *
- * @author Aitor <aitor@keyko.io>
  */
 @Document
 @Entity

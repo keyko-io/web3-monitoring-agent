@@ -2,8 +2,8 @@ package io.keyko.monitoring.agent.core.chain.converter;
 
 import io.keyko.monitoring.agent.core.dto.event.parameter.ArrayParameter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
-import io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter;
-import io.keyko.monitoring.agent.core.dto.event.parameter.StringParameter;
+import io.keyko.monitoring.agent.core.dto.parameter.NumberParameter;
+import io.keyko.monitoring.agent.core.dto.parameter.StringParameter;
 import io.keyko.monitoring.agent.core.settings.EventeumSettings;
 import org.springframework.stereotype.Component;
 import org.web3j.abi.datatypes.DynamicArray;

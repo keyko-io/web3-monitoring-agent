@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 
 @AllArgsConstructor
 @Data

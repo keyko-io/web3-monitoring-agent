@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.service;
+package io.keyko.monitoring.agent.core.service.views;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
@@ -8,9 +8,8 @@ import java.util.List;
 /**
  * A service for managing contract view subscriptions within the Eventeum instance.
  *
- * @author Aitor Argomaniz <aitor@keyko.io>
  */
-public interface ViewMonitoringService {
+public interface ViewSubscriptionService {
 
     /**
      * Initialise the subscription service

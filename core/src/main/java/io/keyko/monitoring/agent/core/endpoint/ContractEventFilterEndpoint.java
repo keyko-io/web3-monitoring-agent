@@ -4,7 +4,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.endpoint.response.AddEventFilterResponse;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.events.SubscriptionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
