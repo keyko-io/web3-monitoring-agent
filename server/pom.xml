@@ -40,6 +40,11 @@
             <artifactId>spring-kafka</artifactId>
             <version>${spring.kafka.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.keyko.monitoring</groupId>
+            <artifactId>schemas</artifactId>
+            <version>${keyko.schemas.version}</version>
+        </dependency>
         <!-- Micrometer Prometheus registry  -->
         <dependency>
             <groupId>io.micrometer</groupId>
