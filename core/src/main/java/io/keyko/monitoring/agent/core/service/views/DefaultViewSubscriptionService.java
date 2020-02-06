@@ -6,7 +6,7 @@ import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.chain.service.container.NodeServices;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
-import io.keyko.monitoring.agent.core.endpoint.ContractViewFilterRepository;
+import io.keyko.monitoring.agent.core.repository.ContractViewFilterRepository;
 import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumMessageBroadcaster;
 import io.keyko.monitoring.agent.core.model.FilterSubscription;
 import io.keyko.monitoring.agent.core.service.AbstractSubscriptionService;
@@ -138,7 +138,7 @@ public class DefaultViewSubscriptionService extends AbstractSubscriptionService 
         if (nodeServices == null) {
             log.warn("No node configure" +
                     "d with name {}, not registering filter", filter.getNode());
-            return null;
+//            return null;
         }
 
         final BlockchainService blockchainService = nodeServices.getBlockchainService();
