@@ -114,6 +114,11 @@
             <version>1.1.0</version>
         </dependency>
         <dependency>
+            <groupId>io.keyko.monitoring</groupId>
+            <artifactId>schemas</artifactId>
+            <version>${keyko.schemas.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>23.4-jre</version>
@@ -159,27 +164,5 @@
         </dependency>
 
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.avro</groupId>
-                <artifactId>avro-maven-plugin</artifactId>
-                <version>1.9.1</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>schema</goal>
-                        </goals>
-                        <configuration>
-                            <sourceDirectory>src/main/resources/avro</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                            <stringType>String</stringType>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

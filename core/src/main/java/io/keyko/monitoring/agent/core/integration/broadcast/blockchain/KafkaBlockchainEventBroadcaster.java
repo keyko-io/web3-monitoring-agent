@@ -1,7 +1,7 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.blockchain;
 
-import io.keyko.monitoring.agent.core.*;
-import io.keyko.monitoring.agent.core.BlockDetails;
+import io.keyko.monitoring.schemas.*;
+import io.keyko.monitoring.schemas.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
 import io.keyko.monitoring.agent.core.dto.message.BlockEvent;
@@ -60,7 +60,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
                 .setHash(message.getDetails().getHash()).setNodeName(message.getDetails().getNodeName())
                 .setNumber(message.getDetails().getNumber().toString()).setTimestamp(message.getDetails().getTimestamp().toString()).build();
 
-        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.agent.core.BlockEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.BlockEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", blockDetails);
@@ -83,7 +83,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
                 .setStatus(ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
                 .setTransactionHash(message.getDetails().getTransactionHash()).build();
 
-        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.agent.core.ContractEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.ContractEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", contractEventDetails);
@@ -96,7 +96,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     public void broadcastTransaction(TransactionDetails transactionDetails) {
         final EventeumMessage<TransactionDetails> message = createTransactionEventMessage(transactionDetails);
         LOG.info("Sending transaction event message: " + JSON.stringify(message));
-        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.agent.core.TransactionEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.TransactionEvent.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", message.getDetails());

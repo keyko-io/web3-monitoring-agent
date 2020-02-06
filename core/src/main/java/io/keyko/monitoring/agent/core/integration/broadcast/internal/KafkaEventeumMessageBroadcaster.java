@@ -1,6 +1,6 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.internal;
 
-import io.keyko.monitoring.agent.core.BlockEvent;
+import io.keyko.monitoring.schemas.BlockEvent;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.dto.message.*;
