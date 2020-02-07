@@ -51,6 +51,26 @@ public class ContractViewFilterEndpoint {
     }
 
     /**
+     * Get a view filter with the corresponding filter id.
+     *
+     * @param filterId the filterId to delete
+     * @param response the http response
+     */
+    @RequestMapping(value = "/{filterId}", method = RequestMethod.GET)
+    public ContractViewFilter getViewFilter(@PathVariable String filterId,
+                                 HttpServletResponse response) {
+
+        try {
+            ContractViewFilter filter= filterService.getContractViewFilter(filterId);
+            response.setStatus(HttpServletResponse.SC_OK);
+            return filter;
+        } catch (NotFoundException e) {
+            //Rethrow endpoint exception with response information
+            throw new FilterNotFoundEndpointException();
+        }
+    }
+
+    /**
      * Deletes a view filter with the corresponding filter id.
      *
      * @param filterId the filterId to delete

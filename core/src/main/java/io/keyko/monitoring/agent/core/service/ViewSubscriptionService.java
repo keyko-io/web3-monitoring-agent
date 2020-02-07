@@ -49,6 +49,13 @@ public interface ViewSubscriptionService {
     List<ContractViewFilter> listContractViewFilters();
 
     /**
+     * Get a previously added contract view filter.
+     *
+     * @param filterId  The filter id of the view to return.
+     */
+    ContractViewFilter getContractViewFilter(String filterId) throws NotFoundException;
+
+    /**
      * Unregisters a previously added contract view filter.
      * <p>
      * Broadcasts the removed filter view to any other Eventeum instances.

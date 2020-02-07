@@ -335,7 +335,7 @@ viewFilters:
 
 -   **URL Params:** `N/A`
 
--   **Response:** List of contract event filters:
+-   **Response:** List of contract view filters:
 ```json
 [
     {
@@ -369,6 +369,39 @@ viewFilters:
         }
     }
 ]
+```
+
+### Get one Registered View by Id
+
+#### REST
+
+-   **URL:** `/api/rest/v1/view-filter/{id}`    
+-   **Method:** `GET`
+-   **Headers:**  
+
+| Key | Value |
+| -------- | -------- |
+| accept | application/json |
+
+-   **URL Params:** `N/A`
+
+-   **Response:** View Filter:
+```json
+    {
+        "id": "view-identifier-1",
+        "contractAddress": "0x1fbBeeE6eC2B7B095fE3c5A572551b1e260Af4d2",
+        "methodSpecification": {
+            "methodName": "myPublicMethod",
+            "inputParameterDefinitions": [
+              {"position": 0, "type": "UINT256", "name": "foo", "value":  "0"},
+              {"position": 1, "type": "ADDRESS", "name": "bar", "value": "0x0"}],
+            "outputParameterDefinitions": [
+              {"position": 0, "type": "BYTES32", "name": "result"}]
+        },
+        "pollingStrategy": {
+            "blockInterval": 1
+        }
+    }
 ```
 
 ## Transactions 

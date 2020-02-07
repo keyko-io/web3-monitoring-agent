@@ -127,6 +127,18 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
      * {@inheritDoc}
      */
     @Override
+    public ContractViewFilter getContractViewFilter(String filterId) throws NotFoundException {
+        Optional<ContractViewFilter> byId = viewFilterRepository.findById(filterId);
+        if (!byId.isPresent() || null == byId.get()) {
+            throw new NotFoundException(String.format("Filter with id %s, doesn't exist", filterId));
+        }
+        return byId.get();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void unregisterContractViewFilter(String filterId) throws NotFoundException {
         unregisterContractViewFilter(filterId, true);
     }
