@@ -25,10 +25,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -93,6 +90,7 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
         if (!isFilterRegistered(filter)) {
 
             saveContractViewFilter(filter);
+//            filterSubscriptions.put(filter.getId(), filter);
 
             if (broadcast) {
                 broadcastContractEventFilterAdded(filter);
@@ -120,8 +118,9 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
      */
     @Override
     public List<ContractViewFilter> listContractViewFilters() {
-        return getFilterSubscriptions().stream().map(
-                (ViewFilterSubscription f) -> f.getFilter()).collect(Collectors.toList());
+        List<ContractViewFilter> target = new ArrayList<>();
+        viewFilterRepository.findAll().forEach(target::add);
+        return target;
     }
 
     /**
@@ -137,16 +136,18 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
      */
     @Override
     public void unregisterContractViewFilter(String filterId, boolean broadcast) throws NotFoundException {
-        final ViewFilterSubscription filterSubscription = getFilterSubscription(filterId);
+//        final ViewFilterSubscription filterSubscription = getFilterSubscription(filterId);
 
-        if (filterSubscription == null) {
+        Optional<ContractViewFilter> byId = viewFilterRepository.findById(filterId);
+
+        if (!byId.isPresent() || null == byId.get()) {
             throw new NotFoundException(String.format("Filter with id %s, doesn't exist", filterId));
         }
 
-        deleteContractViewFilter(filterSubscription.getFilter());
+        deleteContractViewFilter(byId.get());
 
         if (broadcast) {
-            broadcastContractViewFilterRemoved(filterSubscription.getFilter());
+            broadcastContractViewFilterRemoved(byId.get());
         }
     }
 
