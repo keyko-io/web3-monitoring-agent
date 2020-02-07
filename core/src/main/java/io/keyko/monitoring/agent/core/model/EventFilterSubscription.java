@@ -9,7 +9,7 @@ import java.math.BigInteger;
 
 @Data
 @AllArgsConstructor
-public class FilterSubscription {
+public class EventFilterSubscription {
 
     private ContractEventFilter filter;
 
@@ -17,7 +17,7 @@ public class FilterSubscription {
 
     private BigInteger startBlock;
 
-    public FilterSubscription(ContractEventFilter filter, Disposable subscription) {
+    public EventFilterSubscription(ContractEventFilter filter, Disposable subscription) {
         this.filter = filter;
         this.subscription = subscription;
     }

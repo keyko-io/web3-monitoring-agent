@@ -7,7 +7,7 @@ import io.keyko.monitoring.agent.core.dto.message.TransactionMonitorAdded;
 import io.keyko.monitoring.agent.core.dto.message.TransactionMonitorRemoved;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import org.apache.avro.generic.GenericRecord;
@@ -34,7 +34,7 @@ public class KafkaFilterEventConsumer implements EventeumInternalEventConsumer {
     private final Map<String, Consumer<GenericRecord>> messageConsumers;
 
     @Autowired
-    public KafkaFilterEventConsumer(SubscriptionService subscriptionService,
+    public KafkaFilterEventConsumer(EventSubscriptionService subscriptionService,
                                     TransactionMonitoringService transactionMonitoringService,
                                     KafkaSettings kafkaSettings) {
 

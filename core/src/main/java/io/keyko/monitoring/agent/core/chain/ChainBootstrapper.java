@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.chain.config.TransactionFilterConfiguratio
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.factory.ContractEventFilterFactory;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class ChainBootstrapper implements InitializingBean {
     private final Logger LOG = LoggerFactory.getLogger(ChainBootstrapper.class);
 
-    private SubscriptionService subscriptionService;
+    private EventSubscriptionService subscriptionService;
     private TransactionMonitoringService transactionMonitoringService;
     private EventFilterConfiguration filterConfiguration;
     private CrudRepository<ContractEventFilter, String> filterRepository;

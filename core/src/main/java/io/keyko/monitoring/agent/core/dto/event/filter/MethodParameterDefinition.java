@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParameterDefinition implements Comparable<ParameterDefinition>, Serializable {
+public class MethodParameterDefinition implements Comparable<MethodParameterDefinition>, Serializable {
 
     Integer position;
 
@@ -21,8 +21,10 @@ public class ParameterDefinition implements Comparable<ParameterDefinition>, Ser
 
     String name;
 
+    private String value;
+
     @Override
-    public int compareTo(ParameterDefinition o) {
+    public int compareTo(MethodParameterDefinition o) {
         return this.position.compareTo(o.getPosition());
     }
 }

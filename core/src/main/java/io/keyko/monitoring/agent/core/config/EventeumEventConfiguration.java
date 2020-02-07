@@ -6,7 +6,7 @@ import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEve
 import io.keyko.monitoring.agent.core.integration.broadcast.internal.KafkaEventeumEventBroadcaster;
 import io.keyko.monitoring.agent.core.integration.consumer.EventeumInternalEventConsumer;
 import io.keyko.monitoring.agent.core.integration.consumer.KafkaFilterEventConsumer;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
 import org.apache.avro.generic.GenericRecord;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,7 +34,7 @@ public class EventeumEventConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "broadcaster.multiInstance", havingValue = "true")
-    public EventeumInternalEventConsumer kafkaFilterEventConsumer(SubscriptionService subscriptionService,
+    public EventeumInternalEventConsumer kafkaFilterEventConsumer(EventSubscriptionService subscriptionService,
                                                                   TransactionMonitoringService transactionMonitoringService,
                                                                   KafkaSettings kafkaSettings) {
         return new KafkaFilterEventConsumer(subscriptionService, transactionMonitoringService, kafkaSettings);

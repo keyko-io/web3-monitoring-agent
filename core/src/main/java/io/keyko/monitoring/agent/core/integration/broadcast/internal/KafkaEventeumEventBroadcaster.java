@@ -1,11 +1,12 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.internal;
 
-import io.keyko.monitoring.schemas.BlockEvent;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.dto.message.*;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.utils.JSON;
+import io.keyko.monitoring.schemas.BlockEvent;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.slf4j.Logger;
@@ -44,6 +45,16 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
     }
 
     @Override
+    public void broadcastViewFilterAdded(ContractViewFilter filter) {
+        sendMessage(createContractViewFilterAddedMessage(filter));
+    }
+
+    @Override
+    public void broadcastViewFilterRemoved(ContractViewFilter filter) {
+        sendMessage(createContractViewFilterRemovedMessage(filter));
+    }
+
+    @Override
     public void broadcastTransactionMonitorAdded(TransactionMonitoringSpec spec) {
         sendMessage(createTransactionMonitorAddedMessage(spec));
     }
@@ -60,6 +71,15 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
     protected EventeumMessage createContractEventFilterRemovedMessage(ContractEventFilter filter) {
         return new ContractEventFilterRemoved(filter);
     }
+
+    protected EventeumMessage createContractViewFilterAddedMessage(ContractViewFilter filter) {
+        return new ContractViewFilterAdded(filter);
+    }
+
+    protected EventeumMessage createContractViewFilterRemovedMessage(ContractViewFilter filter) {
+        return new ContractViewFilterRemoved(filter);
+    }
+
 
     protected EventeumMessage createTransactionMonitorAddedMessage(TransactionMonitoringSpec spec) {
         return new TransactionMonitorAdded(spec);

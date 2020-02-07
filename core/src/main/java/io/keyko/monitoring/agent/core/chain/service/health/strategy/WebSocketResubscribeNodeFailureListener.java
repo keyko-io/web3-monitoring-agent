@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.websocket.WebSocketReconnectionManager;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import org.web3j.protocol.websocket.WebSocketClient;
 
 /**
@@ -22,7 +22,7 @@ public class WebSocketResubscribeNodeFailureListener extends ResubscribingReconn
     private WebSocketClient client;
     private BlockchainService blockchainService;
 
-    public WebSocketResubscribeNodeFailureListener(SubscriptionService subscriptionService,
+    public WebSocketResubscribeNodeFailureListener(EventSubscriptionService subscriptionService,
                                                    BlockchainService blockchainService,
                                                    WebSocketReconnectionManager reconnectionManager,
                                                    WebSocketClient client) {

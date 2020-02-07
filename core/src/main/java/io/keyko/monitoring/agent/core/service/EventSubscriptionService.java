@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Craig Williams <craig.williams@consensys.net>
  */
-public interface SubscriptionService {
+public interface EventSubscriptionService {
 
     /**
      * Initialise the subscription service
