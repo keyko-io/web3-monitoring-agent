@@ -10,7 +10,7 @@ import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionSt
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
-import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
 import io.reactivex.Flowable;
@@ -87,7 +87,7 @@ public class Web3jService implements BlockchainService {
      * {inheritDoc}
      */
     @Override
-    public FilterSubscription registerEventListener(
+    public EventFilterSubscription registerEventListener(
             ContractEventFilter eventFilter, ContractEventListener eventListener) {
         log.debug("Registering event filter for event: {}", eventFilter.getId());
         final ContractEventSpecification eventSpec = eventFilter.getEventSpecification();
@@ -120,7 +120,7 @@ public class Web3jService implements BlockchainService {
                     "Failed to subcribe for filter %s.  The subscription is disposed.", eventFilter.getId()));
         }
 
-        return new FilterSubscription(eventFilter, sub, startBlock);
+        return new EventFilterSubscription(eventFilter, sub, startBlock);
     }
 
     /**

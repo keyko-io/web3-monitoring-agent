@@ -3,13 +3,13 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 
 @AllArgsConstructor
 @Data
 public abstract class ResubscribingReconnectionStrategy implements ReconnectionStrategy {
 
-    private SubscriptionService subscriptionService;
+    private EventSubscriptionService subscriptionService;
     private BlockchainService blockchainService;
 
     @Override

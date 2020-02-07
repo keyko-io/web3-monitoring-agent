@@ -2,7 +2,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 
 /**
  * An NodeFailureListener that reconnects the blockchain service and resubscribes to all
@@ -15,7 +15,7 @@ import io.keyko.monitoring.agent.core.service.SubscriptionService;
 @Slf4j
 public class HttpReconnectionStrategy extends ResubscribingReconnectionStrategy {
 
-    public HttpReconnectionStrategy(SubscriptionService subscriptionService, BlockchainService blockchainService) {
+    public HttpReconnectionStrategy(EventSubscriptionService subscriptionService, BlockchainService blockchainService) {
         super(subscriptionService, blockchainService);
     }
 

@@ -8,11 +8,13 @@ import io.keyko.monitoring.agent.core.chain.service.container.NodeServices;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
-import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import io.keyko.monitoring.agent.core.utils.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +37,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
-public class DefaultSubscriptionService implements SubscriptionService {
+public class DefaultEventSubscriptionService implements EventSubscriptionService {
 
     private ChainServicesContainer chainServices;
 
@@ -49,20 +51,20 @@ public class DefaultSubscriptionService implements SubscriptionService {
 
     private List<BlockListener> blockListeners;
 
-    private Map<String, FilterSubscription> filterSubscriptions = new ConcurrentHashMap<>();
+    private Map<String, EventFilterSubscription> filterSubscriptions = new ConcurrentHashMap<>();
 
     private ApplicationContext applicationContext;
 
     private RetryTemplate retryTemplate;
 
     @Autowired
-    public DefaultSubscriptionService(ChainServicesContainer chainServices,
-                                      ContractEventFilterRepository eventFilterRepository,
-                                      EventeumEventBroadcaster eventeumEventBroadcaster,
-                                      AsyncTaskService asyncTaskService,
-                                      List<BlockListener> blockListeners,
-                                      List<ContractEventListener> contractEventListeners,
-                                      @Qualifier("eternalRetryTemplate") RetryTemplate retryTemplate) {
+    public DefaultEventSubscriptionService(ChainServicesContainer chainServices,
+                                           ContractEventFilterRepository eventFilterRepository,
+                                           EventeumEventBroadcaster eventeumEventBroadcaster,
+                                           AsyncTaskService asyncTaskService,
+                                           List<BlockListener> blockListeners,
+                                           List<ContractEventListener> contractEventListeners,
+                                           @Qualifier("eternalRetryTemplate") RetryTemplate retryTemplate) {
         this.contractEventListeners = contractEventListeners;
         this.chainServices = chainServices;
         this.asyncTaskService = asyncTaskService;
@@ -100,7 +102,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
      */
     @Override
     public List<ContractEventFilter> listContractEventFilters() {
-        return getFilterSubscriptions().stream().map((FilterSubscription f) -> f.getFilter()).collect(Collectors.toList());
+        return getFilterSubscriptions().stream().map((EventFilterSubscription f) -> f.getFilter()).collect(Collectors.toList());
     }
 
     /**
@@ -116,7 +118,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
      */
     @Override
     public void unregisterContractEventFilter(String filterId, boolean broadcast) throws NotFoundException {
-        final FilterSubscription filterSubscription = getFilterSubscription(filterId);
+        final EventFilterSubscription filterSubscription = getFilterSubscription(filterId);
 
         if (filterSubscription == null) {
             throw new NotFoundException(String.format("Filter with id %s, doesn't exist", filterId));
@@ -143,7 +145,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
                 .map(filterSubscription -> filterSubscription.getFilter())
                 .collect(Collectors.toList());
 
-        final Map<String, FilterSubscription> newFilterSubscriptions = new ConcurrentHashMap<>();
+        final Map<String, EventFilterSubscription> newFilterSubscriptions = new ConcurrentHashMap<>();
 
         currentFilters.forEach(filter -> registerContractEventFilter(filter, newFilterSubscriptions));
 
@@ -182,7 +184,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
         });
     }
 
-    public void unsubscribeFilterSubscription(FilterSubscription filterSubscription) {
+    public void unsubscribeFilterSubscription(EventFilterSubscription filterSubscription) {
 
         try {
             filterSubscription.getSubscription().dispose();
@@ -196,7 +198,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
         populateIdIfMissing(filter);
 
         if (!isFilterRegistered(filter)) {
-            final FilterSubscription sub = registerContractEventFilter(filter, filterSubscriptions);
+            final EventFilterSubscription sub = registerContractEventFilter(filter, filterSubscriptions);
 
             if (filter.getStartBlock() == null && sub != null) {
                 filter.setStartBlock(sub.getStartBlock());
@@ -222,7 +224,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
         blockchainService.connect();
     }
 
-    private FilterSubscription registerContractEventFilter(ContractEventFilter filter, Map<String, FilterSubscription> allFilterSubscriptions) {
+    private EventFilterSubscription registerContractEventFilter(ContractEventFilter filter, Map<String, EventFilterSubscription> allFilterSubscriptions) {
         log.info("Registering filter: " + JSON.stringify(filter));
 
         final NodeServices nodeServices = chainServices.getNodeServices(filter.getNode());
@@ -235,7 +237,7 @@ public class DefaultSubscriptionService implements SubscriptionService {
 
         final BlockchainService blockchainService = nodeServices.getBlockchainService();
 
-        final FilterSubscription sub = blockchainService.registerEventListener(filter, contractEvent -> {
+        final EventFilterSubscription sub = blockchainService.registerEventListener(filter, contractEvent -> {
             contractEventListeners.forEach(
                     listener -> triggerListener(listener, contractEvent));
         });
@@ -276,11 +278,11 @@ public class DefaultSubscriptionService implements SubscriptionService {
         return (getFilterSubscription(contractEventFilter.getId()) != null);
     }
 
-    private FilterSubscription getFilterSubscription(String filterId) {
+    private EventFilterSubscription getFilterSubscription(String filterId) {
         return filterSubscriptions.get(filterId);
     }
 
-    private List<FilterSubscription> getFilterSubscriptions() {
+    private List<EventFilterSubscription> getFilterSubscriptions() {
         return new ArrayList(filterSubscriptions.values());
     }
 

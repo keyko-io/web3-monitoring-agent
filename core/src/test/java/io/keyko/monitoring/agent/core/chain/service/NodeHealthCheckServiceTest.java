@@ -8,7 +8,7 @@ import io.keyko.monitoring.agent.core.constant.Constants;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
 import io.keyko.monitoring.agent.core.monitoring.MicrometerValueMonitor;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class NodeHealthCheckServiceTest {
 
     private ReconnectionStrategy mockReconnectionStrategy;
 
-    private SubscriptionService mockSubscriptionService;
+    private EventSubscriptionService mockSubscriptionService;
 
     private EventeumValueMonitor mockEventeumValueMonitor;
 
@@ -49,7 +49,7 @@ public class NodeHealthCheckServiceTest {
         when(mockBlockchainService.getNodeName()).thenReturn(Constants.DEFAULT_NODE_NAME);
 
         mockReconnectionStrategy = mock(ReconnectionStrategy.class);
-        mockSubscriptionService = mock(SubscriptionService.class);
+        mockSubscriptionService = mock(EventSubscriptionService.class);
 
         mockEventStoreService = mock(EventStoreService.class);
         LatestBlock latestBlock = new LatestBlock();

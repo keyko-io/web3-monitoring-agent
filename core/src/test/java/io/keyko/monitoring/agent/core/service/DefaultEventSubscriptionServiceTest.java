@@ -2,7 +2,7 @@ package io.keyko.monitoring.agent.core.service;
 
 import java.util.Collections;
 
-import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.testutils.DummyAsyncTaskService;
 import io.reactivex.disposables.Disposable;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DefaultSubscriptionServiceTest {
+public class DefaultEventSubscriptionServiceTest {
     private static final String FILTER_ID = "123-456";
 
     private static final String EVENT_NAME = "DummyEvent";
@@ -41,7 +41,7 @@ public class DefaultSubscriptionServiceTest {
 
     private static ContractEventSpecification eventSpec;
 
-    private DefaultSubscriptionService underTest;
+    private DefaultEventSubscriptionService underTest;
 
     @Mock
     private ChainServicesContainer mockChainServicesContainer;
@@ -86,7 +86,7 @@ public class DefaultSubscriptionServiceTest {
 
         mockRetryTemplate = new RetryTemplate();
 
-        underTest = new DefaultSubscriptionService(mockChainServicesContainer,
+        underTest = new DefaultEventSubscriptionService(mockChainServicesContainer,
                 mockRepo, mockFilterBroadcaster, new DummyAsyncTaskService(),
                 Arrays.asList(mockBlockListener1, mockBlockListener2),
                 Arrays.asList(mockEventListener1, mockEventListener2),mockRetryTemplate);
@@ -135,7 +135,7 @@ public class DefaultSubscriptionServiceTest {
         final ContractEventFilter filter = createEventFilter(null);
 
         when(mockBlockchainService.registerEventListener(any(ContractEventFilter.class), any(ContractEventListener.class)))
-                .thenReturn(new FilterSubscription(filter, mock(Disposable.class)));
+                .thenReturn(new EventFilterSubscription(filter, mock(Disposable.class)));
 
         underTest.registerContractEventFilter(filter, true);
 
@@ -147,7 +147,7 @@ public class DefaultSubscriptionServiceTest {
     public void testListContractEventFilterAlreadyRegistered() {
         final ContractEventFilter filter1 = createEventFilter(null);
         when(mockBlockchainService.registerEventListener(any(ContractEventFilter.class), any(ContractEventListener.class)))
-	   .thenReturn(new FilterSubscription(filter1, mock(Disposable.class)));
+	   .thenReturn(new EventFilterSubscription(filter1, mock(Disposable.class)));
 
         underTest.registerContractEventFilter(filter1, true);
         underTest.registerContractEventFilter(filter1, true);
@@ -163,9 +163,9 @@ public class DefaultSubscriptionServiceTest {
         final Disposable sub2 = mock(Disposable.class);
 
         when(mockBlockchainService.registerEventListener(
-                eq(filter1), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter1, sub1));
+                eq(filter1), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter1, sub1));
         when(mockBlockchainService.registerEventListener(
-                eq(filter2), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter2, sub2));
+                eq(filter2), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter2, sub2));
 
         //Add 2 filters
         underTest.registerContractEventFilter(filter1, true);
@@ -174,9 +174,9 @@ public class DefaultSubscriptionServiceTest {
         reset(mockBlockchainService, mockRepo, mockFilterBroadcaster);
 
         when(mockBlockchainService.registerEventListener(
-                eq(filter1), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter1, sub1));
+                eq(filter1), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter1, sub1));
         when(mockBlockchainService.registerEventListener(
-                eq(filter2), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter2, sub2));
+                eq(filter2), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter2, sub2));
 
         underTest.resubscribeToAllSubscriptions();
 
@@ -190,7 +190,7 @@ public class DefaultSubscriptionServiceTest {
         final Disposable sub1 = mock(Disposable.class);
 
         when(mockBlockchainService.registerEventListener(
-                eq(filter), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter, sub1));
+                eq(filter), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter, sub1));
 
         underTest.registerContractEventFilter(filter, false);
 
@@ -222,9 +222,9 @@ public class DefaultSubscriptionServiceTest {
         final Disposable sub2 = mock(Disposable.class);
 
         when(mockBlockchainService.registerEventListener(
-                eq(filter1), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter1, sub1));
+                eq(filter1), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter1, sub1));
         when(mockBlockchainService.registerEventListener(
-                eq(filter2), any(ContractEventListener.class))).thenReturn(new FilterSubscription(filter2, sub2));
+                eq(filter2), any(ContractEventListener.class))).thenReturn(new EventFilterSubscription(filter2, sub2));
 
         underTest.registerContractEventFilter(filter1, false);
         underTest.registerContractEventFilter(filter2, false);
@@ -258,7 +258,7 @@ public class DefaultSubscriptionServiceTest {
         final ContractEventFilter filter =  createEventFilter(FILTER_ID);
 
         when(mockBlockchainService.registerEventListener(eq(filter), any(ContractEventListener.class)))
-                .thenReturn(new FilterSubscription(filter, mock(Disposable.class)));
+                .thenReturn(new EventFilterSubscription(filter, mock(Disposable.class)));
 
         return filter;
     }

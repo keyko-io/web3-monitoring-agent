@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 
 import java.math.BigInteger;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -32,7 +32,7 @@ public class NodeHealthCheckService {
 
     private ReconnectionStrategy reconnectionStrategy;
 
-    private SubscriptionService subscriptionService;
+    private EventSubscriptionService eventSubscriptionService;
 
     private boolean initiallySubscribed = false;
 
@@ -48,7 +48,7 @@ public class NodeHealthCheckService {
 
     public NodeHealthCheckService(BlockchainService blockchainService,
                                   ReconnectionStrategy reconnectionStrategy,
-                                  SubscriptionService subscriptionService,
+                                  EventSubscriptionService eventSubscriptionService,
                                   EventeumValueMonitor valueMonitor,
                                   EventStoreService eventStoreService,
                                   Integer syncingThreshold,
@@ -57,7 +57,7 @@ public class NodeHealthCheckService {
         this.eventStoreService = eventStoreService;
         this.blockchainService = blockchainService;
         this.reconnectionStrategy = reconnectionStrategy;
-        this.subscriptionService = subscriptionService;
+        this.eventSubscriptionService = eventSubscriptionService;
         this.syncingThreshold = syncingThreshold;
         nodeStatus = NodeStatus.SUBSCRIBED;
 
@@ -91,7 +91,7 @@ public class NodeHealthCheckService {
                 nodeStatus = NodeStatus.DOWN;
 
                 if (statusAtStart != NodeStatus.DOWN) {
-                    subscriptionService.unsubscribeToAllSubscriptions(blockchainService.getNodeName());
+                    eventSubscriptionService.unsubscribeToAllSubscriptions(blockchainService.getNodeName());
                     blockchainService.disconnect();
                 }
 
@@ -124,7 +124,7 @@ public class NodeHealthCheckService {
 
     protected boolean isSubscribed() {
         return blockchainService.isConnected() &&
-                subscriptionService.isFullySubscribed(blockchainService.getNodeName());
+                eventSubscriptionService.isFullySubscribed(blockchainService.getNodeName());
     }
 
     private void doReconnect() {

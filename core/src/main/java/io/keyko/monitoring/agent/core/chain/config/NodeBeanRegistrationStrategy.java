@@ -138,7 +138,7 @@ public class NodeBeanRegistrationStrategy {
 
         builder.addConstructorArgReference(blockchainServiceBeanName);
         builder.addConstructorArgReference(nodeFailureListenerBeanName);
-        builder.addConstructorArgReference("defaultSubscriptionService");
+        builder.addConstructorArgReference("defaultEventSubscriptionService");
         builder.addConstructorArgReference("eventeumValueMonitor");
         builder.addConstructorArgReference("defaultEventStoreService");
         builder.addConstructorArgValue(node.getSyncingThreshold());

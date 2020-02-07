@@ -6,7 +6,7 @@ import io.keyko.monitoring.agent.core.factory.ContractEventFilterFactory;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
 import io.keyko.monitoring.agent.core.repository.TransactionMonitoringSpecRepository;
-import io.keyko.monitoring.agent.core.service.SubscriptionService;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.chain.config.EventFilterConfiguration;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
@@ -34,7 +34,7 @@ public class ChainBootstrapperTest {
     private EventFilterConfiguration mockConfig;
 
     @Mock
-    private SubscriptionService mockSubscriptionService;
+    private EventSubscriptionService mockSubscriptionService;
 
     @Mock
     private TransactionMonitoringService mockTransactionMonitoringService;

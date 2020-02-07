@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
-import io.keyko.monitoring.agent.core.model.FilterSubscription;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 
 import java.math.BigInteger;
 import java.util.Optional;
@@ -44,7 +44,7 @@ public interface BlockchainService {
      * @param eventListener The listener to be triggered when a matching event is emitted
      * @return The registered subscription
      */
-    FilterSubscription registerEventListener(ContractEventFilter filter, ContractEventListener eventListener);
+    EventFilterSubscription registerEventListener(ContractEventFilter filter, ContractEventListener eventListener);
 
     /**
      * @return the client version for the connected Ethereum node.
