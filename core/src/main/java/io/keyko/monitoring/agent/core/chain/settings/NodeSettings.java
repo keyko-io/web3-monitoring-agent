@@ -41,6 +41,8 @@ public class NodeSettings {
 
     private static final String BLOCK_STRATEGY_ATTRIBUTE = "blockStrategy";
 
+    private static final String NODE_CLIENT_ADDRESS_ATTRIBUTE = "address";
+
     private static final String TRANSACTION_REVERT_REASON_ATTRIBUTTE = "addTransactionRevertReason";
 
     private static final String MAX_IDLE_CONNECTIONS_ATTRIBUTTE = "maxIdleConnections";
@@ -103,7 +105,8 @@ public class NodeSettings {
                     getNodeHealthcheckIntervalProperty(environment, index),
                     getBlocksToWaitForConfirmationProperty(environment, index),
                     getBlocksToWaitBeforeInvalidatingProperty(environment, index),
-                    getBlocksToWaitForMissingTxProperty(environment, index)
+                    getBlocksToWaitForMissingTxProperty(environment, index),
+                    getNodeClientAddressProperty(environment, index)
             );
 
             nodes.put(nodeName, node);
@@ -230,6 +233,9 @@ public class NodeSettings {
         return BigInteger.valueOf(Long.valueOf(blocksToWaitForMissingTx));
     }
 
+    private String getNodeClientAddressProperty(Environment environment, int index) {
+        return getProperty(environment, buildNodeAttribute(NODE_CLIENT_ADDRESS_ATTRIBUTE, index));
+    }
 
     private String getNodeUsernameProperty(Environment environment, int index) {
         return getProperty(environment, buildNodeAttribute(NODE_USERNAME_ATTRIBUTE, index));

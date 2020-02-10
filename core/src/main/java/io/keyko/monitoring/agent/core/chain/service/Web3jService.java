@@ -18,10 +18,12 @@ import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.FunctionReturnDecoder;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.DefaultBlockParameter;
-import org.web3j.protocol.core.DefaultBlockParameterName;
-import org.web3j.protocol.core.DefaultBlockParameterNumber;
+import org.web3j.protocol.core.*;
 import org.web3j.protocol.core.filters.FilterException;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.request.Transaction;
@@ -30,7 +32,11 @@ import org.web3j.protocol.core.methods.response.*;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A BlockchainService implementating utilising the Web3j library.
@@ -122,6 +128,7 @@ public class Web3jService implements BlockchainService {
 
         return new EventFilterSubscription(eventFilter, sub, startBlock);
     }
+
 
     /**
      * {inheritDoc}
@@ -240,4 +247,22 @@ public class Web3jService implements BlockchainService {
     private BigInteger getStartBlockForEventFilter(ContractEventFilter filter) {
         return blockManagement.getLatestBlockForEvent(filter);
     }
+
+    @Override
+    public List<Type> executeReadCall(String from, String contractAddress, Function function)    {
+
+        try {
+            EthCall response = web3j.ethCall(
+                    Transaction.createEthCallTransaction(from, contractAddress, FunctionEncoder.encode(function)),
+                    DefaultBlockParameterName.LATEST)
+                    .sendAsync().get();
+            return FunctionReturnDecoder.decode(
+                    response.getValue(), function.getOutputParameters());
+
+        } catch (ExecutionException | InterruptedException e)  {
+            log.error("Unable to execute remote call " + e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
 }

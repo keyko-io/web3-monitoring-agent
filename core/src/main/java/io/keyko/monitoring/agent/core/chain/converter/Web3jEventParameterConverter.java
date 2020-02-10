@@ -1,13 +1,14 @@
 package io.keyko.monitoring.agent.core.chain.converter;
 
+import io.keyko.monitoring.agent.core.dto.event.filter.MethodParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.parameter.ArrayParameter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.StringParameter;
 import io.keyko.monitoring.agent.core.settings.EventeumSettings;
+import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
-import org.web3j.abi.datatypes.DynamicArray;
-import org.web3j.abi.datatypes.Type;
+import org.web3j.abi.datatypes.*;
 import org.web3j.crypto.Keys;
 import org.web3j.utils.Numeric;
 

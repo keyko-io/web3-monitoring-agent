@@ -6,8 +6,11 @@ import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.chain.block.BlockListener;
 import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -92,4 +95,14 @@ public interface BlockchainService {
     boolean isConnected();
 
     String getRevertReason(String from, String to, BigInteger blockNumber, String input);
+
+    /**
+     * Execute a remote read blockchain call
+     *
+     * @param from address sending the request
+     * @param contractAddress Smart Contract Address
+     * @param function Function to call
+     * @return the list of returned values after the execution call
+     */
+    List<Type> executeReadCall(String from, String contractAddress, Function function);
 }
