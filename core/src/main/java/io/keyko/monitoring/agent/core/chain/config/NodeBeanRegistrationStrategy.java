@@ -163,7 +163,7 @@ public class NodeBeanRegistrationStrategy {
                     .getBeanDefinition();
 
             beanDefinition.getConstructorArgumentValues()
-                    .addIndexedArgumentValue(3, webSocketService.getWebSocketClient());
+                    .addIndexedArgumentValue(4, webSocketService.getWebSocketClient());
 
         } else {
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HttpReconnectionStrategy.class)
@@ -171,7 +171,7 @@ public class NodeBeanRegistrationStrategy {
         }
 
         beanDefinition.getConstructorArgumentValues()
-                .addIndexedArgumentValue(1, new RuntimeBeanReference(blockchainServiceBeanName));
+                .addIndexedArgumentValue(2, new RuntimeBeanReference(blockchainServiceBeanName));
 
 
         final String beanName = String.format(NODE_FAILURE_LISTENER_BEAN_NAME, node.getName());

@@ -42,7 +42,8 @@ public class ViewBlockListener implements BlockListener {
 
     @Override
     public void onBlock(Block block) {
-        log.info(String.format("New block mined. Hash: %s, Number: %s", block.getHash(), block.getNumber()));
+        log.info(String.format("New block mined. Hash: %s, Number: %s, Filters: %s",
+                block.getHash(), block.getNumber(), viewFilters.size()));
 
         // Foreach registered filter
         viewFilters.forEach((id, filter) -> {
@@ -53,28 +54,9 @@ public class ViewBlockListener implements BlockListener {
             BigInteger mod= block.getNumber().mod(interval);
 
             if (mod.equals(BigInteger.ZERO))    {
-                processViewMessage(block, filter);
+                processViewMessage(filter);
             }
         });
-    }
-
-    public void processViewMessage(Block block, ContractViewFilter filter)  {
-        log.info("Processing message for filter " + filter.getId());
-        // Compose message
-        Function _func= filter.getMethodSpecification().getWeb3Function();
-
-        // 3. Call the contract
-        List<Type> result = blockchainService.executeReadCall(
-                nodeSettings.getNode(filter.getNode()).getClientAddress(),
-                filter.getContractAddress(),
-                _func);
-
-        // 4. Parse the result
-        if (result.size()>0)    {
-            // 5. Write
-            log.info("Returned: ");
-            result.forEach( k -> log.info(k.getValue().toString()));
-        }
     }
 
     private Function composeFunction(ContractViewFilter filter) {
@@ -86,6 +68,28 @@ public class ViewBlockListener implements BlockListener {
                 "Adding new filter to ViewBlockListener: %s", filter.getId()));
         if (!viewFilters.containsKey(filter.getId()))
             viewFilters.put(filter.getId(), filter);
+    }
+
+    public void processViewMessage(ContractViewFilter filter)  {
+        // Compose message
+        Function _func= filter.getMethodSpecification().getWeb3Function();
+        log.debug("Processing message for filter " + filter.getId()
+                + " and function " + _func.getName());
+
+        // 3. Call the contract
+        List<Type> result = blockchainService.executeReadCall(
+                nodeSettings.getNode(filter.getNode()).getClientAddress(),
+                filter.getContractAddress(),
+                _func);
+
+        log.info("--> Result after calling remote contract " + result.size());
+
+        // 4. Parse the result
+        if (result.size()>0)    {
+            // 5. Write
+            log.info("Returned: ");
+            result.forEach( k -> log.info(k.getValue().toString()));
+        }
     }
 
     public void removeViewFilter(ContractViewFilter filter) {

@@ -16,14 +16,14 @@ public class Web3Converter {
     private static final String DEFAULT_TYPE_MAPPING = "string";
     static {
         typeMappings.put("bool", new TypeReference<Bool>(){});
-        typeMappings.put("unit", new TypeReference<Uint>(){});
+        typeMappings.put("uint", new TypeReference<Uint>(){});
         typeMappings.put("address", new TypeReference<Address>(){});
         typeMappings.put("int", new TypeReference<Int>(){});
         typeMappings.put("string", new TypeReference<Utf8String>(){});
         typeMappings.put("bytes", new TypeReference<Bytes>(){});
 
         subTypeMappings.put("bool", new TypeReference<DynamicArray<Bool>>(){});
-        subTypeMappings.put("unit", new TypeReference<DynamicArray<Uint>>(){});
+        subTypeMappings.put("uint", new TypeReference<DynamicArray<Uint>>(){});
         subTypeMappings.put("address", new TypeReference<DynamicArray<Address>>(){});
         subTypeMappings.put("int", new TypeReference<DynamicArray<Int>>(){});
         subTypeMappings.put("string", new TypeReference<DynamicArray<Utf8String>>(){});

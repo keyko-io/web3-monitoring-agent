@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 
+import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
@@ -15,8 +16,8 @@ import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 @Slf4j
 public class HttpReconnectionStrategy extends ResubscribingReconnectionStrategy {
 
-    public HttpReconnectionStrategy(EventSubscriptionService subscriptionService, BlockchainService blockchainService) {
-        super(subscriptionService, blockchainService);
+    public HttpReconnectionStrategy(EventSubscriptionService subscriptionService, ViewSubscriptionService viewSubscriptionService, BlockchainService blockchainService) {
+        super(subscriptionService, viewSubscriptionService, blockchainService);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ContractViewSpecification implements Serializable {
 
     public Function getWeb3Function()    {
         List<Type> funcInput= new ArrayList<>();
-        List<TypeReference<?>> funcOutput = Arrays.<TypeReference<?>>asList();
+        List<TypeReference<?>> funcOutput = new ArrayList<>();
 
         inputParameterDefinitions.forEach(definition -> {
             try {
@@ -48,7 +48,9 @@ public class ContractViewSpecification implements Serializable {
 
         outputParameterDefinitions.forEach(definition -> {
             try {
-                funcOutput.add(definition.getWeb3TypeReference());
+                TypeReference typeReference = definition.getWeb3TypeReference();
+                funcOutput.add(typeReference);
+//                funcOutput.add(definition.getWeb3TypeReference());
             } catch (UnsupportedEncodingException e) {
                 log.error("Unable to convert output parameter: " + e.getMessage());
             }

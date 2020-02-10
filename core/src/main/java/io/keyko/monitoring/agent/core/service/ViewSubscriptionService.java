@@ -72,4 +72,13 @@ public interface ViewSubscriptionService {
      */
     void unregisterContractViewFilter(String filterId, boolean broadcast) throws NotFoundException;
 
+    /**
+     * Resubscribe to all currently active event filters.
+     */
+    void resubscribeToAllSubscriptions();
+
+    /**
+     * Unsubscribe all active listeners
+     */
+    void unsubscribeToAllSubscriptions(String nodeName);
 }

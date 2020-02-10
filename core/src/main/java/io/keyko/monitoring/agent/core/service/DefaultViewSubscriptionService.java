@@ -5,11 +5,14 @@ import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.model.ViewFilterSubscription;
 import io.keyko.monitoring.agent.core.repository.ContractViewFilterRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
+import io.keyko.monitoring.agent.core.utils.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * {@inheritDoc}
@@ -166,6 +170,27 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
         if (broadcast) {
             broadcastContractViewFilterRemoved(byId.get());
         }
+    }
+
+    @Override
+    public void resubscribeToAllSubscriptions() {
+        final List<ContractViewFilter> dbFilters = listContractViewFilters();
+
+        dbFilters.forEach( viewFilter -> {
+            try {
+                doRegister(viewFilter, false);
+            } catch (NotFoundException e) {
+                log.error("Unable to re-subscribe to ViewFilter "+ viewFilter.getId());
+            }
+        });
+
+        log.info("Resubscribed to view filters: {}", JSON.stringify(filterSubscriptions));
+
+    }
+
+    @Override
+    public void unsubscribeToAllSubscriptions(String nodeName) {
+
     }
 
     private void subscribeToNewBlocks(

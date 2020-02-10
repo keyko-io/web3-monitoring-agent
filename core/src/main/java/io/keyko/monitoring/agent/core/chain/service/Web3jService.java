@@ -256,6 +256,7 @@ public class Web3jService implements BlockchainService {
                     Transaction.createEthCallTransaction(from, contractAddress, FunctionEncoder.encode(function)),
                     DefaultBlockParameterName.LATEST)
                     .sendAsync().get();
+            log.info("EthCall " + response.getRawResponse());
             return FunctionReturnDecoder.decode(
                     response.getValue(), function.getOutputParameters());
 
