@@ -42,6 +42,9 @@ public class KafkaSettings {
     @Value("${kafka.topic.contractEvents}")
     private String contractEventsTopic;
 
+    @Value("${kafka.topic.contractViews}")
+    private String contractViewsTopic;
+
     @Value("${kafka.topic.blockEvents}")
     private String blockEventsTopic;
 

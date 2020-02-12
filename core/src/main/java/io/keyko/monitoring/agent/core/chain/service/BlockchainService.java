@@ -99,10 +99,9 @@ public interface BlockchainService {
     /**
      * Execute a remote read blockchain call
      *
-     * @param from address sending the request
      * @param contractAddress Smart Contract Address
      * @param function Function to call
      * @return the list of returned values after the execution call
      */
-    List<Type> executeReadCall(String from, String contractAddress, Function function);
+    List<Type> executeReadCall(String contractAddress, Function function);
 }

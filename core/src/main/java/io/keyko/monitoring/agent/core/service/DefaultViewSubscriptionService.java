@@ -5,10 +5,8 @@ import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.integration.broadcast.internal.EventeumEventBroadcaster;
-import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.model.ViewFilterSubscription;
 import io.keyko.monitoring.agent.core.repository.ContractViewFilterRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * {@inheritDoc}
@@ -68,7 +65,7 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
     public void init() {
         chainServices.getNodeNames().forEach(nodeName ->
                 subscribeToNewBlocks(
-                    chainServices.getNodeServices(nodeName).getBlockchainService(), viewBlockListener));
+                        chainServices.getNodeServices(nodeName).getBlockchainService(), viewBlockListener));
     }
 
     /**
@@ -178,6 +175,7 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
 
         dbFilters.forEach( viewFilter -> {
             try {
+                log.info("Re-Subscribing to View Filter: " + viewFilter.getId());
                 doRegister(viewFilter, false);
             } catch (NotFoundException e) {
                 log.error("Unable to re-subscribe to ViewFilter "+ viewFilter.getId());
@@ -229,13 +227,14 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
 //        return (getFilterSubscription(filter.getId()) != null);
     }
 
-//    private ViewFilterSubscription getFilterSubscription(String filterId) {
+    //    private ViewFilterSubscription getFilterSubscription(String filterId) {
 //        return filterSubscriptions.get(filterId);
 //    }
 //
-//    private List<ViewFilterSubscription> getFilterSubscriptions() {
-//        return new ArrayList(filterSubscriptions.values());
-//    }
+    @Override
+    public List<ViewFilterSubscription> getFilterSubscriptions() {
+        return new ArrayList(filterSubscriptions.values());
+    }
 //
 //    private void removeFilterSubscription(String filterId) {
 //        filterSubscriptions.remove(filterId);

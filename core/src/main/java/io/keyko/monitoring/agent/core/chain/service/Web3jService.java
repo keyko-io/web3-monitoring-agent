@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.datatypes.Function;
@@ -47,6 +48,10 @@ import java.util.concurrent.ExecutionException;
 public class Web3jService implements BlockchainService {
 
     private static final String EVENT_EXECUTOR_NAME = "EVENT";
+
+    @Value("${ethereum.client.address}")
+    private String clientAddress;
+
     @Getter
     private String nodeName;
 
@@ -249,14 +254,14 @@ public class Web3jService implements BlockchainService {
     }
 
     @Override
-    public List<Type> executeReadCall(String from, String contractAddress, Function function)    {
+    public List<Type> executeReadCall(String contractAddress, Function function)    {
 
         try {
             EthCall response = web3j.ethCall(
-                    Transaction.createEthCallTransaction(from, contractAddress, FunctionEncoder.encode(function)),
+                    Transaction.createEthCallTransaction(clientAddress, contractAddress, FunctionEncoder.encode(function)),
                     DefaultBlockParameterName.LATEST)
                     .sendAsync().get();
-            log.info("EthCall " + response.getRawResponse());
+            log.info("EthCall " + response.getValue());
             return FunctionReturnDecoder.decode(
                     response.getValue(), function.getOutputParameters());
 

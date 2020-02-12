@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.service;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 
 import java.util.List;
@@ -82,4 +83,10 @@ public interface EventSubscriptionService {
      * @return true if all subscriptions for node are active (not disposed)
      */
     boolean isFullySubscribed(String nodeName);
+
+    /**
+     * Get the list of all the subscription filters from memory
+     * @return EventFilterSubscription
+     */
+    List<EventFilterSubscription> getFilterSubscriptions();
 }

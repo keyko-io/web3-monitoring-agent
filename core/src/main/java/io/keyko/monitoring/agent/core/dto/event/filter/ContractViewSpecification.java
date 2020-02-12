@@ -4,16 +4,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.web3j.abi.TypeReference;
-import org.web3j.abi.datatypes.*;
-import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.Type;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,6 +33,7 @@ public class ContractViewSpecification implements Serializable {
     @ElementCollection
     private List<ParameterDefinition> outputParameterDefinitions = new ArrayList<>();
 
+    @Transient
     public Function getWeb3Function()    {
         List<Type> funcInput= new ArrayList<>();
         List<TypeReference<?>> funcOutput = new ArrayList<>();

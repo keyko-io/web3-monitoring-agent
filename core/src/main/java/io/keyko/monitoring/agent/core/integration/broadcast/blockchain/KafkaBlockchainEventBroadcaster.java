@@ -1,11 +1,13 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.blockchain;
 
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.schemas.*;
 import io.keyko.monitoring.schemas.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
 import io.keyko.monitoring.agent.core.dto.message.BlockEvent;
 import io.keyko.monitoring.agent.core.dto.message.ContractEvent;
+import io.keyko.monitoring.agent.core.dto.message.ContractView;
 import io.keyko.monitoring.agent.core.dto.message.EventeumMessage;
 import io.keyko.monitoring.agent.core.dto.message.TransactionEvent;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
@@ -41,14 +43,19 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
 
     private KafkaSettings kafkaSettings;
 
-    private CrudRepository<ContractEventFilter, String> filterRespository;
+    private CrudRepository<ContractEventFilter, String> filterEventRepository;
+
+    private CrudRepository<ContractViewFilter, String> filterViewRepository;
+
 
     public KafkaBlockchainEventBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
                                            KafkaSettings kafkaSettings,
-                                           CrudRepository<ContractEventFilter, String> filterRepository) {
+                                           CrudRepository<ContractEventFilter, String> filterEventRepository,
+                                           CrudRepository<ContractViewFilter, String> filterViewRepository) {
         this.kafkaTemplate = kafkaTemplate;
         this.kafkaSettings = kafkaSettings;
-        this.filterRespository = filterRepository;
+        this.filterEventRepository = filterEventRepository;
+        this.filterViewRepository = filterViewRepository;
     }
 
     @Override
@@ -93,6 +100,32 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     }
 
     @Override
+    public void broadcastContractView(io.keyko.monitoring.agent.core.dto.view.ContractViewDetails viewDetails)  {
+        final EventeumMessage<io.keyko.monitoring.agent.core.dto.view.ContractViewDetails> message = createContractViewMessage(viewDetails);
+        LOG.info("Sending contract view message: " + JSON.stringify(message));
+        ContractViewDetails contractViewDetails = ContractViewDetails.newBuilder()
+                .setAddress(message.getDetails().getAddress())
+                .setBlockHash(message.getDetails().getBlockHash())
+                .setBlockNumber(message.getDetails().getBlockNumber().toString())
+                .setId(message.getDetails().getId())
+                .setFilterId(message.getDetails().getFilterId())
+                .setName(message.getDetails().getName())
+                .setNetworkName(message.getDetails().getNetworkName())
+                .setNodeName(message.getDetails().getNodeName())
+                .setOutput(convertParameters(message.getDetails().getOutput()))
+                .build();
+
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.ContractView.getClassSchema());
+        genericRecord.put("id", message.getId());
+        genericRecord.put("type", message.getType());
+        genericRecord.put("details", contractViewDetails);
+        genericRecord.put("retries", message.getRetries());
+
+        kafkaTemplate.send(kafkaSettings.getContractViewsTopic(), getContractViewCorrelationId(message), genericRecord);
+
+    }
+
+    @Override
     public void broadcastTransaction(TransactionDetails transactionDetails) {
         final EventeumMessage<TransactionDetails> message = createTransactionEventMessage(transactionDetails);
         LOG.info("Sending transaction event message: " + JSON.stringify(message));
@@ -112,6 +145,10 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         return new ContractEvent(contractEventDetails);
     }
 
+    protected EventeumMessage<io.keyko.monitoring.agent.core.dto.view.ContractViewDetails> createContractViewMessage(io.keyko.monitoring.agent.core.dto.view.ContractViewDetails contractViewDetails) {
+        return new ContractView(contractViewDetails);
+    }
+
     protected EventeumMessage<TransactionDetails> createTransactionEventMessage(TransactionDetails transactionDetails) {
         return new TransactionEvent(transactionDetails);
     }
@@ -129,7 +166,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     }
 
     private String getContractEventCorrelationId(EventeumMessage<io.keyko.monitoring.agent.core.dto.event.ContractEventDetails> message) {
-        final Optional<ContractEventFilter> filter = filterRespository.findById(message.getDetails().getFilterId());
+        final Optional<ContractEventFilter> filter = filterEventRepository.findById(message.getDetails().getFilterId());
 
         if (!filter.isPresent() || filter.get().getCorrelationIdStrategy() == null) {
             return message.getId();
@@ -139,5 +176,17 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
                 .get()
                 .getCorrelationIdStrategy()
                 .getCorrelationId(message.getDetails());
+    }
+
+    private String getContractViewCorrelationId(EventeumMessage<io.keyko.monitoring.agent.core.dto.view.ContractViewDetails> message) {
+        final Optional<ContractViewFilter> filter = filterViewRepository.findById(message.getDetails().getFilterId());
+
+        if (!filter.isPresent()) {
+            return message.getId();
+        }
+
+        return filter
+                .get()
+                .getId();
     }
 }

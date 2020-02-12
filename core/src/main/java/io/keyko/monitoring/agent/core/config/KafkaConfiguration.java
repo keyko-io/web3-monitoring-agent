@@ -116,6 +116,12 @@ public class KafkaConfiguration {
     }
 
     @Bean
+    public NewTopic contractViewsTopic(KafkaSettings kafkaSettings) {
+        return new NewTopic(kafkaSettings.getContractViewsTopic(),
+                kafkaSettings.getPartitions(), kafkaSettings.getReplicationSets().shortValue());
+    }
+
+    @Bean
     public NewTopic eventeumEventsTopic(KafkaSettings kafkaSettings) {
         return new NewTopic(kafkaSettings.getEventeumEventsTopic(),
                 kafkaSettings.getPartitions(), kafkaSettings.getReplicationSets().shortValue());

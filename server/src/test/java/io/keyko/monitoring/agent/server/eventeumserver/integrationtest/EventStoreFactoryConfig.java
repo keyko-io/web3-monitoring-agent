@@ -8,6 +8,7 @@ import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
+import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import io.keyko.monitoring.agent.core.factory.ContractEventFilterRepositoryFactory;
 import io.keyko.monitoring.agent.core.factory.EventStoreFactory;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
@@ -34,6 +35,11 @@ public class EventStoreFactoryConfig {
 
             @Override
             public void onContractEvent(ContractEventDetails eventDetails) {
+                //DO NOTHING
+            }
+
+            @Override
+            public void onContractView(ContractViewDetails viewDetails) {
                 //DO NOTHING
             }
 

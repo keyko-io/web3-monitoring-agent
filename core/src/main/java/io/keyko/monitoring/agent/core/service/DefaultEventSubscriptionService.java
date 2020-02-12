@@ -282,7 +282,7 @@ public class DefaultEventSubscriptionService implements EventSubscriptionService
         return filterSubscriptions.get(filterId);
     }
 
-    private List<EventFilterSubscription> getFilterSubscriptions() {
+    public List<EventFilterSubscription> getFilterSubscriptions() {
         return new ArrayList(filterSubscriptions.values());
     }
 

@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.config;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.EventBroadcasterWrapper;
@@ -43,9 +44,10 @@ public class BlockchainEventBroadcasterConfiguration {
     @ConditionalOnProperty(name = BROADCASTER_PROPERTY, havingValue = "KAFKA")
     public BlockchainEventBroadcaster kafkaBlockchainEventBroadcaster(KafkaTemplate<String, GenericRecord> kafkaTemplate,
                                                                       KafkaSettings kafkaSettings,
-                                                                      CrudRepository<ContractEventFilter, String> filterRepository) {
+                                                                      CrudRepository<ContractEventFilter, String> eventFilterRepository,
+                                                                      CrudRepository<ContractViewFilter, String> viewFilterRepository) {
         final BlockchainEventBroadcaster broadcaster =
-                new KafkaBlockchainEventBroadcaster(kafkaTemplate, kafkaSettings, filterRepository);
+                new KafkaBlockchainEventBroadcaster(kafkaTemplate, kafkaSettings, eventFilterRepository, viewFilterRepository);
 
         return onlyOnceWrap(broadcaster);
     }

@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.core.service;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
+import io.keyko.monitoring.agent.core.model.ViewFilterSubscription;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 
 import java.util.List;
@@ -81,4 +82,10 @@ public interface ViewSubscriptionService {
      * Unsubscribe all active listeners
      */
     void unsubscribeToAllSubscriptions(String nodeName);
+
+    /**
+     * Get the list of all the subscription filters from memory
+     * @return ViewFilterSubscription
+     */
+    List<ViewFilterSubscription> getFilterSubscriptions();
 }

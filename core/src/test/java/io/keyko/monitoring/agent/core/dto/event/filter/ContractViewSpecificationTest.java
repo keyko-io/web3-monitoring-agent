@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ContractViewSpecificationTest {
 
     private static ContractViewSpecification spec;
+    private static final String accountAddress= "0x7c08fEc4dA47EbeCe57DE73204bd632DDAC91027".toLowerCase();
 
     @BeforeEach
     void setUp() {
@@ -23,7 +24,7 @@ class ContractViewSpecificationTest {
         MethodParameterDefinition input= new MethodParameterDefinition();
         input.position= 0;
         input.type= new ParameterType("address");
-        input.setValue("0x7c08fEc4dA47EbeCe57DE73204bd632DDAC91027");
+        input.setValue(accountAddress);
         inputParameterDefinitions.add(input);
         spec.setInputParameterDefinitions(inputParameterDefinitions);
 
@@ -42,8 +43,8 @@ class ContractViewSpecificationTest {
         assertEquals(1, function.getInputParameters().size());
         assertEquals(1, function.getOutputParameters().size());
 
-        assertEquals("0x7c08fEc4dA47EbeCe57DE73204bd632DDAC91027", (String) function.getInputParameters().get(0).getValue());
-        assertEquals("string",
+        assertEquals(accountAddress, function.getInputParameters().get(0).getValue().toString().toLowerCase());
+        assertEquals("address",
                 function.getInputParameters().get(0).getTypeAsString());
 
         assertEquals("org.web3j.abi.datatypes.Uint",

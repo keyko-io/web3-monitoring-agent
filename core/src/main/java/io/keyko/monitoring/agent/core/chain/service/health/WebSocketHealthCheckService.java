@@ -6,6 +6,7 @@ import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
 import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
+import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import org.web3j.protocol.Web3jService;
 import org.web3j.protocol.websocket.EventeumWebSocketService;
 import org.web3j.protocol.websocket.WebSocketClient;
@@ -20,13 +21,14 @@ public class WebSocketHealthCheckService extends NodeHealthCheckService {
                                        BlockchainService blockchainService,
                                        ReconnectionStrategy failureListener,
                                        EventSubscriptionService subscriptionService,
+                                       ViewSubscriptionService viewSubscriptionService,
                                        EventeumValueMonitor valueMonitor,
                                        EventStoreService eventStoreService,
                                        Integer syncingThreshold,
                                        ScheduledThreadPoolExecutor taskScheduler,
                                        Long healthCheckPollInterval
     ) {
-        super(blockchainService, failureListener, subscriptionService,
+        super(blockchainService, failureListener, subscriptionService, viewSubscriptionService,
                 valueMonitor, eventStoreService, syncingThreshold, taskScheduler, healthCheckPollInterval);
 
         if (web3jService instanceof EventeumWebSocketService) {

@@ -47,7 +47,7 @@ public class Web3Converter {
             else
                 new Uint((BigInteger) value);
         else if (type.contains("address"))
-            new Address((String) value);
+            return new Address((String) value);
         else if (type.contains("bytes"))
             return new DynamicBytes((byte[]) value);
         else if ("string".equals(type))

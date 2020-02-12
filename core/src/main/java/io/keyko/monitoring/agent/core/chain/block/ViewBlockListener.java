@@ -1,9 +1,12 @@
 package io.keyko.monitoring.agent.core.chain.block;
 
+import io.keyko.monitoring.agent.core.chain.converter.Web3jEventParameterConverter;
+import io.keyko.monitoring.agent.core.chain.factory.ContractViewDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.settings.NodeSettings;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
+import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import org.slf4j.Logger;
@@ -30,14 +33,20 @@ public class ViewBlockListener implements BlockListener {
     private BlockchainEventBroadcaster eventBroadcaster;
     private Map<String, ContractViewFilter> viewFilters= new HashMap<>();
     private NodeSettings nodeSettings;
+    private Web3jEventParameterConverter eventParameterConverter;
+    private ContractViewDetailsFactory contractViewDetailsFactory;
 
     public ViewBlockListener(BlockchainService blockchainService,
                              BlockchainEventBroadcaster eventBroadcaster,
-                             NodeSettings nodeSettings) {
+                             NodeSettings nodeSettings,
+                             Web3jEventParameterConverter eventParameterConverter,
+                             ContractViewDetailsFactory contractViewDetailsFactory) {
 
         this.blockchainService = blockchainService;
         this.eventBroadcaster = eventBroadcaster;
         this.nodeSettings = nodeSettings;
+        this.eventParameterConverter= eventParameterConverter;
+        this.contractViewDetailsFactory = contractViewDetailsFactory;
     }
 
     @Override
@@ -54,7 +63,7 @@ public class ViewBlockListener implements BlockListener {
             BigInteger mod= block.getNumber().mod(interval);
 
             if (mod.equals(BigInteger.ZERO))    {
-                processViewMessage(filter);
+                processViewMessage(filter, block);
             }
         });
     }
@@ -70,7 +79,7 @@ public class ViewBlockListener implements BlockListener {
             viewFilters.put(filter.getId(), filter);
     }
 
-    public void processViewMessage(ContractViewFilter filter)  {
+    public boolean processViewMessage(ContractViewFilter filter, Block block)  {
         // Compose message
         Function _func= filter.getMethodSpecification().getWeb3Function();
         log.debug("Processing message for filter " + filter.getId()
@@ -78,18 +87,26 @@ public class ViewBlockListener implements BlockListener {
 
         // 3. Call the contract
         List<Type> result = blockchainService.executeReadCall(
-                nodeSettings.getNode(filter.getNode()).getClientAddress(),
                 filter.getContractAddress(),
                 _func);
 
-        log.info("--> Result after calling remote contract " + result.size());
 
-        // 4. Parse the result
-        if (result.size()>0)    {
-            // 5. Write
-            log.info("Returned: ");
-            result.forEach( k -> log.info(k.getValue().toString()));
+        log.debug("Number of items returned after calling remote contract: " + result.size());
+
+        int expectedNumberResults= filter.getMethodSpecification().getOutputParameterDefinitions().size();
+        if (result.size() != expectedNumberResults)    {
+            log.error(String.format("Un-expected number of results. Expected %s return values but found %s.",
+                    result.size(), expectedNumberResults));
+            return false;
         }
+        if (result.size()>0)    {
+            // 4. Parse the result
+            ContractViewDetails viewDetails = contractViewDetailsFactory.createViewDetails(filter, result, block);
+            // Broadcasting
+            eventBroadcaster.broadcastContractView(viewDetails);
+            return true;
+        }
+        return false;
     }
 
     public void removeViewFilter(ContractViewFilter filter) {
