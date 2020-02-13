@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.chain.config;
 
 import io.keyko.monitoring.agent.core.chain.config.factory.ContractEventDetailsFactoryFactoryBean;
+import io.keyko.monitoring.agent.core.chain.config.factory.ContractViewDetailsFactoryBean;
 import io.keyko.monitoring.agent.core.chain.service.container.NodeServices;
 import io.keyko.monitoring.agent.core.chain.service.health.NodeHealthCheckService;
 import io.keyko.monitoring.agent.core.chain.service.health.WebSocketHealthCheckService;
@@ -41,6 +42,9 @@ public class NodeBeanRegistrationStrategy {
     private static final String CONTRACT_EVENT_DETAILS_FACTORY_BEAN_NAME =
             "%sContractEventDetailsFactory";
 
+    private static final String CONTRACT_VIEW_DETAILS_FACTORY_BEAN_NAME =
+            "%sContractViewDetailsFactory";
+
     private static final String NODE_SERVICES_BEAN_NAME =
             "%sNodeServices";
 
@@ -60,6 +64,7 @@ public class NodeBeanRegistrationStrategy {
 
     public void register(Node node, BeanDefinitionRegistry registry) {
         registerContractEventDetailsFactoryBean(node, registry);
+        registerContractViewDetailsFactoryBean(node, registry);
 
         final Web3jService web3jService = buildWeb3jService(node);
         final Web3j web3j = buildWeb3j(node, web3jService);
@@ -104,6 +109,21 @@ public class NodeBeanRegistrationStrategy {
         return beanName;
     }
 
+    private String registerContractViewDetailsFactoryBean(Node node, BeanDefinitionRegistry registry) {
+        final BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(
+                ContractViewDetailsFactoryBean.class);
+
+        builder.addPropertyReference("parameterConverter", "web3jEventParameterConverter")
+                .addPropertyValue("node", node)
+                .addPropertyValue("nodeName", node.getName());
+
+        final String beanName = String.format(CONTRACT_VIEW_DETAILS_FACTORY_BEAN_NAME, node.getName());
+        registry.registerBeanDefinition(String.format(CONTRACT_VIEW_DETAILS_FACTORY_BEAN_NAME, node.getName()),
+                builder.getBeanDefinition());
+
+        return beanName;
+    }
+
     private String registerBlockchainServiceBean(Node node, Web3j web3j, BeanDefinitionRegistry registry) {
         final String blockSubStrategyBeanName = registerBlockSubscriptionStrategyBean(node, web3j, registry);
 
@@ -139,6 +159,7 @@ public class NodeBeanRegistrationStrategy {
         builder.addConstructorArgReference(blockchainServiceBeanName);
         builder.addConstructorArgReference(nodeFailureListenerBeanName);
         builder.addConstructorArgReference("defaultEventSubscriptionService");
+        builder.addConstructorArgReference("defaultViewSubscriptionService");
         builder.addConstructorArgReference("eventeumValueMonitor");
         builder.addConstructorArgReference("defaultEventStoreService");
         builder.addConstructorArgValue(node.getSyncingThreshold());
@@ -163,7 +184,7 @@ public class NodeBeanRegistrationStrategy {
                     .getBeanDefinition();
 
             beanDefinition.getConstructorArgumentValues()
-                    .addIndexedArgumentValue(3, webSocketService.getWebSocketClient());
+                    .addIndexedArgumentValue(4, webSocketService.getWebSocketClient());
 
         } else {
             beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(HttpReconnectionStrategy.class)
@@ -171,7 +192,7 @@ public class NodeBeanRegistrationStrategy {
         }
 
         beanDefinition.getConstructorArgumentValues()
-                .addIndexedArgumentValue(1, new RuntimeBeanReference(blockchainServiceBeanName));
+                .addIndexedArgumentValue(2, new RuntimeBeanReference(blockchainServiceBeanName));
 
 
         final String beanName = String.format(NODE_FAILURE_LISTENER_BEAN_NAME, node.getName());

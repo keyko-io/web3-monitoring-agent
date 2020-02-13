@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
+import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.concurrent.TimeUnit;
@@ -23,6 +24,8 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 
     private Cache<Integer, ContractEventDetails> contractEventCache;
 
+    private Cache<Integer, ContractViewDetails> contractViewCache;
+
     private Cache<Integer, TransactionDetails> transactionCache;
 
     private Cache<Integer, TransactionDetails> transactionDetailsCache;
@@ -38,6 +41,7 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
                                    boolean enableBlockNotifications) {
         this.expirationTimeMillis = expirationTimeMillis;
         this.contractEventCache = createCache(ContractEventDetails.class);
+        this.contractViewCache = createCache(ContractViewDetails.class);
         this.transactionCache = createCache(TransactionDetails.class);
         this.wrapped = toWrap;
         this.enableBlockNotifications = enableBlockNotifications;
@@ -58,6 +62,17 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
             if (contractEventCache.getIfPresent(Integer.valueOf(eventDetails.hashCode())) == null) {
                 contractEventCache.put(Integer.valueOf(eventDetails.hashCode()), eventDetails);
                 wrapped.broadcastContractEvent(eventDetails);
+            }
+        }
+    }
+
+    @Override
+    public void broadcastContractView(ContractViewDetails viewDetails) {
+        synchronized(this) {
+            if (contractViewCache.getIfPresent(Integer.valueOf(viewDetails.hashCode())) == null) {
+                contractViewCache.put(Integer.valueOf(viewDetails.hashCode()), viewDetails);
+                wrapped.broadcastContractView(viewDetails);
+
             }
         }
     }

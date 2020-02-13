@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.chain.service;
 
 import io.keyko.monitoring.agent.core.model.LatestBlock;
+import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.keyko.monitoring.agent.core.chain.service.health.NodeHealthCheckService;
 import io.keyko.monitoring.agent.core.chain.service.health.strategy.ReconnectionStrategy;
@@ -37,6 +38,8 @@ public class NodeHealthCheckServiceTest {
 
     private EventSubscriptionService mockSubscriptionService;
 
+    private ViewSubscriptionService mockViewSubscriptionService;
+
     private EventeumValueMonitor mockEventeumValueMonitor;
 
     private EventStoreService mockEventStoreService;
@@ -50,6 +53,7 @@ public class NodeHealthCheckServiceTest {
 
         mockReconnectionStrategy = mock(ReconnectionStrategy.class);
         mockSubscriptionService = mock(EventSubscriptionService.class);
+        mockViewSubscriptionService = mock(ViewSubscriptionService.class);
 
         mockEventStoreService = mock(EventStoreService.class);
         LatestBlock latestBlock = new LatestBlock();
@@ -211,6 +215,7 @@ public class NodeHealthCheckServiceTest {
                         mockBlockchainService,
                         mockReconnectionStrategy,
                         mockSubscriptionService,
+                        mockViewSubscriptionService,
                         mockEventeumValueMonitor,
                         mockEventStoreService,
                         SYNCING_THRESHOLD,

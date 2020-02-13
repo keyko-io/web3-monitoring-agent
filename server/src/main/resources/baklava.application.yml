@@ -590,6 +590,7 @@ kafka:
     addresses: ${KAFKA_ADDRESSES:localhost:9092}
   topic:
     contractEvents: w3m-contract-events
+    contractViews: w3m-contract-views
     blockEvents: w3m-block-events
     eventeumEvents: w3m-eventeum-events
     transactionEvents: w3m-transaction-events

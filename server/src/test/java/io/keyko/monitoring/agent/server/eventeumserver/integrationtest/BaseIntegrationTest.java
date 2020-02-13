@@ -3,6 +3,7 @@ package io.keyko.monitoring.agent.server.eventeumserver.integrationtest;
 import java.io.File;
 import java.util.*;
 
+import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import junit.framework.TestCase;
 import io.keyko.monitoring.agent.core.chain.service.health.NodeHealthCheckService;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
@@ -76,6 +77,8 @@ public class BaseIntegrationTest {
     private static FixedHostPortGenericContainer parityContainer;
 
     private List<ContractEventDetails> broadcastContractEvents = new ArrayList<>();
+
+    private List<ContractViewDetails> broadcastContractViews = new ArrayList<>();
 
     private List<BlockDetails> broadcastBlockMessages = new ArrayList<>();
 
@@ -185,6 +188,11 @@ public class BaseIntegrationTest {
 
     protected List<ContractEventDetails> getBroadcastContractEvents() {
         return broadcastContractEvents;
+    }
+
+
+    protected List<ContractViewDetails> getBroadcastContractViews() {
+        return broadcastContractViews;
     }
 
     protected List<BlockDetails> getBroadcastBlockMessages() {

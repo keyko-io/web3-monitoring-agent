@@ -230,7 +230,6 @@ public class NodeSettings {
         return BigInteger.valueOf(Long.valueOf(blocksToWaitForMissingTx));
     }
 
-
     private String getNodeUsernameProperty(Environment environment, int index) {
         return getProperty(environment, buildNodeAttribute(NODE_USERNAME_ATTRIBUTE, index));
     }

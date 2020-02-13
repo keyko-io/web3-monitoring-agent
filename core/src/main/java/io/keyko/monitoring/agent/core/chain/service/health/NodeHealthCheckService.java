@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.core.chain.service.health;
 
 import io.keyko.monitoring.agent.core.chain.service.health.strategy.ReconnectionStrategy;
 import io.keyko.monitoring.agent.core.model.LatestBlock;
+import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.monitoring.EventeumValueMonitor;
@@ -34,6 +35,8 @@ public class NodeHealthCheckService {
 
     private EventSubscriptionService eventSubscriptionService;
 
+    private ViewSubscriptionService viewSubscriptionService;
+
     private boolean initiallySubscribed = false;
 
     private AtomicLong currentBlock;
@@ -49,6 +52,7 @@ public class NodeHealthCheckService {
     public NodeHealthCheckService(BlockchainService blockchainService,
                                   ReconnectionStrategy reconnectionStrategy,
                                   EventSubscriptionService eventSubscriptionService,
+                                  ViewSubscriptionService viewSubscriptionService,
                                   EventeumValueMonitor valueMonitor,
                                   EventStoreService eventStoreService,
                                   Integer syncingThreshold,
@@ -58,6 +62,7 @@ public class NodeHealthCheckService {
         this.blockchainService = blockchainService;
         this.reconnectionStrategy = reconnectionStrategy;
         this.eventSubscriptionService = eventSubscriptionService;
+        this.viewSubscriptionService = viewSubscriptionService;
         this.syncingThreshold = syncingThreshold;
         nodeStatus = NodeStatus.SUBSCRIBED;
 
@@ -79,11 +84,18 @@ public class NodeHealthCheckService {
 
             if (isNodeConnected()) {
                 log.trace("Node connected");
+
+
                 if (nodeStatus == NodeStatus.DOWN) {
                     log.info("Node {} has come back up.", blockchainService.getNodeName());
-
                     //We've come back up
                     doResubscribe();
+                }   else if (eventSubscriptionService.getFilterSubscriptions().size() !=
+                        eventSubscriptionService.listContractEventFilters().size()) {
+                    eventSubscriptionService.resubscribeToAllSubscriptions();
+                }   else if (viewSubscriptionService.getFilterSubscriptions().size() !=
+                        viewSubscriptionService.listContractViewFilters().size()) {
+                    viewSubscriptionService.resubscribeToAllSubscriptions();
                 }
 
             } else {

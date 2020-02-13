@@ -3,6 +3,7 @@ package io.keyko.monitoring.agent.server.eventeumserver.integrationtest;
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
+import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.ListenerInvokingBlockchainEventBroadcaster;
 import org.junit.runner.RunWith;
@@ -35,6 +36,11 @@ public class ListenerBackedBroadcasterIT extends BroadcasterSmokeTest {
     }
 
     @Override
+    protected List<ContractViewDetails> getBroadcastContractViews() {
+        return ListenerConfig.broadcastContractViews;
+    }
+
+    @Override
     protected List<TransactionDetails> getBroadcastTransactionMessages() {
         return ListenerConfig.broadcastTransactionMessages;
     }
@@ -45,6 +51,8 @@ public class ListenerBackedBroadcasterIT extends BroadcasterSmokeTest {
         private static List<BlockDetails> broadcastBlockMessages = new ArrayList<>();
 
         private static List<ContractEventDetails> broadcastContractEvents = new ArrayList<>();
+
+        private static List<ContractViewDetails> broadcastContractViews = new ArrayList<>();
 
         private static List<TransactionDetails> broadcastTransactionMessages = new ArrayList<>();
 
@@ -60,6 +68,11 @@ public class ListenerBackedBroadcasterIT extends BroadcasterSmokeTest {
                 @Override
                 public void onContractEvent(ContractEventDetails eventDetails) {
                     broadcastContractEvents.add(eventDetails);
+                }
+
+                @Override
+                public void onContractView(ContractViewDetails viewDetails) {
+                    broadcastContractViews.add(viewDetails);
                 }
 
                 @Override

@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 
+import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.service.BlockchainService;
 import io.keyko.monitoring.agent.core.chain.websocket.WebSocketReconnectionManager;
@@ -23,10 +24,11 @@ public class WebSocketResubscribeNodeFailureListener extends ResubscribingReconn
     private BlockchainService blockchainService;
 
     public WebSocketResubscribeNodeFailureListener(EventSubscriptionService subscriptionService,
+                                                   ViewSubscriptionService viewSubscriptionService,
                                                    BlockchainService blockchainService,
                                                    WebSocketReconnectionManager reconnectionManager,
                                                    WebSocketClient client) {
-        super(subscriptionService, blockchainService);
+        super(subscriptionService, viewSubscriptionService, blockchainService);
 
         this.reconnectionManager = reconnectionManager;
         this.client = client;
