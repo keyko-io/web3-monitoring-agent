@@ -81,7 +81,7 @@ public class ViewBlockListener implements BlockListener {
 
     public boolean processViewMessage(ContractViewFilter filter, Block block)  {
         // Compose message
-        Function _func= filter.getMethodSpecification().getWeb3Function();
+        Function _func= composeFunction(filter);
         log.debug("Processing message for filter " + filter.getId()
                 + " and function " + _func.getName());
 
