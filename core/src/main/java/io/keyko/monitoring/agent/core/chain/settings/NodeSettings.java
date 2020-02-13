@@ -12,7 +12,7 @@ import java.util.HashMap;
 @Component
 public class NodeSettings {
 
-    private static final Long DEFAULT_POLLING_INTERVAL = 10000l;
+    private static final Long DEFAULT_POLLING_INTERVAL = 5000l;
     private static final Long DEFAULT_HEALTHCHECK_POLLING_INTERVAL = 10000l;
 
     private static final Long DEFAULT_KEEP_ALIVE_DURATION = 10000l;

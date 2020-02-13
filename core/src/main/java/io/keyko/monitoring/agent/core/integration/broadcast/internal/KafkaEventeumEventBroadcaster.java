@@ -6,7 +6,7 @@ import io.keyko.monitoring.agent.core.dto.message.*;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.utils.JSON;
-import io.keyko.monitoring.schemas.BlockEvent;
+import io.keyko.monitoring.schemas.BlockRecord;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.slf4j.Logger;
@@ -91,7 +91,7 @@ public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
 
     private void sendMessage(EventeumMessage message) {
         LOG.info("Sending message: " + JSON.stringify(message));
-        GenericRecord genericRecord = new GenericData.Record(BlockEvent.getClassSchema());
+        GenericRecord genericRecord = new GenericData.Record(BlockRecord.getClassSchema());
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
         genericRecord.put("details", message.getDetails());

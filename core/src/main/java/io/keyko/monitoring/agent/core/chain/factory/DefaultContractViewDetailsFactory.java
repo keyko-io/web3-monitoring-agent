@@ -54,6 +54,7 @@ public class DefaultContractViewDetailsFactory implements ContractViewDetailsFac
         ContractViewDetails details= new ContractViewDetails();
         details.setFilterId(filter.getId());
         details.setName(filter.getMethodSpecification().getMethodName());
+        details.setContractName(filter.getMethodSpecification().getContractName());
         details.setNodeName(filter.getNode());
         details.setOutput(functionOutput);
         details.setAddress(filter.getContractAddress());

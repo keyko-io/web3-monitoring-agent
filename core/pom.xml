@@ -5,12 +5,12 @@
 
     <groupId>io.keyko.monitoring.agent</groupId>
     <artifactId>core</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
 
     <parent>
         <groupId>io.keyko.monitoring</groupId>
         <artifactId>agent</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2</version>
     </parent>
 
 

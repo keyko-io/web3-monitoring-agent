@@ -6,6 +6,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.correlationId.IndexedPara
 import io.keyko.monitoring.agent.core.dto.event.filter.correlationId.NonIndexedParameterCorrelationIdStrategy;
 import io.keyko.monitoring.agent.core.utils.ModelMapperFactory;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,7 @@ public class EventFilterConfiguration {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper=true)
     public static class EventFilterConfig extends ContractEventFilter {
         private CorrelationId correlationId;
     }
