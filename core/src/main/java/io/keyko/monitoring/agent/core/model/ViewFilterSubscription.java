@@ -21,4 +21,8 @@ public class ViewFilterSubscription {
         this.filter = filter;
         this.subscription = subscription;
     }
+
+    public ViewFilterSubscription(ContractViewFilter filter)    {
+        this.filter= filter;
+    }
 }

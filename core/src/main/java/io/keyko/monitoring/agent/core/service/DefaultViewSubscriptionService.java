@@ -89,7 +89,8 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
 
             saveContractViewFilter(filter);
             viewBlockListener.addViewFilter(filter);
-//            filterSubscriptions.put(filter.getId(), filter);
+
+            filterSubscriptions.put(filter.getId(), new ViewFilterSubscription(filter));
 
             if (broadcast) {
                 broadcastContractEventFilterAdded(filter);
