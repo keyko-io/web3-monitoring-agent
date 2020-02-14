@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class ViewBlockListener implements BlockListener {
         });
     }
 
-    private Function composeFunction(ContractViewFilter filter) {
+    private Function composeFunction(ContractViewFilter filter) throws UnsupportedEncodingException {
         return filter.getMethodSpecification().getWeb3Function();
     }
 
@@ -80,31 +81,35 @@ public class ViewBlockListener implements BlockListener {
     }
 
     public boolean processViewMessage(ContractViewFilter filter, Block block)  {
-        // Compose message
-        Function _func= composeFunction(filter);
-        log.debug("Processing message for filter " + filter.getId()
-                + " and function " + _func.getName());
+        try {
+            // Compose message
+            Function _func= composeFunction(filter);
+            log.debug("Processing message for filter " + filter.getId()
+                    + " and function " + _func.getName());
 
-        // 3. Call the contract
-        List<Type> result = blockchainService.executeReadCall(
-                filter.getContractAddress(),
-                _func);
+            // 3. Call the contract
+            List<Type> result = blockchainService.executeReadCall(
+                    filter.getContractAddress(),
+                    _func);
 
 
-        log.debug("Number of items returned after calling remote contract: " + result.size());
+            log.debug("Number of items returned after calling remote contract: " + result.size());
 
-        int expectedNumberResults= filter.getMethodSpecification().getOutputParameterDefinitions().size();
-        if (result.size() != expectedNumberResults)    {
-            log.error(String.format("Un-expected number of results. Expected %s return values but found %s.",
-                    result.size(), expectedNumberResults));
-            return false;
-        }
-        if (result.size()>0)    {
-            // 4. Parse the result
-            ContractViewDetails viewDetails = contractViewDetailsFactory.createViewDetails(filter, result, block);
-            // Broadcasting
-            eventBroadcaster.broadcastContractView(viewDetails);
-            return true;
+            int expectedNumberResults= filter.getMethodSpecification().getOutputParameterDefinitions().size();
+            if (result.size() != expectedNumberResults)    {
+                log.error(String.format("Un-expected number of results. Expected %s return values but found %s.",
+                        expectedNumberResults, result.size()));
+                return false;
+            }
+            if (result.size()>0)    {
+                // 4. Parse the result
+                ContractViewDetails viewDetails = contractViewDetailsFactory.createViewDetails(filter, result, block);
+                // Broadcasting
+                eventBroadcaster.broadcastContractView(viewDetails);
+                return true;
+            }
+        } catch (Exception e)   {
+            log.error("Unable to process view message: " + e.getMessage());
         }
         return false;
     }

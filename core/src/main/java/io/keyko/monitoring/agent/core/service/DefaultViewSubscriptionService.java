@@ -85,7 +85,7 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
     private ContractViewFilter doRegister(ContractViewFilter filter, boolean broadcast) throws NotFoundException {
         populateIdIfMissing(filter);
 
-        if (!isFilterRegistered(filter)) {
+//        if (!isFilterRegistered(filter)) {
 
             saveContractViewFilter(filter);
             viewBlockListener.addViewFilter(filter);
@@ -97,10 +97,10 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
             }
 
             return filter;
-        } else {
-            log.info("Already registered contract event filter with id: " + filter.getId());
-            return viewBlockListener.getViewFilter(filter.getId());
-        }
+//        } else {
+//            log.info("Already registered contract event filter with id: " + filter.getId());
+//            return viewBlockListener.getViewFilter(filter.getId());
+//        }
     }
 
 
@@ -163,7 +163,7 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
 
         deleteContractViewFilter(byId.get());
         viewBlockListener.removeViewFilter(byId.get());
-//        filterSubscriptions.remove(byId.get());
+        filterSubscriptions.remove(byId.get());
 
         if (broadcast) {
             broadcastContractViewFilterRemoved(byId.get());
