@@ -1,6 +1,7 @@
 package org.web3j.protocol.websocket;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Data
+@EqualsAndHashCode(callSuper=true)
 public class EventeumWebSocketService extends WebSocketService {
 
     private WebSocketClient webSocketClient;

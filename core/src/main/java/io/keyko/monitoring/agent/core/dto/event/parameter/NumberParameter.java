@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.dto.event.parameter;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
@@ -13,6 +14,7 @@ import java.math.BigInteger;
  */
 @Embeddable
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 public class NumberParameter extends AbstractEventParameter<BigInteger> {
 

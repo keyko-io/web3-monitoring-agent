@@ -34,6 +34,8 @@ public class ContractViewDetails {
 
     private String name;
 
+    private String contractName;
+
     @Id
     private String filterId;
 

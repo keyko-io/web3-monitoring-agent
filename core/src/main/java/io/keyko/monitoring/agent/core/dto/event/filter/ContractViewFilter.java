@@ -27,6 +27,8 @@ public class ContractViewFilter {
 
     private String contractAddress;
 
+    private String contractName;
+
     private String node = Constants.DEFAULT_NODE_NAME;
 
     @Embedded

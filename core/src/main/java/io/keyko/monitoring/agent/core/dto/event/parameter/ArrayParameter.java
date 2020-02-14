@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.core.dto.event.parameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  */
 @Embeddable
 @Data
+@EqualsAndHashCode(callSuper=true)
 @NoArgsConstructor
 public class ArrayParameter<T extends EventParameter<?>> extends AbstractEventParameter<ArrayList<T>> {
 

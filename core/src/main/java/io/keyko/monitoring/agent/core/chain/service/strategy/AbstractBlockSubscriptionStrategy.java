@@ -1,16 +1,15 @@
 package io.keyko.monitoring.agent.core.chain.service.strategy;
 
-import io.keyko.monitoring.agent.core.chain.ChainBootstrapper;
+import io.keyko.monitoring.agent.core.chain.block.BlockListener;
+import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.model.LatestBlock;
+import io.keyko.monitoring.agent.core.service.AsyncTaskService;
+import io.keyko.monitoring.agent.core.service.EventStoreService;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import lombok.extern.slf4j.Slf4j;
-import io.keyko.monitoring.agent.core.chain.block.BlockListener;
-import io.keyko.monitoring.agent.core.chain.service.domain.Block;
-import io.keyko.monitoring.agent.core.service.AsyncTaskService;
-import io.keyko.monitoring.agent.core.service.EventStoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.protocol.Web3j;

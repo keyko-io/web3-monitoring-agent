@@ -27,6 +27,8 @@ public class ContractViewSpecification implements Serializable {
 
     private String methodName;
 
+    private String contractName;
+
     @ElementCollection
     private List<MethodParameterDefinition> inputParameterDefinitions = new ArrayList<>();
 
