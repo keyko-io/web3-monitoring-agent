@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * A contract event listener that broadcasts the event details via the configured broadcaster.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)

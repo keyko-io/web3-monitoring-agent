@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Supported event parameter types.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Embeddable
 @NoArgsConstructor

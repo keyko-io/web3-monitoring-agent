@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.chain.service.health.strategy;
 /**
  * A listener interface that is triggered on node failure and recovery events.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface ReconnectionStrategy {
 

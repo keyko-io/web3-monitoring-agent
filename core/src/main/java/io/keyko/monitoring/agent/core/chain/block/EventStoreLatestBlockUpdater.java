@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>
  * Only gets registered if a SaveableEventStore exists in the context.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class EventStoreLatestBlockUpdater implements BlockListener {
 

@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * <p>
  * The topic to be consumed from can be configured via the kafka.topic.contractEvents property.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class KafkaFilterEventConsumer implements EventeumInternalEventConsumer {
 

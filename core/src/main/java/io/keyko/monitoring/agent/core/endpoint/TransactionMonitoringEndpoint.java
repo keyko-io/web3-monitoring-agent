@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * A REST endpoint for adding a removing event filters.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @RestController
 @RequestMapping(value = "/api/rest/v1/transaction")
@@ -24,8 +24,9 @@ public class TransactionMonitoringEndpoint {
     /**
      * Monitors a transaction with the specified hash, on a specific node
      *
-     * @param TransactionMonitoringSpec the transaction spec to add
-     * @param response                  the http response
+     * @param spec the transaction spec to add
+     * @param response the http response
+     * @return MonitorTransactionsResponse
      */
     @RequestMapping(method = RequestMethod.POST)
     public MonitorTransactionsResponse monitorTransactions(@RequestBody TransactionMonitoringSpec spec,
@@ -41,7 +42,7 @@ public class TransactionMonitoringEndpoint {
     /**
      * Stops monitoring a transaction with the specfied hash
      *
-     * @param @param   specId the id of the transaction monitor to remove
+     * @param id   specId the id of the transaction monitor to remove
      * @param nodeName the name of the node where the transaction is being monitored
      * @param response the http response
      */

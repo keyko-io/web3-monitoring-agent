@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Represents the details of an emitted Ethereum smart contract event.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Document
 @Entity

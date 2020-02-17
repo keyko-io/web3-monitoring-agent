@@ -11,7 +11,7 @@ import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
  * <p>
  * Note:  All subscriptions are unregistered before being reregistered.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 public class HttpReconnectionStrategy extends ResubscribingReconnectionStrategy {

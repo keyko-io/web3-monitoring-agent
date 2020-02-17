@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * <p>
  * Only gets registered if a SaveableEventStore exists in the context.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class EventStoreContractEventUpdater implements ContractEventListener {
 

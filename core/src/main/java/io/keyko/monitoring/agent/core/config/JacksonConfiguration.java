@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 /**
  * Configures the jackson ObjectMapper bean.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration
 public class JacksonConfiguration {

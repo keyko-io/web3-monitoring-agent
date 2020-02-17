@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Spring configuration for Kafka related beans.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration("eventeumKafkaConfiguration")
 @EnableKafka

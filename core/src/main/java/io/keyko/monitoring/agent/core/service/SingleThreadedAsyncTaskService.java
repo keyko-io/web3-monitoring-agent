@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 /**
  * An async task service that utilises a single thread executor
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 public class SingleThreadedAsyncTaskService implements AsyncTaskService {

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * A TransactionReceipt that is constructed from a Web3j transaction receipt.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Data
 public class Web3jTransactionReceipt implements TransactionReceipt {

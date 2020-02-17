@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * An array EventParameter, backed by an ArrayList.
  * Its ArrayList rather than List as ArrayList implements Serializable.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Embeddable
 @Data

@@ -23,7 +23,7 @@ import java.util.concurrent.Callable;
 /**
  * Event Filter Configuration
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration
 @ConfigurationProperties

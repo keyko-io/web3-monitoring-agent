@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * A REST endpoint for adding a removing event filters.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @RestController
 @RequestMapping(value = "/api/rest/v1/event-filter")
@@ -27,6 +27,7 @@ public class ContractEventFilterEndpoint {
      *
      * @param eventFilter the event filter to add
      * @param response    the http response
+     * @return AddEventFilterResponse
      */
     @RequestMapping(method = RequestMethod.POST)
     public AddEventFilterResponse addEventFilter(@RequestBody ContractEventFilter eventFilter,
@@ -42,6 +43,7 @@ public class ContractEventFilterEndpoint {
      * Returns the list of registered {@link ContractEventFilter}
      *
      * @param response the http response
+     * @return List<ContractEventFilter>
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<ContractEventFilter> listEventFilters(HttpServletResponse response) {

@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>
  * The poll interval can be configured with the ethereum.node.healthcheck.pollInterval property.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 public class NodeHealthCheckService {

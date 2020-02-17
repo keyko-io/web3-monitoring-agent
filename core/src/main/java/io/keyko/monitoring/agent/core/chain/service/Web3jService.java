@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A BlockchainService implementating utilising the Web3j library.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 public class Web3jService implements BlockchainService {

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Represents contract event specification, to be used when registering a new filter.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Embeddable
 @Data

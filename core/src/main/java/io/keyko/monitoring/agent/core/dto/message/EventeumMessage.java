@@ -9,7 +9,7 @@ import net.consensys.kafkadl.message.RetryableMessage;
  * A message interface to be broadcast from the Eventeum application.
  *
  * @param <T> The details type for the message
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,

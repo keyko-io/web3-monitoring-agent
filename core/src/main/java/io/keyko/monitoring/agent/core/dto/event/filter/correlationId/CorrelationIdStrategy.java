@@ -14,7 +14,7 @@ import javax.persistence.Embeddable;
  * This is particularly useful when used with a Kafka broadcaster as you can configure the system
  * so that events with particular parameter values are always sent to the same partition.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Embeddable
 @JsonTypeInfo(

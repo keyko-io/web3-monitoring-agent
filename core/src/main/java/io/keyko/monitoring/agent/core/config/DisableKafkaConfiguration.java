@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Disable Spring Boot Kafka auto configuration if its not needed.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration
 @ConditionalOnKafkaRequired(false)

@@ -20,7 +20,7 @@ import org.springframework.kafka.core.KafkaTemplate;
  * If broadcaster.multiInstance is set to true, then register a Kafka broadcaster,
  * otherwise register a dummy broadcaster that does nothing.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration
 public class EventeumEventConfiguration {

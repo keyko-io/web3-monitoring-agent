@@ -22,7 +22,7 @@ import java.math.BigInteger;
  * This created block listener counts blocks since the event was first fired and broadcasts a CONFIRMED
  * event once the configured number of blocks have passed.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 @AllArgsConstructor

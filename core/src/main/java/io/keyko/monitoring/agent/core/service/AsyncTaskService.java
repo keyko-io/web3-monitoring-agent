@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 /**
  * An service that should execute a task in an Asynchronous manner.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface AsyncTaskService {
 

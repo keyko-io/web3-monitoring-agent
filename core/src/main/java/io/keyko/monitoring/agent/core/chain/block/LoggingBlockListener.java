@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * A block listener that logs the block details.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 public class LoggingBlockListener implements BlockListener {

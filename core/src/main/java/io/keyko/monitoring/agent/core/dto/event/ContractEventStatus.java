@@ -3,7 +3,7 @@ package io.keyko.monitoring.agent.core.dto.event;
 /**
  * The status of a contract event being broadcast from Eventeum.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public enum ContractEventStatus {
     //The transaction that triggered the event has been mined

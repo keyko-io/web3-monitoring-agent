@@ -14,7 +14,7 @@ import org.web3j.protocol.websocket.WebSocketClient;
  * <p>
  * Note:  All subscriptions are unregistered before being reregistered.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 public class WebSocketResubscribeNodeFailureListener extends ResubscribingReconnectionStrategy {

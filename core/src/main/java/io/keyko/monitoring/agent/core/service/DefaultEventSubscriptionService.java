@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 /**
  * {@inheritDoc}
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 @Component

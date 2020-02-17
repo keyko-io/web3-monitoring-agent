@@ -15,7 +15,7 @@ import java.util.Optional;
  * <p>
  * The REST events tore path can be specified with the eventStore.url and eventStore.eventPath parameters.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class RESTEventStore implements EventStore {
 

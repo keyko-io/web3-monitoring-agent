@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * The cache expiration time can be configured with the broadcaster.cache.expirationMillis property.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * An Ethereum transaction receipt.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface TransactionReceipt {
 

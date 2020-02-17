@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * A block listener that broadcasts the block details via the configured broadcaster.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 @AllArgsConstructor

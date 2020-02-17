@@ -21,7 +21,7 @@ import java.util.Optional;
  * Registers filters that are either configured within the properties file, exist in the
  * Eventeum database on startup, or are returned from ContractEventFilterFactory beans.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Service
 @AllArgsConstructor

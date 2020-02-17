@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Converts Web3j Type objects into Eventeum EventParameter objects.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component("web3jEventParameterConverter")
 public class Web3jEventParameterConverter implements EventParameterConverter<Type> {

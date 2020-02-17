@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * A service that interacts with the event store in order to retrieve data required by Eventeum.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface EventStoreService {
 

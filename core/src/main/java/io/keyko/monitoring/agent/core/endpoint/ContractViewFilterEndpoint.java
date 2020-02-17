@@ -26,6 +26,7 @@ public class ContractViewFilterEndpoint {
      *
      * @param viewFilter the view filter to add
      * @param response    the http response
+     * @return AddViewFilterResponse
      */
     @RequestMapping(method = RequestMethod.POST)
     public AddViewFilterResponse addViewFilter(@RequestBody ContractViewFilter viewFilter,
@@ -41,6 +42,7 @@ public class ContractViewFilterEndpoint {
      * Returns the list of registered {@link ContractViewFilter}
      *
      * @param response the http response
+     * @return List<ContractViewFilter>
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<ContractViewFilter> listViewFilters(HttpServletResponse response) {
@@ -55,6 +57,7 @@ public class ContractViewFilterEndpoint {
      *
      * @param filterId the filterId to delete
      * @param response the http response
+     * @return ContractViewFilter
      */
     @RequestMapping(value = "/{filterId}", method = RequestMethod.GET)
     public ContractViewFilter getViewFilter(@PathVariable String filterId,

@@ -9,7 +9,7 @@ import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
  * <p>
  * (Used in single instance mode)
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class DoNothingEventeumEventBroadcaster implements EventeumEventBroadcaster {
 

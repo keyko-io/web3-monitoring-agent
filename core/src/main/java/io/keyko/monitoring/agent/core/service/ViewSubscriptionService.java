@@ -53,6 +53,8 @@ public interface ViewSubscriptionService {
      * Get a previously added contract view filter.
      *
      * @param filterId  The filter id of the view to return.
+     * @return ContractViewFilter
+     * @throws NotFoundException
      */
     ContractViewFilter getContractViewFilter(String filterId) throws NotFoundException;
 
@@ -62,6 +64,7 @@ public interface ViewSubscriptionService {
      * Broadcasts the removed filter view to any other Eventeum instances.
      *
      * @param filterId The filter id of the view to remove.
+     * @throws NotFoundException
      */
     void unregisterContractViewFilter(String filterId) throws NotFoundException;
 
@@ -70,6 +73,7 @@ public interface ViewSubscriptionService {
      *
      * @param filterId  The filter id of the view to remove.
      * @param broadcast Specifies if the removed filter view should be broadcast to other Eventeum instances.
+     * @throws NotFoundException
      */
     void unregisterContractViewFilter(String filterId, boolean broadcast) throws NotFoundException;
 
@@ -80,6 +84,7 @@ public interface ViewSubscriptionService {
 
     /**
      * Unsubscribe all active listeners
+     * @param nodeName the name of the node
      */
     void unsubscribeToAllSubscriptions(String nodeName);
 

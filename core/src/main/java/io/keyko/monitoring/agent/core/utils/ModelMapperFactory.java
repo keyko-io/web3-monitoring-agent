@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 /**
  * A singleton factory for creating ModelMapper instances.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class ModelMapperFactory {
 

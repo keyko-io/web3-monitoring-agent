@@ -10,7 +10,7 @@ import java.math.BigInteger;
 /**
  * A number based EventParameter, represented by a BigInteger.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Embeddable
 @Data

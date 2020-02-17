@@ -34,7 +34,7 @@ import java.util.Optional;
  * The topic names for block and contract events can be configured via the
  * kafka.topic.contractEvents and kafka.topic.blockEvents properties.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcaster {
 

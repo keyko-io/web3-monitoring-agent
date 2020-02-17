@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This implementation stores the latest blocks for each event filter in memory, but delegates to
  * the event store if an entry is not found in memory.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Slf4j
 @Component

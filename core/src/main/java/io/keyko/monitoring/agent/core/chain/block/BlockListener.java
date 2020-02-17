@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 /**
  * A listener for new block events.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface BlockListener {
 

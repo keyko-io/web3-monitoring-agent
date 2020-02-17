@@ -7,7 +7,7 @@ import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 /**
  * An interface for a class that broadcasts Eventeum internal events to other Eventeum instances in the wider system.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface EventeumEventBroadcaster {
 

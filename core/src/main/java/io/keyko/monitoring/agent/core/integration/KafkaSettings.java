@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 /**
  * An encapsulation of Kafka related properties.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component("eventeumKafkaSettings")
 @ConditionalOnKafkaRequired

@@ -18,7 +18,7 @@ import org.springframework.kafka.core.KafkaTemplate;
  * <p>
  * The topic name can be configured via the kafka.topic.eventeumEvents property.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class KafkaEventeumEventBroadcaster implements EventeumEventBroadcaster {
 

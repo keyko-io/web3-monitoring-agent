@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * A Log that is constructed from a Web3j Log object.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Data
 @NoArgsConstructor

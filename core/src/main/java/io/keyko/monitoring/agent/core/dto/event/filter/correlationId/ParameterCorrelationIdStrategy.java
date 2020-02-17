@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
  * An abstract CorrelationIdStrategy that considers the correlation id of a specific contract event
  * to be the value of a parameter at a specified index.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Data
 @NoArgsConstructor

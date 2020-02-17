@@ -21,7 +21,7 @@ import java.util.Optional;
 /**
  * A saveable event store that stores contract events in a db repository.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class MongoEventStore implements SaveableEventStore {
 

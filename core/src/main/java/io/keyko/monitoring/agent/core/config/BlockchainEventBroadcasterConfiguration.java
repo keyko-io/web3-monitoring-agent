@@ -21,7 +21,7 @@ import org.springframework.kafka.core.KafkaTemplate;
  * <p>
  * Registers a broadcaster bean based on the value of the broadcaster.type property.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Configuration
 public class BlockchainEventBroadcasterConfiguration {

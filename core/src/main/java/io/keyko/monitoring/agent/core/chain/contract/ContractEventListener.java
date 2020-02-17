@@ -5,7 +5,7 @@ import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 /**
  * A listener for new contract events.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface ContractEventListener {
 

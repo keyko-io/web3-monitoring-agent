@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * A contract event listener that logs the contract event details.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 public class LoggingContractEventListener implements ContractEventListener {

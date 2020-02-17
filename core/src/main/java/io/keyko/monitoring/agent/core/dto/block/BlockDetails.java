@@ -7,7 +7,7 @@ import java.math.BigInteger;
 /**
  * Represents the details of an Ethereum block.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Data
 public class BlockDetails {

@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Interface for a service that interacts directly with an Ethereum blockchain node.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface BlockchainService {
 

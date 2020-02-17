@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A service for manageing contract event subscriptions within the Eventeum instance.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface EventSubscriptionService {
 
@@ -55,6 +55,7 @@ public interface EventSubscriptionService {
      * Broadcasts the removed filter event to any other Eventeum instances.
      *
      * @param filterId The filter id of the event to remove.
+     * @throws NotFoundException
      */
     void unregisterContractEventFilter(String filterId) throws NotFoundException;
 
@@ -63,6 +64,7 @@ public interface EventSubscriptionService {
      *
      * @param filterId  The filter id of the event to remove.
      * @param broadcast Specifies if the removed filter event should be broadcast to other Eventeum instances.
+     * @throws NotFoundException
      */
     void unregisterContractEventFilter(String filterId, boolean broadcast) throws NotFoundException;
 
@@ -73,6 +75,7 @@ public interface EventSubscriptionService {
 
     /**
      * Unsubscribe all active listeners
+     * @param nodeName name of the node
      */
     void unsubscribeToAllSubscriptions(String nodeName);
 

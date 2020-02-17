@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Useful Web3j related utility methods
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public class Web3jUtil {
 

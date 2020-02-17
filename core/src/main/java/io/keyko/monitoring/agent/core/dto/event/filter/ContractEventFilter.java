@@ -15,7 +15,7 @@ import java.math.BigInteger;
 /**
  * Represents the details of a contract event filter.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Document
 @Entity

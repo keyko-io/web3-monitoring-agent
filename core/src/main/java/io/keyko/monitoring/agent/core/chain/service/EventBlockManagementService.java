@@ -7,7 +7,7 @@ import java.math.BigInteger;
 /**
  * Interface for a service that manages the latest block that has been seen to a specific event specification.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface EventBlockManagementService {
 

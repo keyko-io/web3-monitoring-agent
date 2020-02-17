@@ -8,7 +8,7 @@ import org.web3j.protocol.core.methods.response.Log;
  * A factory interface for creating ContractEventDetails objects from the event filter plus the
  * Web3J log.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface ContractEventDetailsFactory {
     ContractEventDetails createEventDetails(ContractEventFilter eventFilter, Log log);

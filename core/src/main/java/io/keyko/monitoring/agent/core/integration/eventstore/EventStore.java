@@ -10,7 +10,7 @@ import java.util.Optional;
 /**
  * Interface for integrating with an event store, in order to obtain events for a specified signature.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 public interface EventStore {
     Page<ContractEventDetails> getContractEventsForSignature(

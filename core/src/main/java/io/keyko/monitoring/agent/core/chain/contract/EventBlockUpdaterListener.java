@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * A contract event listener that updates the latest block number seen for the event spec.
  *
- * @author Craig Williams <craig.williams@consensys.net>
+ * @author Craig Williams - craig.williams@consensys.net
  */
 @Component
 public class EventBlockUpdaterListener implements ContractEventListener {
