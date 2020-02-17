@@ -33,28 +33,33 @@ public class Web3Converter {
     public static Type getEncodeAbiType(String type, Object value) throws UnsupportedEncodingException {
         type= type.toLowerCase();
 
-        if (type.contains("[")) {
-            String subType = type.replaceAll("\\[\\]", "");
-            Object[] items = (String[]) value;
-            Array result= new DynamicArray(Arrays.asList(items));
-            return result;
-        } else if (type.contains("bool"))
-            return new Bool((boolean) value);
-        else if (type.contains("uint"))
-            if(value instanceof Integer){
-                new Uint(BigInteger.valueOf((Integer) value));
-            }
-            else
-                new Uint((BigInteger) value);
-        else if (type.contains("address"))
-            return new Address((String) value);
-        else if (type.contains("bytes"))
-            return new DynamicBytes((byte[]) value);
-        else if ("string".equals(type))
+        try {
+
+            if (type.contains("[")) {
+                String subType = type.replaceAll("\\[\\]", "");
+                Object[] items = (String[]) value;
+                Array result= new DynamicArray(Arrays.asList(items));
+                return result;
+            } else if (type.contains("bool"))
+                return new Bool(Boolean.parseBoolean((String) value));
+//            return new Bool((boolean) value);
+            else if (type.contains("uint"))
+                if(value instanceof Integer){
+                    new Uint(BigInteger.valueOf((Integer) value));
+                }
+                else
+                    new Uint((BigInteger) value);
+            else if (type.contains("address"))
+                return new Address((String) value);
+            else if (type.contains("bytes"))
+                return new DynamicBytes((byte[]) value);
+            else if ("string".equals(type))
+                return new Utf8String((String) value);
+
             return new Utf8String((String) value);
-
-        return new Utf8String((String) value);
-
+        } catch (Exception ex)  {
+            throw new UnsupportedEncodingException("Error encoding " + type + ": " + ex.getMessage());
+        }
     }
 
     public static TypeReference getTypeReference(String type) throws UnsupportedEncodingException {

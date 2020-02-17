@@ -10,6 +10,7 @@ import org.web3j.abi.datatypes.Type;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -36,27 +37,17 @@ public class ContractViewSpecification implements Serializable {
     private List<ParameterDefinition> outputParameterDefinitions = new ArrayList<>();
 
     @Transient
-    public Function getWeb3Function()    {
+    public Function getWeb3Function() throws UnsupportedEncodingException   {
         List<Type> funcInput= new ArrayList<>();
         List<TypeReference<?>> funcOutput = new ArrayList<>();
 
-        inputParameterDefinitions.forEach(definition -> {
-            try {
-                funcInput.add(definition.getWeb3Type());
-            } catch (UnsupportedEncodingException e) {
-                log.error("Unable to convert input parameter: " + e.getMessage());
-            }
-        });
+        for (MethodParameterDefinition inputParameterDefinition : inputParameterDefinitions) {
+            funcInput.add(inputParameterDefinition.getWeb3Type());
+        }
 
-        outputParameterDefinitions.forEach(definition -> {
-            try {
-                TypeReference typeReference = definition.getWeb3TypeReference();
-                funcOutput.add(typeReference);
-//                funcOutput.add(definition.getWeb3TypeReference());
-            } catch (UnsupportedEncodingException e) {
-                log.error("Unable to convert output parameter: " + e.getMessage());
-            }
-        });
+        for (ParameterDefinition definition : outputParameterDefinitions) {
+            funcOutput.add(definition.getWeb3TypeReference());
+        }
 
         Function function = new Function(methodName, funcInput, funcOutput);
         return function;

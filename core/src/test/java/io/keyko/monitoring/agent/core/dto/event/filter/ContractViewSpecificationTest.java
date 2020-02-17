@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.web3j.abi.datatypes.Function;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ class ContractViewSpecificationTest {
     }
 
     @Test
-    void getWeb3Function() {
+    void getWeb3Function() throws UnsupportedEncodingException {
         Function function= spec.getWeb3Function();
         assertEquals("balanceOf", function.getName());
         assertEquals(1, function.getInputParameters().size());
@@ -51,4 +52,5 @@ class ContractViewSpecificationTest {
                 function.getOutputParameters().get(0).getType().getTypeName());
 
     }
+
 }
