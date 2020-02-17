@@ -1,7 +1,9 @@
 History
 =======
 
-0.0.2 (2020-02)
+
+
+0.1.0 (2020-02)
 ------------------
 
 * Support of ingestion of public method values
