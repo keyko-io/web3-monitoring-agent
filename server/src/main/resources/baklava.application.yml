@@ -28,6 +28,8 @@ ethereum:
   healthcheck:
     pollInterval: 2000
   blockStrategy: POLL
+  client:
+    address: ${ETHEREUM_CLIENT_ADDRESS:0x0}
 
 eventFilters:
   - id: Exchanged
