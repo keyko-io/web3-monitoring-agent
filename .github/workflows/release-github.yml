@@ -12,10 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: xresloader/upload-to-github-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: |
-            server/target/*.jar
+          file: "server/target/web3-monitoring-agent-*.jar"
+          tags: true
+          draft: false
+          prerelease: false
+          overwrite: true
+          verbose: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

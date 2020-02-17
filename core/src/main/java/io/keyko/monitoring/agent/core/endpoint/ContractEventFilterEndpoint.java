@@ -43,7 +43,7 @@ public class ContractEventFilterEndpoint {
      * Returns the list of registered {@link ContractEventFilter}
      *
      * @param response the http response
-     * @return List<ContractEventFilter>
+     * @return list of ContractEventFilter
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<ContractEventFilter> listEventFilters(HttpServletResponse response) {

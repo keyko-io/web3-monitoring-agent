@@ -11,10 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @author Craig Williams - craig.williams@consensys.net
- * @{inheritDoc}
- */
 @Component
 public class DefaultEventStoreService implements EventStoreService {
 
@@ -24,9 +20,6 @@ public class DefaultEventStoreService implements EventStoreService {
         this.eventStore = eventStore;
     }
 
-    /**
-     * @{inheritDoc}
-     */
     @Override
     public Optional<ContractEventDetails> getLatestContractEvent(
             String eventSignature, String contractAddress) {

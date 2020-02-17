@@ -55,7 +55,7 @@ public interface EventSubscriptionService {
      * Broadcasts the removed filter event to any other Eventeum instances.
      *
      * @param filterId The filter id of the event to remove.
-     * @throws NotFoundException
+     * @throws NotFoundException object not found
      */
     void unregisterContractEventFilter(String filterId) throws NotFoundException;
 
@@ -64,7 +64,7 @@ public interface EventSubscriptionService {
      *
      * @param filterId  The filter id of the event to remove.
      * @param broadcast Specifies if the removed filter event should be broadcast to other Eventeum instances.
-     * @throws NotFoundException
+     * @throws NotFoundException object not found
      */
     void unregisterContractEventFilter(String filterId, boolean broadcast) throws NotFoundException;
 

@@ -42,7 +42,7 @@ public class ContractViewFilterEndpoint {
      * Returns the list of registered {@link ContractViewFilter}
      *
      * @param response the http response
-     * @return List<ContractViewFilter>
+     * @return list of ContractViewFilter
      */
     @RequestMapping(method = RequestMethod.GET)
     public List<ContractViewFilter> listViewFilters(HttpServletResponse response) {
