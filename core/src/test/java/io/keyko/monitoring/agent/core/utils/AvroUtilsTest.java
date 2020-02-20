@@ -24,7 +24,7 @@ class AvroUtilsTest {
         BlockDetailsRecord blockDetailsRecord = BlockDetailsRecord.newBuilder()
                 .setHash("0x17ef13ce9c048ebd1f4a362f4afb797fe306bfbe5419e5bef254ea287139d031")
                 .setNodeName("default")
-                .setNumber("578276")
+                .setNumber(578276l)
                 .setTimestamp(AvroUtils.toLogicalTypeTimestamp(number))
                 .build();
 
