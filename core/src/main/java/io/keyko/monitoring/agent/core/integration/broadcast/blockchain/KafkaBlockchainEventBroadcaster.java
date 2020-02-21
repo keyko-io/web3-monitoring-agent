@@ -86,11 +86,19 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.event.ContractEventDetails> message = createContractEventMessage(eventDetails);
         LOG.info("Sending contract event message: " + JSON.stringify(message));
         EventDetailsRecord contractEventDetails = EventDetailsRecord.newBuilder()
-                .setAddress(message.getDetails().getAddress()).setBlockHash(message.getDetails().getBlockHash()).setBlockNumber(message.getDetails().getBlockNumber().longValue())
-                .setEventSpecificationSignature(message.getDetails().getEventSpecificationSignature()).setFilterId(message.getDetails().getFilterId())
-                .setId(message.getDetails().getId()).setLogIndex(message.getDetails().getLogIndex().toString())
-                .setName(message.getDetails().getName()).setNetworkName(message.getDetails().getNetworkName()).setNodeName(message.getDetails().getNodeName())
-                .setNonIndexedParameters(convertParameters(message.getDetails().getNonIndexedParameters())).setIndexedParameters(convertParameters(message.getDetails().getIndexedParameters()))
+                .setAddress(message.getDetails().getAddress())
+                .setContractName(message.getDetails().getContractName())
+                .setBlockHash(message.getDetails().getBlockHash())
+                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
+                .setEventSpecificationSignature(message.getDetails().getEventSpecificationSignature())
+                .setFilterId(message.getDetails().getFilterId())
+                .setId(message.getDetails().getId())
+                .setLogIndex(message.getDetails().getLogIndex().toString())
+                .setName(message.getDetails().getName())
+                .setNetworkName(message.getDetails().getNetworkName())
+                .setNodeName(message.getDetails().getNodeName())
+                .setNonIndexedParameters(convertParameters(message.getDetails().getNonIndexedParameters()))
+                .setIndexedParameters(convertParameters(message.getDetails().getIndexedParameters()))
                 .setStatus(ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
                 .setTransactionHash(message.getDetails().getTransactionHash()).build();
 

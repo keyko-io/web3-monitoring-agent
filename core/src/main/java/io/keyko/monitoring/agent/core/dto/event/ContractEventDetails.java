@@ -31,6 +31,8 @@ public class ContractEventDetails {
 
     private String name;
 
+    private String contractName;
+
     @Id
     private String filterId;
 

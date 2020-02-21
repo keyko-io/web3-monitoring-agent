@@ -1,10 +1,10 @@
 package io.keyko.monitoring.agent.core.dto.event.filter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.keyko.monitoring.agent.core.constant.Constants;
 import io.keyko.monitoring.agent.core.dto.event.filter.correlationId.CorrelationIdStrategy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import io.keyko.monitoring.agent.core.constant.Constants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Embedded;
@@ -28,6 +28,8 @@ public class ContractEventFilter {
     private String id;
 
     private String contractAddress;
+
+    private String contractName;
 
     private String node = Constants.DEFAULT_NODE_NAME;
 

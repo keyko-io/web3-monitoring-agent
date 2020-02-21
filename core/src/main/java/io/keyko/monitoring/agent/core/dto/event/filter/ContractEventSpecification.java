@@ -21,6 +21,8 @@ public class ContractEventSpecification implements Serializable {
 
     private String eventName;
 
+    private String contractName;
+
     @ElementCollection
     // See answer in https://stackoverflow.com/questions/51835604/jpa-elementcollection-within-embeddable-not-persisted
     private List<ParameterDefinition> indexedParameterDefinitions = new ArrayList<>();

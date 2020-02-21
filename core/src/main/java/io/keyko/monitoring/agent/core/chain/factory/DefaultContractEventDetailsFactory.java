@@ -46,6 +46,7 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
 
         final ContractEventDetails eventDetails = new ContractEventDetails();
         eventDetails.setName(eventSpec.getEventName());
+        eventDetails.setContractName(eventSpec.getContractName());
         eventDetails.setFilterId(eventFilter.getId());
         eventDetails.setNonIndexedParameters(nonIndexed);
         eventDetails.setIndexedParameters(indexed);
