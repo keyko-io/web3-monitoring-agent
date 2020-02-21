@@ -67,7 +67,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         BlockDetailsRecord blockDetailsRecord = BlockDetailsRecord.newBuilder()
                 .setHash(message.getDetails().getHash())
                 .setNodeName(message.getDetails().getNodeName())
-                .setNumber(message.getDetails().getNumber().toString())
+                .setNumber(message.getDetails().getNumber().longValue())
                 .setTimestamp(AvroUtils.toLogicalTypeTimestamp(message.getDetails().getTimestamp()))
                 .build();
 
@@ -86,7 +86,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.event.ContractEventDetails> message = createContractEventMessage(eventDetails);
         LOG.info("Sending contract event message: " + JSON.stringify(message));
         EventDetailsRecord contractEventDetails = EventDetailsRecord.newBuilder()
-                .setAddress(message.getDetails().getAddress()).setBlockHash(message.getDetails().getBlockHash()).setBlockNumber(message.getDetails().getBlockNumber().toString())
+                .setAddress(message.getDetails().getAddress()).setBlockHash(message.getDetails().getBlockHash()).setBlockNumber(message.getDetails().getBlockNumber().longValue())
                 .setEventSpecificationSignature(message.getDetails().getEventSpecificationSignature()).setFilterId(message.getDetails().getFilterId())
                 .setId(message.getDetails().getId()).setLogIndex(message.getDetails().getLogIndex().toString())
                 .setName(message.getDetails().getName()).setNetworkName(message.getDetails().getNetworkName()).setNodeName(message.getDetails().getNodeName())
@@ -110,7 +110,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         ViewDetailsRecord contractViewDetails = ViewDetailsRecord.newBuilder()
                 .setAddress(message.getDetails().getAddress())
                 .setBlockHash(message.getDetails().getBlockHash())
-                .setBlockNumber(message.getDetails().getBlockNumber().toString())
+                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
                 .setId(message.getDetails().getId())
                 .setFilterId(message.getDetails().getFilterId())
                 .setName(message.getDetails().getName())
