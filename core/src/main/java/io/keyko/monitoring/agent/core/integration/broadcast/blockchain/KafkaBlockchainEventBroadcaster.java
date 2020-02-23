@@ -172,7 +172,8 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
             if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.StringParameter.class) {
                 parametersConverted.add(new StringParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
             } else if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter.class) {
-                parametersConverted.add(new NumberParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
+                parametersConverted.add(new NumberParameter(
+                        l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString(), l.get(i).getLongValue()));
             }
         }
         return parametersConverted;

@@ -6,6 +6,7 @@ server:
 logging:
   level:
     org.springframework.web: ERROR
+    org.web3j.protocol.core: DEBUG
     io.keyko: DEBUG
     io.keyko.monitoring.agent.core.configs: ERROR
   pattern:
@@ -19,6 +20,8 @@ spring:
     enabled: DETECT
 
 ethereum:
+  client:
+    address: "0xab9c2c7afe19b9491e654b3ca1f20aaf34776802"
   nodes:
   - name: default
     url: ${ETHEREUM_NODE_URL:http://localhost:8545}
@@ -28,8 +31,6 @@ ethereum:
   healthcheck:
     pollInterval: 2000
   blockStrategy: POLL
-  client:
-    address: ${ETHEREUM_CLIENT_ADDRESS:0x0}
 
 
 eventStore:

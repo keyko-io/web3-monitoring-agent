@@ -3,13 +3,34 @@ package io.keyko.monitoring.agent.core.utils;
 import io.keyko.monitoring.schemas.BlockDetailsRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.web3j.abi.datatypes.generated.Uint256;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 class AvroUtilsTest {
+
+
+    @Test
+    void bigIntegerToLong() {
+
+        BigInteger number= new BigInteger(  "3994112015276946430");
+        BigInteger tooLarge= new BigInteger("11941120152769464305040549");
+        BigInteger maxLong= new BigInteger(String.valueOf(Long.MAX_VALUE));
+        BigInteger maxLongPlusOne= new BigInteger(String.valueOf(Long.MAX_VALUE)).add(BigInteger.ONE);
+
+        assertEquals(3994112015276946430l, AvroUtils.truncateToLong(number));
+        assertEquals(1194112015276946430l, AvroUtils.truncateToLong(tooLarge));
+        assertEquals(Long.MAX_VALUE, AvroUtils.truncateToLong(maxLong));
+        assertEquals(922337203685477580l, AvroUtils.truncateToLong(maxLongPlusOne));
+
+        assertEquals( AvroUtils.truncateToLong(number),  AvroUtils.truncateToLong(number.toString()));
+
+    }
 
     @Test
     void toLogicalTypeTimestamp() {

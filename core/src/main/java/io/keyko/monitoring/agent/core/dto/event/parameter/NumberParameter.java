@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.dto.event.parameter;
 
+import io.keyko.monitoring.agent.core.utils.AvroUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,11 @@ public class NumberParameter extends AbstractEventParameter<BigInteger> {
     public String getValueString() {
         return getValue().toString();
     }
+
+    @Override
+    public long getLongValue() {
+        return AvroUtils.truncateToLong(getValue());
+    }
+
+
 }
