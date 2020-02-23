@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -170,10 +169,20 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         List<Object> parametersConverted = new ArrayList<Object>();
         for (int i = 0; i < l.size(); i++) {
             if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.StringParameter.class) {
-                parametersConverted.add(new StringParameter(l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString()));
+                parametersConverted.add(
+                        new StringParameter(
+                                l.get(i).getName(),
+                                l.get(i).getType(),
+                                l.get(i).getValueString()
+                        ));
             } else if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter.class) {
-                parametersConverted.add(new NumberParameter(
-                        l.get(i).getName(), l.get(i).getType(), l.get(i).getValueString(), l.get(i).getLongValue()));
+                parametersConverted.add(
+                        new NumberParameter(
+                            l.get(i).getName(),
+                            l.get(i).getType(),
+                            l.get(i).getValueString(),
+                            AvroUtils.truncateToLong(l.get(i).getValueString())
+                        ));
             }
         }
         return parametersConverted;

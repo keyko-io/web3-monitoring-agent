@@ -35,7 +35,7 @@ public class ArrayParameter<T extends EventParameter<?>> extends AbstractEventPa
     }
 
     @Override
-    public long getLongValue() {
+    public long getNumberValue() {
         return 0l;
     }
 

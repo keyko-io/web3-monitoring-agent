@@ -19,8 +19,11 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class NumberParameter extends AbstractEventParameter<BigInteger> {
 
+    private long numberValue;
+
     public NumberParameter(String type, BigInteger value, String name) {
         super(type, value, name);
+        this.numberValue= AvroUtils.truncateToLong(value);
     }
 
     @Override
@@ -29,8 +32,8 @@ public class NumberParameter extends AbstractEventParameter<BigInteger> {
     }
 
     @Override
-    public long getLongValue() {
-        return AvroUtils.truncateToLong(getValue());
+    public long getNumberValue() {
+        return numberValue;
     }
 
 

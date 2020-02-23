@@ -33,5 +33,5 @@ public interface EventParameter<T extends Serializable> extends Serializable {
     String getValueString();
 
     @JsonIgnore
-    long getLongValue();
+    long getNumberValue();
 }

@@ -27,7 +27,7 @@ class AvroUtilsTest {
         assertEquals(1194112015276946430l, AvroUtils.truncateToLong(tooLarge));
         assertEquals(Long.MAX_VALUE, AvroUtils.truncateToLong(maxLong));
         assertEquals(922337203685477580l, AvroUtils.truncateToLong(maxLongPlusOne));
-
+//
         assertEquals( AvroUtils.truncateToLong(number),  AvroUtils.truncateToLong(number.toString()));
 
     }

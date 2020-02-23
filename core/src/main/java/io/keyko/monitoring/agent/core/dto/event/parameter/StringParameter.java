@@ -27,7 +27,7 @@ public class StringParameter extends AbstractEventParameter<String> {
     }
 
     @Override
-    public long getLongValue() {
+    public long getNumberValue() {
         return 0l;
     }
 }
