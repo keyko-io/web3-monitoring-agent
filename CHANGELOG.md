@@ -1,6 +1,13 @@
 History
 =======
 
+0.1.3 (2020-02)
+------------------
+
+* Block Number is a long
+* New version of the schemas
+* Added START_FROM_BLOCK parameter
+* Numeric values are converted to long before sending
 
 
 0.1.0 (2020-02)
