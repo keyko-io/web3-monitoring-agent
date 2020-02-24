@@ -34,6 +34,11 @@ public class ArrayParameter<T extends EventParameter<?>> extends AbstractEventPa
         return stringRepresentation;
     }
 
+    @Override
+    public long getNumberValue() {
+        return 0l;
+    }
+
     private void initStringRepresentation() {
         final StringBuilder builder = new StringBuilder("[");
 

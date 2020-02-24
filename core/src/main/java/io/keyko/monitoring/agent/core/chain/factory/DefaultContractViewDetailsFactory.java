@@ -3,25 +3,15 @@ package io.keyko.monitoring.agent.core.chain.factory;
 import io.keyko.monitoring.agent.core.chain.converter.EventParameterConverter;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.settings.Node;
-import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
-import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
-import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import io.keyko.monitoring.agent.core.dto.event.filter.*;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import lombok.extern.slf4j.Slf4j;
-import org.web3j.abi.FunctionReturnDecoder;
-import org.web3j.abi.Utils;
 import org.web3j.abi.datatypes.Type;
-import org.web3j.crypto.Keys;
-import org.web3j.protocol.core.methods.response.Log;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class DefaultContractViewDetailsFactory implements ContractViewDetailsFactory {
@@ -42,13 +32,14 @@ public class DefaultContractViewDetailsFactory implements ContractViewDetailsFac
     public ContractViewDetails createViewDetails(ContractViewFilter filter, List<Type> returnedFromCall, Block block) {
 
         List<EventParameter> functionOutput= new ArrayList<>();
-        int position= 0;
+        AtomicInteger position= new AtomicInteger();
         returnedFromCall.forEach( _type -> {
             log.trace("Converting Result to EventParameter: " + _type.getValue().toString());
-            String _name= filter.getMethodSpecification().getOutputParameterDefinitions().get(position).getName();
+            String _name= filter.getMethodSpecification().getOutputParameterDefinitions().get(position.get()).getName();
             EventParameter eventParameter = parameterConverter.convert(_type);
             eventParameter.setName(_name);
             functionOutput.add(eventParameter);
+            position.getAndIncrement();
         });
 
         ContractViewDetails details= new ContractViewDetails();
