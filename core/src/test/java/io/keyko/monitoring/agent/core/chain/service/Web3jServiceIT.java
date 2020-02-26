@@ -151,4 +151,26 @@ public class Web3jServiceIT {
 
         assertEquals(1, ratio.compareTo(BigInteger.TEN));
     }
+
+    @Test
+    public void reserve_getReserveGoldBalance() throws UnsupportedEncodingException {
+        final String methodName= "getReserveGoldBalance";
+        log.info("Executing " + methodName);
+
+        final String contractAddress= "0x1726428A6D575FdC9C7C3B7bac9f2247a5649Bf2";
+
+        TypeReference<Uint> funcOutput = new TypeReference<Uint>() {};
+        Function function = new Function(methodName,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(funcOutput));
+
+        List<Type> result = service.executeReadCall(contractAddress, function);
+
+        assertTrue(result.size()>0);
+        BigInteger ratio= (BigInteger) result.get(0).getValue();
+        log.info("Returned value: " + ratio.toString());
+
+        assertEquals(1, ratio.compareTo(BigInteger.TEN));
+    }
+
 }
