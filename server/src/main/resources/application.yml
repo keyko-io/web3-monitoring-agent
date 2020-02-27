@@ -15,6 +15,8 @@ logging:
   file: /logs/application.log
 
 spring:
+  data:
+    mongodb.uri: "mongodb://localhost:27017/token-monitoring"
   output:
   ansi:
     enabled: DETECT
@@ -24,12 +26,20 @@ ethereum:
     address: "0xab9c2c7afe19b9491e654b3ca1f20aaf34776802"
   nodes:
   - name: default
-    url: ${ETHEREUM_NODE_URL:http://localhost:8545}
-    blockStrategy: POLL
-    syncingThreshold: 100
-    healthcheckInterval: 3000
-  healthcheck:
+    url: ${ETHEREUM_NODE_URL:wss://main-rpc.linkpool.io/ws}
+    blockStrategy: PUBSUB
     pollInterval: 2000
+    maxIdleConnections: 10
+    keepAliveDuration: 15000
+    connectionTimeout: 8000
+    readTimeout: 35000
+    healthcheckInterval: 5000
+    addTransactionRevertReason: true
+    numBlocksToWait: 1
+    numBlocksToWaitBeforeInvalidating: 1
+    numBlocksToWaitForMissingTx: 1 
+  healthcheck:
+    pollInterval: 5000
   blockStrategy: POLL
 
 
@@ -91,29 +101,5 @@ management:
 
 
 eventFilters:
-#  - id: EpochRewardsDistributedToVoters
-#    contractAddress: "0xC8FD77490A12F46709BffbCC0FCe35740Da8D860"
-#    eventSpecification:
-#      eventName: EpochRewardsDistributedToVoters
-#      indexedParameterDefinitions:
-#        - position: 0
-#          type: ADDRESS
-#          name: group
-#      nonIndexedParameterDefinitions:
-#        - position: 0
-#          type: UINT256
-#          name: value
-#    correlationId:
-#      type: NON_INDEXED_PARAMETER
-#      index: 0
 
-#transactionFilters:
-#- nodeName: ${ETHEREUM_NETWORK:DefaultNetwork}
-#  type: "FROM_ADDRESS"
-#  transactionIdentifierValue: ${CONTRACT_ADDRESS_EM_TOKEN:0x0f8E7A681019Ec13EfE853a6Eca666E05b214Fd5}
-#  statuses: ['CONFIRMED']
-#- nodeName: ${ETHEREUM_NETWORK:DefaultNetwork}
-#  type: "TO_ADDRESS"
-#  transactionIdentifierValue: ${CONTRACT_ADDRESS_EM_TOKEN:0xfBAB8dE62002c86986C6e070BD3bB46BF983C74e}
-#  statuses: ['FAILED']
 
