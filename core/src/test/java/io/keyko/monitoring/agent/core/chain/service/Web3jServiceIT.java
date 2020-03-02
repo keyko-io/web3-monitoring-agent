@@ -151,4 +151,49 @@ public class Web3jServiceIT {
 
         assertEquals(1, ratio.compareTo(BigInteger.TEN));
     }
+
+    @Test
+    public void reserve_getReserveGoldBalance() throws UnsupportedEncodingException {
+        final String methodName= "getReserveGoldBalance";
+        log.info("Executing " + methodName);
+
+        final String contractAddress= "0x1726428A6D575FdC9C7C3B7bac9f2247a5649Bf2";
+
+        TypeReference<Uint> funcOutput = new TypeReference<Uint>() {};
+        Function function = new Function(methodName,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(funcOutput));
+
+        List<Type> result = service.executeReadCall(contractAddress, function);
+
+        assertTrue(result.size()>0);
+        BigInteger ratio= (BigInteger) result.get(0).getValue();
+        log.info("Returned value: " + ratio.toString());
+
+        assertEquals(1, ratio.compareTo(BigInteger.TEN));
+    }
+
+
+    @Test
+    public void sortedOracles_medianRate() throws UnsupportedEncodingException {
+        final String methodName= "medianRate";
+        log.info("Executing " + methodName);
+
+        final String contractAddress= "0x5c7197E1147ebF98658A2a8Bc3D32BeBF1692829";
+
+        Type inputType = Web3Converter.getEncodeAbiType("address", "0x91061bF2F509AF76aa01F46E9F3E97577a5a80BA");
+        TypeReference<Uint> funcOutput = new TypeReference<Uint>() {};
+        Function function = new Function(methodName,
+                Arrays.<Type>asList(inputType),
+                Arrays.<TypeReference<?>>asList(funcOutput, funcOutput));
+
+        List<Type> result = service.executeReadCall(contractAddress, function);
+
+        assertTrue(result.size()>0);
+        BigInteger medianRate= (BigInteger) result.get(0).getValue();
+        log.info("Returned value: " + medianRate.toString());
+
+        assertEquals(1, medianRate.compareTo(BigInteger.TEN));
+    }
+
 }

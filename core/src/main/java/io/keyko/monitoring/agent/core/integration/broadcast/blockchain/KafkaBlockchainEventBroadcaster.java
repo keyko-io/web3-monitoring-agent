@@ -107,7 +107,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         genericRecord.put("details", contractEventDetails);
         genericRecord.put("retries", message.getRetries());
 
-        kafkaTemplate.send(kafkaSettings.getContractEventsTopic(), getContractEventCorrelationId(message), genericRecord);
+        kafkaTemplate.send(kafkaSettings.getContractEventsTopic(), message.getId(), genericRecord);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         genericRecord.put("details", contractViewDetails);
         genericRecord.put("retries", message.getRetries());
 
-        kafkaTemplate.send(kafkaSettings.getContractViewsTopic(), getContractViewCorrelationId(message), genericRecord);
+        kafkaTemplate.send(kafkaSettings.getContractViewsTopic(), message.getId(), genericRecord);
 
     }
 

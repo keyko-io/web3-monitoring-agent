@@ -7,6 +7,7 @@ import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,9 @@ public class DefaultEventBlockManagementService implements EventBlockManagementS
     private ChainServicesContainer chainServicesContainer;
 
     private EventStoreService eventStoreService;
+
+    @Value("${start.from.block:0}")
+    private long startFromBlock;
 
     @Autowired
     public DefaultEventBlockManagementService(@Lazy ChainServicesContainer chainServicesContainer,
@@ -77,6 +81,13 @@ public class DefaultEventBlockManagementService implements EventBlockManagementS
 
                 return latestBlockNumber;
             }
+        }
+
+
+        if (startFromBlock > 0)  {
+            log.debug("Block number for event {} forced by configuration, starting at blockNumber configured for the event: {}",
+                    eventFilter.getId(), startFromBlock);
+            return BigInteger.valueOf(startFromBlock);
         }
 
         final Optional<ContractEventDetails> contractEvent =
