@@ -8,6 +8,8 @@ import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jBlock;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jTransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
+import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
@@ -51,6 +53,9 @@ public class Web3jService implements BlockchainService {
 
     @Value("${ethereum.client.address}")
     private String clientAddress;
+
+    @Value("${only.events.confirmed:false}")
+    private boolean onlyConfirmed;
 
     @Getter
     private String nodeName;
@@ -119,9 +124,16 @@ public class Web3jService implements BlockchainService {
 //                .doOnError(error -> )
                 .subscribe(theLog -> {
                     asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
-                        log.debug("Dispatching log: {}", theLog);
-                        eventListener.onEvent(
-                                eventDetailsFactory.createEventDetails(eventFilter, theLog));
+                        ContractEventDetails eventDetails = eventDetailsFactory.createEventDetails(eventFilter, theLog);
+                        if (onlyConfirmed && !eventDetails.getStatus().equals(ContractEventStatus.CONFIRMED))   {
+                            log.debug(String.format(
+                                    "Skipping not confirmed event: Block %s, logIndex %s", theLog.getBlockNumber(), theLog.getLogIndex()
+                            ));
+
+                        }   else {
+                            log.debug("Dispatching log: {}", theLog);
+                            eventListener.onEvent(eventDetails);
+                        }
                     });
                 }, error -> log.error("Flowable subscribe error: " + error.getMessage()));
 
