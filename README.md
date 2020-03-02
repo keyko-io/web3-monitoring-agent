@@ -88,6 +88,16 @@ Connecting to mainnet:
 ETHEREUM_NODE_URL=wss://main-rpc.linkpool.io/ws java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/application.yml
 ```
 
+Syncing from previous blocks:
+
+```bash
+export START_FROM_BLOCK=1   # The block number from we want to start
+export ONLY_EVENTS_CONFIRMED=true   # If we want to avoid sending not confirmed events
+export BROADCASTER_EVENT_CONFIRMATION_NUMBLOCKSTOWAIT=0   # Syncing from an old block could produce many events not confirmed, here we reduced we number of past confirmations required
+export ETHEREUM_NODE_URL=localhost:8545    # The remote full node
+java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/application.yml
+```
+
 **Docker:**
 
 ```sh
