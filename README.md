@@ -83,6 +83,11 @@ export KAFKA_ADDRESSES=<kafka-host:port>
 java -jar target/monitoring-agent-server.jar
 ```
 
+Connecting to mainnet:
+```bash
+ETHEREUM_NODE_URL=wss://main-rpc.linkpool.io/ws java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/application.yml
+```
+
 **Docker:**
 
 ```sh
