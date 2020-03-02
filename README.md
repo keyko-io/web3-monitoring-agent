@@ -83,12 +83,24 @@ export KAFKA_ADDRESSES=<kafka-host:port>
 java -jar target/monitoring-agent-server.jar
 ```
 
-Connecting to mainnet:
+b. If you prefer build an all-in-one test environment with a parity dev node, use docker-compose:
+
 ```bash
-ETHEREUM_NODE_URL=wss://main-rpc.linkpool.io/ws java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/application.yml
+cd server
+docker-compose -f docker-compose.yml build
+docker-compose -f docker-compose.yml up
 ```
 
-Syncing from previous blocks:
+#### Connecting to mainnet
+
+```bash
+export ETHEREUM_NODE_URL=wss://main-rpc.linkpool.io/ws   # We can connect to mainnet via websockets too
+java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/ethereum-mainnet.application.yml
+```
+
+#### Syncing from previous blocks
+
+The Web3 Monitoring Agent allows to replay a network syncing from old blocks. Here the options you can use to do that:
 
 ```bash
 export START_FROM_BLOCK=1   # The block number from we want to start
@@ -98,27 +110,8 @@ export ETHEREUM_NODE_URL=localhost:8545    # The remote full node
 java -jar server/target/web3-monitoring-agent-*.jar --spring.config.location=file:server/src/main/resources/application.yml
 ```
 
-**Docker:**
 
-```sh
-$ cd server
-$ docker build  . -t kauri/eventeum:latest
 
-$ export SPRING_DATA_MONGODB_HOST=<mongodb-host:port>
-$ export ETHEREUM_NODE_URL=http://<node-host:port>
-$ export ZOOKEEPER_ADDRESS=<zookeeper-host:port>
-$ export KAFKA_ADDRESSES=<kafka-host:port>
-
-$ docker run -p 8060:8060 kauri/eventeum
-```
-
-b. If you prefer build an all-in-one test environment with a parity dev node, use docker-compose:
-
-```sh
-$ cd server
-$ docker-compose -f docker-compose.yml build
-$ docker-compose -f docker-compose.yml up
-```
 
 ## Configuring Nodes
 Listening for events from multiple different nodes is supported, and these nodes can be configured in the properties file.
