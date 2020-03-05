@@ -267,11 +267,21 @@ public class Web3jService implements BlockchainService {
 
     @Override
     public List<Type> executeReadCall(String contractAddress, Function function)    {
+        return executeReadCall(contractAddress, function, DefaultBlockParameterName.LATEST);
+    }
+
+    @Override
+    public List<Type> executeReadCall(String contractAddress, Function function, BigInteger blockNumber)    {
+        return executeReadCall(contractAddress, function, DefaultBlockParameter.valueOf(blockNumber));
+    }
+
+    @Override
+    public List<Type> executeReadCall(String contractAddress, Function function, DefaultBlockParameter blockParameter)    {
 
         try {
             EthCall response = web3j.ethCall(
                     Transaction.createEthCallTransaction(clientAddress, contractAddress, FunctionEncoder.encode(function)),
-                    DefaultBlockParameterName.LATEST)
+                    blockParameter)
                     .sendAsync().get();
             log.info("EthCall " + response.getValue());
             return FunctionReturnDecoder.decode(
