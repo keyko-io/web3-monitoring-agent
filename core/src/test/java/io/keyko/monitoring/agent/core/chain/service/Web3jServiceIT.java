@@ -15,8 +15,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @Slf4j
 public class Web3jServiceIT {
@@ -194,6 +193,38 @@ public class Web3jServiceIT {
         log.info("Returned value: " + medianRate.toString());
 
         assertEquals(1, medianRate.compareTo(BigInteger.TEN));
+    }
+
+
+    @Test
+    public void reserve_getReserveGoldBalanceDifferentBlocks() throws UnsupportedEncodingException {
+        final String methodName= "getReserveGoldBalance";
+        log.info("Executing " + methodName);
+
+        final String contractAddress= "0x1726428A6D575FdC9C7C3B7bac9f2247a5649Bf2";
+
+        TypeReference<Uint> funcOutput = new TypeReference<Uint>() {};
+        Function function = new Function(methodName,
+                Arrays.<Type>asList(),
+                Arrays.<TypeReference<?>>asList(funcOutput));
+
+        List<Type> resultBefore = service.executeReadCall(contractAddress, function, BigInteger.valueOf(10000l));
+        List<Type> resultAfter = service.executeReadCall(contractAddress, function, BigInteger.valueOf(50000l));
+
+        assertTrue(resultBefore.size()>0);
+        BigInteger valueBefore= (BigInteger) resultBefore.get(0).getValue();
+        log.info("Returned value Before: " + valueBefore.toString());
+
+        assertEquals(1, valueBefore.compareTo(BigInteger.TEN));
+
+        assertTrue(resultAfter.size()>0);
+        BigInteger valueAfter= (BigInteger) resultAfter.get(0).getValue();
+        log.info("Returned value After: " + valueAfter.toString());
+
+        assertEquals(1, valueAfter.compareTo(BigInteger.TEN));
+
+        assertNotEquals(0, valueBefore.compareTo(valueAfter));
+
     }
 
 }

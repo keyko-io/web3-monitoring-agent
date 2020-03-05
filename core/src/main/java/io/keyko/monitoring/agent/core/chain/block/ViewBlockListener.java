@@ -90,7 +90,9 @@ public class ViewBlockListener implements BlockListener {
             // 3. Call the contract
             List<Type> result = blockchainService.executeReadCall(
                     filter.getContractAddress(),
-                    _func);
+                    _func,
+                    block.getNumber()
+                    );
 
 
             log.debug("Number of items returned after calling remote contract: " + result.size());
