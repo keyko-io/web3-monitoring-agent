@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.chain.block.tx;
 
+import io.keyko.monitoring.agent.core.chain.block.tx.criteria.AllTransactionsMatchingCriteria;
 import io.keyko.monitoring.agent.core.chain.block.tx.criteria.TransactionMatchingCriteria;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.chain.service.domain.Transaction;
@@ -14,15 +15,13 @@ import io.keyko.monitoring.agent.core.chain.settings.Node;
 import io.keyko.monitoring.agent.core.chain.settings.NodeSettings;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
@@ -49,6 +48,9 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
     private Lock lock = new ReentrantLock();
 
     private NodeSettings nodeSettings;
+
+    @Value("${fetch.all.transactions:false}")
+    private boolean ALL_TRANSACTIONS;
 
     public DefaultTransactionMonitoringBlockListener(ChainServicesContainer chainServicesContainer,
                                                      BlockchainEventBroadcaster broadcaster,
@@ -77,7 +79,10 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
         lock.lock();
 
         try {
-            processBlock(block);
+            if (ALL_TRANSACTIONS)
+                processBlockAllTransactions(block);
+            else
+                processBlockMatchingTransactions(block);
         } finally {
             lock.unlock();
         }
@@ -115,7 +120,16 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
         criteria.get(matchingCriteria.getNodeName()).remove(matchingCriteria);
     }
 
-    private void processBlock(Block block) {
+    private void processBlockAllTransactions(Block block) {
+        block.getTransactions()
+                .forEach(tx -> broadcastIfMatched(
+                        tx,
+                        block.getNodeName(),
+                        Arrays.asList(new AllTransactionsMatchingCriteria(block.getNodeName(), Arrays.asList(TransactionStatus.CONFIRMED)))
+                ));
+    }
+
+    private void processBlockMatchingTransactions(Block block) {
         block.getTransactions()
                 .forEach(tx -> broadcastIfMatched(tx, block.getNodeName()));
     }
