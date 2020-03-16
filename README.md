@@ -188,7 +188,7 @@ It can either be configured by:
 | FETCH_ALL_TRANSACTIONS | false | If is set to `true` the agent will process all the transactions included in a block, independently of the configuration |
 | FETCH_ALL_EVENTS | false | If is set to `true` the agent will process all the events emitted, independently of the configuration |
 | EVENTSTORE_TYPE | DB | The type of eventstore used in Eventeum. (See the Advanced section for more details) |
-| BROADCASTER_TYPE | KAFKA | The broadcast mechanism to use.  (KAFKA or HTTP or RABBIT) |
+| BROADCASTER_TYPE | KAFKA | The broadcast mechanism to ruse.  (KAFKA or HTTP) |
 | BROADCASTER_CACHE_EXPIRATIONMILLIS | 6000000 | The eventeum broadcaster has an internal cache of sent messages, which ensures that duplicate messages are not broadcast.  This is the time that a message should live within this cache. |
 | BROADCASTER_EVENT_CONFIRMATION_NUMBLOCKSTOWAIT | 12 | The number of blocks to wait (after the initial mined block) before broadcasting a CONFIRMED event |
 | BROADCASTER_EVENT_CONFIRMATION_NUMBLOCKSTOWAITFORMISSINGTX | 200 | After a fork, a transaction may disappear, and this is the number of blocks to wait on the new fork, before assuming that an event emitted during this transaction has been INVALIDATED |
@@ -216,9 +216,6 @@ It can either be configured by:
 | SYNCINC_THRESHOLD | 60 | Number of blocks of difference to consider that eventeum is "syncing" with a node
 | SPRING_DATA_MONGODB_HOST | localhost | The mongoDB host (used when event store is set to DB) |
 | SPRING_DATA_MONGODB_PORT | 27017 | The mongoDB post (used when event store is set to DB) |
-| RABBIT_ADDRESS | localhost:5672 | property spring.rabbitmq.host (The rabbitmq address) |
-| RABBIT_EXCHANGE | ThisIsAExchange | property rabbitmq.exchange |
-| RABBIT_ROUTING_KEY | thisIsRoutingKey | property rabbitmq.routingKeyPrefix |
 | DATABASE_TYPE | MONGO | The database to use.  Either MONGO or SQL. |
 | CONNECTION_TIMEOUT | 7000 | RPC, http connection timeout in millis |
 | READ_TIMEOUT | 35000 | RPC, http read timeout in millis |

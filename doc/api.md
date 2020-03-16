@@ -525,7 +525,7 @@ When a subscribed event is emitted, a JSON message is broadcast to the configure
 ```
 
 ### Block Events
-When a new block is mined, a JSON message is broadcast to the configured kafka topic or rabbit exchange (w3m-block-events by default), with the following format:
+When a new block is mined, a JSON message is broadcast to the configured kafka topic (w3m-block-events by default), with the following format:
 
 ```json
  {
@@ -541,7 +541,7 @@ When a new block is mined, a JSON message is broadcast to the configured kafka t
 
 
 ### Transaction Events
-When a new transaction that matches a transaction monitor is mined, a JSON message is broadcast to the configured kafka topic or rabbit exchange (w3m-transaction-events by default), with the following format:
+When a new transaction that matches a transaction monitor is mined, a JSON message is broadcast to the configured kafka topic (w3m-transaction-events by default), with the following format:
 
 ```json
  {

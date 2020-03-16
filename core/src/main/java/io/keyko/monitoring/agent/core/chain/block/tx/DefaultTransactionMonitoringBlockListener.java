@@ -242,7 +242,7 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
         return getBlockchainService(txDetails.getNodeName()).getRevertReason(
                 txDetails.getFrom(),
                 txDetails.getTo(),
-                Numeric.toBigInt(txDetails.getBlockNumber()),
+                txDetails.getBlockNumber(),
                 txDetails.getInput()
         );
     }
