@@ -1,6 +1,5 @@
 package io.keyko.monitoring.agent.core.chain.block.tx;
 
-import io.keyko.monitoring.agent.core.chain.block.tx.criteria.AllTransactionsMatchingCriteria;
 import io.keyko.monitoring.agent.core.chain.block.tx.criteria.TransactionMatchingCriteria;
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.chain.service.domain.Transaction;
@@ -80,7 +79,7 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
 
         try {
             if (ALL_TRANSACTIONS)
-                processBlockAllTransactions(block);
+                processAllBlockTransactions(block);
             else
                 processBlockMatchingTransactions(block);
         } finally {
@@ -120,13 +119,16 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
         criteria.get(matchingCriteria.getNodeName()).remove(matchingCriteria);
     }
 
-    private void processBlockAllTransactions(Block block) {
+    private void processAllBlockTransactions(Block block) {
         block.getTransactions()
-                .forEach(tx -> broadcastIfMatched(
-                        tx,
-                        block.getNodeName(),
-                        Arrays.asList(new AllTransactionsMatchingCriteria(block.getNodeName(), Arrays.asList(TransactionStatus.CONFIRMED)))
-                ));
+                .forEach(tx -> {
+                    final TransactionDetails txDetails = transactionDetailsFactory.createTransactionDetails(
+                            tx, TransactionStatus.CONFIRMED, block.getNodeName());
+
+                    if (txDetails.getStatus().equals(TransactionStatus.CONFIRMED)) {
+                        broadcaster.broadcastTransaction(txDetails);
+                    }
+                });
     }
 
     private void processBlockMatchingTransactions(Block block) {

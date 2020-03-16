@@ -16,7 +16,7 @@ logging:
 
 spring:
   data:
-    mongodb.uri: "mongodb://localhost:27017/token-monitoring"
+    mongodb.uri: "mongodb://localhost:27017/w3m-monitoring"
   output:
   ansi:
     enabled: DETECT

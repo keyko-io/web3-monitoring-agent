@@ -42,6 +42,8 @@ public class Web3jTransactionReceipt implements TransactionReceipt {
             //Skip logs
             modelMapper.getConfiguration().setPropertyCondition(ctx ->
                     !ctx.getMapping().getLastDestinationProperty().getName().equals("logs"));
+//            BigInteger gasUsed = web3TransactionReceipt.getGasUsed();
+//            web3TransactionReceipt.setGasUsed("0");
             modelMapper.map(web3TransactionReceipt, this);
         } catch (RuntimeException re) {
             re.printStackTrace();
