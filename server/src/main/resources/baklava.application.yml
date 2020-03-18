@@ -596,6 +596,7 @@ kafka:
     blockEvents: w3m-block-events
     eventeumEvents: w3m-eventeum-events
     transactionEvents: w3m-transaction-events
+    logs:  w3m-logs
 
     partitions: 1
     replicationSets: 1

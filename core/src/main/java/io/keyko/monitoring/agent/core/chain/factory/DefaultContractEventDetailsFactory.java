@@ -9,6 +9,7 @@ import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
 import io.keyko.monitoring.agent.core.dto.event.filter.ParameterDefinition;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.Utils;
 import org.web3j.abi.datatypes.Type;
@@ -69,6 +70,22 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
         }
 
         return eventDetails;
+    }
+
+    @Override
+    public LogDetails createLogDetails(Log log) {
+        LogDetails logDetails = new LogDetails();
+        logDetails.setAddress(log.getAddress());
+        logDetails.setBlockHash(log.getBlockHash());
+        logDetails.setBlockNumber(log.getBlockNumber());
+        logDetails.setData(log.getData());
+        logDetails.setLogIndex(log.getLogIndex());
+        logDetails.setTopics(log.getTopics());
+        logDetails.setTransactionHash(log.getTransactionHash());
+        logDetails.setNetworkName(this.networkName);
+        logDetails.setNodeName(node.getName());
+
+        return logDetails;
     }
 
     private void setNameParameters(List<EventParameter> parameterList, List<ParameterDefinition> parameterDefinitions) {

@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.blockchain;
 
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import lombok.AllArgsConstructor;
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
@@ -32,6 +33,11 @@ public class ListenerInvokingBlockchainEventBroadcaster implements BlockchainEve
         listener.onTransactionEvent(transactionDetails);
     }
 
+    @Override
+    public void broadcastLog(LogDetails logDetails) {
+        listener.onLog(logDetails);
+    }
+
     public interface OnBlockchainEventListener {
 
         void onNewBlock(BlockDetails block);
@@ -41,6 +47,9 @@ public class ListenerInvokingBlockchainEventBroadcaster implements BlockchainEve
         void onContractView(ContractViewDetails viewDetails);
 
         void onTransactionEvent(TransactionDetails transactionDetails);
+
+        void onLog(LogDetails logDetails);
+
     }
 
 }

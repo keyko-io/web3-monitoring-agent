@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -30,6 +31,8 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 
     private Cache<Integer, TransactionDetails> transactionDetailsCache;
 
+    private Cache<Integer, LogDetails> logCache;
+
     private Long expirationTimeMillis;
 
     private BlockchainEventBroadcaster wrapped;
@@ -43,6 +46,7 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
         this.contractEventCache = createCache(ContractEventDetails.class);
         this.contractViewCache = createCache(ContractViewDetails.class);
         this.transactionCache = createCache(TransactionDetails.class);
+        this.logCache = createCache(LogDetails.class);
         this.wrapped = toWrap;
         this.enableBlockNotifications = enableBlockNotifications;
     }
@@ -58,7 +62,7 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 
     @Override
     public void broadcastContractEvent(ContractEventDetails eventDetails) {
-        synchronized(this) {
+        synchronized (this) {
             if (contractEventCache.getIfPresent(Integer.valueOf(eventDetails.hashCode())) == null) {
                 contractEventCache.put(Integer.valueOf(eventDetails.hashCode()), eventDetails);
                 wrapped.broadcastContractEvent(eventDetails);
@@ -68,7 +72,7 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 
     @Override
     public void broadcastContractView(ContractViewDetails viewDetails) {
-        synchronized(this) {
+        synchronized (this) {
             if (contractViewCache.getIfPresent(Integer.valueOf(viewDetails.hashCode())) == null) {
                 contractViewCache.put(Integer.valueOf(viewDetails.hashCode()), viewDetails);
                 wrapped.broadcastContractView(viewDetails);
@@ -79,10 +83,21 @@ public class EventBroadcasterWrapper implements BlockchainEventBroadcaster {
 
     @Override
     public void broadcastTransaction(TransactionDetails transactionDetails) {
-        synchronized(this) {
+        synchronized (this) {
             if (transactionCache.getIfPresent(Integer.valueOf(transactionDetails.hashCode())) == null) {
                 transactionCache.put(Integer.valueOf(transactionDetails.hashCode()), transactionDetails);
                 wrapped.broadcastTransaction(transactionDetails);
+            }
+        }
+    }
+
+    @Override
+    public void broadcastLog(LogDetails logDetails) {
+        synchronized (this) {
+            if (logCache.getIfPresent(Integer.valueOf(logDetails.hashCode())) == null) {
+                logCache.put(Integer.valueOf(logDetails.hashCode()), logDetails);
+                wrapped.broadcastLog(logDetails);
+
             }
         }
     }
