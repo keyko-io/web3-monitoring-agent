@@ -1,15 +1,14 @@
 package io.keyko.monitoring.agent.core.chain.service;
 
-import io.reactivex.Flowable;
-import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
-import io.keyko.monitoring.agent.core.chain.service.domain.Log;
 import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
+import io.keyko.monitoring.agent.core.chain.service.domain.Log;
+import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
-
 import io.keyko.monitoring.agent.core.testutils.DummyAsyncTaskService;
+import io.reactivex.Flowable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -19,7 +18,10 @@ import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.Request;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.request.Transaction;
-import org.web3j.protocol.core.methods.response.*;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
+import org.web3j.protocol.core.methods.response.EthCall;
+import org.web3j.protocol.core.methods.response.EthGetTransactionReceipt;
+import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -30,11 +32,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.*;
 
 public class Web3jServiceTest {
 

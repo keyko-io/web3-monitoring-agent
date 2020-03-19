@@ -1,8 +1,9 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.blockchain;
 
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
-import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
+import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 
 /**
@@ -21,19 +22,29 @@ public interface BlockchainEventBroadcaster {
 
     /**
      * Broadcasts details of a new smart contract event that has been emitted from the ethereum blockchain.
+     *
      * @param eventDetails event to broadcast
      */
     void broadcastContractEvent(ContractEventDetails eventDetails);
 
     /**
      * Broadcasts details of a new smart contract view that has been emitted from the ethereum blockchain.
+     *
      * @param viewDetails view to broadcast
      */
     void broadcastContractView(ContractViewDetails viewDetails);
 
     /**
      * Broadcasts details of a monitored transaction that has been mined.
+     *
      * @param transactionDetails transaction to broadcast
      */
     void broadcastTransaction(TransactionDetails transactionDetails);
+
+    /**
+     * Broadcasts details of a monitored log that has been mined.
+     *
+     * @param logDetails log to broadcast
+     */
+    void broadcastLog(LogDetails logDetails);
 }

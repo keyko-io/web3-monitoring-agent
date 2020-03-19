@@ -7,6 +7,7 @@ import java.util.Optional;
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import io.keyko.monitoring.agent.core.factory.ContractEventFilterRepositoryFactory;
@@ -46,6 +47,11 @@ public class EventStoreFactoryConfig {
             @Override
             public void onTransactionEvent(TransactionDetails transactionDetails) {
                 //DO NOTHING
+            }
+
+            @Override
+            public void onLog(LogDetails logDetails) {
+
             }
         });
     }

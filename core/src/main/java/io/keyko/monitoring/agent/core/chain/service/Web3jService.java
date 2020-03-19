@@ -5,6 +5,7 @@ import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jBlock;
+import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jLog;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jTransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
@@ -12,6 +13,8 @@ import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventSpecification;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
+import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
 import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.utils.ExecutorNameFactory;
@@ -36,10 +39,10 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
  * A BlockchainService implementating utilising the Web3j library.
@@ -144,6 +147,13 @@ public class Web3jService implements BlockchainService {
         }
 
         return new EventFilterSubscription(eventFilter, sub, startBlock);
+    }
+
+    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster){
+        web3j.ethLogFlowable(new EthFilter()).subscribe(log -> {
+            final LogDetails logDetails = eventDetailsFactory.createLogDetails(log);
+            broadcaster.broadcastLog(logDetails);
+        });
     }
 
 

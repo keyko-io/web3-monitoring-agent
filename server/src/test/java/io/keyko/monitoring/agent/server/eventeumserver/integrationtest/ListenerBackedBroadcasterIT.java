@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.server.eventeumserver.integrationtest;
 
 import io.keyko.monitoring.agent.core.dto.block.BlockDetails;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.view.ContractViewDetails;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
@@ -56,6 +57,8 @@ public class ListenerBackedBroadcasterIT extends BroadcasterSmokeTest {
 
         private static List<TransactionDetails> broadcastTransactionMessages = new ArrayList<>();
 
+        private static List<LogDetails> broadcastLogMessages = new ArrayList<>();
+
         @Bean
         public BlockchainEventBroadcaster listenerBroadcaster() {
 
@@ -78,6 +81,11 @@ public class ListenerBackedBroadcasterIT extends BroadcasterSmokeTest {
                 @Override
                 public void onTransactionEvent(TransactionDetails transactionDetails) {
                     broadcastTransactionMessages.add(transactionDetails);
+                }
+
+                @Override
+                public void onLog(LogDetails logDetails) {
+                    broadcastLogMessages.add(logDetails);
                 }
             });
         }

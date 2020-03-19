@@ -1,18 +1,15 @@
 package io.keyko.monitoring.agent.core.integration.broadcast.blockchain;
 
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
-import io.keyko.monitoring.agent.core.utils.AvroUtils;
-import io.keyko.monitoring.schemas.*;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.dto.event.parameter.EventParameter;
-import io.keyko.monitoring.agent.core.dto.message.BlockEvent;
-import io.keyko.monitoring.agent.core.dto.message.ContractEvent;
-import io.keyko.monitoring.agent.core.dto.message.ContractView;
-import io.keyko.monitoring.agent.core.dto.message.EventeumMessage;
-import io.keyko.monitoring.agent.core.dto.message.TransactionEvent;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
+import io.keyko.monitoring.agent.core.dto.message.*;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.integration.KafkaSettings;
+import io.keyko.monitoring.agent.core.utils.AvroUtils;
 import io.keyko.monitoring.agent.core.utils.JSON;
+import io.keyko.monitoring.schemas.*;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.slf4j.Logger;
@@ -111,7 +108,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     }
 
     @Override
-    public void broadcastContractView(io.keyko.monitoring.agent.core.dto.view.ContractViewDetails viewDetails)  {
+    public void broadcastContractView(io.keyko.monitoring.agent.core.dto.view.ContractViewDetails viewDetails) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.view.ContractViewDetails> message = createContractViewMessage(viewDetails);
         LOG.info("Sending contract view message: " + JSON.stringify(message));
         ViewDetailsRecord contractViewDetails = ViewDetailsRecord.newBuilder()
@@ -139,14 +136,57 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
 
     @Override
     public void broadcastTransaction(TransactionDetails transactionDetails) {
-        final EventeumMessage<TransactionDetails> message = createTransactionEventMessage(transactionDetails);
+        final EventeumMessage<io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails> message = createTransactionEventMessage(transactionDetails);
         LOG.info("Sending transaction event message: " + JSON.stringify(message));
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.TransactionRecord.getClassSchema());
+
+        TransactionDetailsRecord transactionDetailsRecord = TransactionDetailsRecord.newBuilder()
+                .setBlockHash(message.getDetails().getBlockHash())
+                .setTransactionIndex(message.getDetails().getTransactionIndex())
+                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
+                .setContractAddress(message.getDetails().getContractAddress())
+                .setFrom(message.getDetails().getFrom())
+                .setHash(message.getDetails().getHash())
+                .setInput(message.getDetails().getInput())
+                .setNodeName(message.getDetails().getNodeName())
+                .setNonce(message.getDetails().getNonce())
+                .setRevertReason(message.getDetails().getRevertReason())
+                .setStatus(TransactionStatus.valueOf(message.getDetails().getStatus().name()))
+                .setTo(message.getDetails().getTo())
+                .setValue(message.getDetails().getValue())
+                .build();
+
         genericRecord.put("id", message.getId());
         genericRecord.put("type", message.getType());
-        genericRecord.put("details", message.getDetails());
+        genericRecord.put("details", transactionDetailsRecord);
         genericRecord.put("retries", message.getRetries());
-        kafkaTemplate.send(kafkaSettings.getTransactionEventsTopic(), transactionDetails.getBlockHash(), genericRecord);
+        kafkaTemplate.send(kafkaSettings.getTransactionEventsTopic(), transactionDetailsRecord.getBlockHash(), genericRecord);
+    }
+
+    @Override
+    public void broadcastLog(LogDetails logDetails) {
+        final EventeumMessage<io.keyko.monitoring.agent.core.dto.log.LogDetails> message = createLogMessage(logDetails);
+        LOG.info("Sending log message: " + JSON.stringify(message));
+        GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.LogRecord.getClassSchema());
+
+        LogDetailsRecord logDetailsRecord = LogDetailsRecord.newBuilder()
+                .setBlockHash(message.getDetails().getBlockHash())
+                .setLogIndex(message.getDetails().getLogIndex().toString())
+                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
+                .setAddress(message.getDetails().getAddress())
+                .setTransactionHash(message.getDetails().getTransactionHash())
+                .setTopics(convertTopics(message.getDetails().getTopics()))
+                .setNodeName(message.getDetails().getNodeName())
+                .setData(message.getDetails().getData())
+                .setNetworkName(message.getDetails().getNetworkName())
+                .setId(message.getId())
+                .build();
+
+        genericRecord.put("id", message.getId());
+        genericRecord.put("type", message.getType());
+        genericRecord.put("details", logDetailsRecord);
+        genericRecord.put("retries", message.getRetries());
+        kafkaTemplate.send(kafkaSettings.getLogsTopic(), logDetailsRecord.getBlockHash(), genericRecord);
     }
 
     protected EventeumMessage<io.keyko.monitoring.agent.core.dto.block.BlockDetails> createBlockEventMessage(io.keyko.monitoring.agent.core.dto.block.BlockDetails blockDetails) {
@@ -165,6 +205,19 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         return new TransactionEvent(transactionDetails);
     }
 
+    protected EventeumMessage<io.keyko.monitoring.agent.core.dto.log.LogDetails> createLogMessage(io.keyko.monitoring.agent.core.dto.log.LogDetails logDetails) {
+        return new Log(logDetails);
+    }
+
+
+    public List<Object> convertTopics(List<String> topics) {
+        List<Object> topicsConverted = new ArrayList<Object>();
+        for (int i = 0; i < topics.size(); i++) {
+            topicsConverted.add(topics.get(i));
+        }
+        return topicsConverted;
+    }
+
     public List<Object> convertParameters(List<EventParameter> l) {
         List<Object> parametersConverted = new ArrayList<Object>();
         for (int i = 0; i < l.size(); i++) {
@@ -178,10 +231,10 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
             } else if (l.get(i).getClass() == io.keyko.monitoring.agent.core.dto.event.parameter.NumberParameter.class) {
                 parametersConverted.add(
                         new NumberParameter(
-                            l.get(i).getName(),
-                            l.get(i).getType(),
-                            l.get(i).getValueString(),
-                            AvroUtils.truncateToLong(l.get(i).getValueString())
+                                l.get(i).getName(),
+                                l.get(i).getType(),
+                                l.get(i).getValueString(),
+                                AvroUtils.truncateToLong(l.get(i).getValueString())
                         ));
             }
         }

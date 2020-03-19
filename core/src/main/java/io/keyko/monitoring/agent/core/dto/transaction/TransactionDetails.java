@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.math.BigInteger;
+
 @Data
 @ToString
 @EqualsAndHashCode
@@ -16,7 +18,7 @@ public class TransactionDetails {
     private String hash;
     private String nonce;
     private String blockHash;
-    private String blockNumber;
+    private BigInteger blockNumber;
     private String transactionIndex;
     private String from;
     private String to;
