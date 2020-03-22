@@ -124,7 +124,9 @@ public class Web3jService implements BlockchainService {
         final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
 
         final Disposable sub = flowable
-//                .doOnError(error -> )
+//                .doOnError(error -> {
+//                    log.error("Looks we are having a flowable error " + error.getMessage());
+//                })
                 .subscribe(theLog -> {
                     asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
                         ContractEventDetails eventDetails = eventDetailsFactory.createEventDetails(eventFilter, theLog);
@@ -138,7 +140,9 @@ public class Web3jService implements BlockchainService {
                             eventListener.onEvent(eventDetails);
                         }
                     });
-                }, error -> log.error("Flowable subscribe error: " + error.getMessage()));
+                }, error -> {
+                    log.error("Flowable subscribe error: " + error.getMessage());
+                });
 
         if (sub.isDisposed()) {
             //There was an error subscribing

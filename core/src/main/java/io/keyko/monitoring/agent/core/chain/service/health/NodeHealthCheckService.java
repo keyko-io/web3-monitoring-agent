@@ -82,9 +82,14 @@ public class NodeHealthCheckService {
 
             final NodeStatus statusAtStart = nodeStatus;
 
+            //Can take a few seconds to subscribe initially so if wait until after
+            //first subscription to check health
+            if (!isSubscribed() && !initiallySubscribed) {
+                log.debug("Not initially subscribed");
+                return;
+            }
             if (isNodeConnected()) {
                 log.trace("Node connected");
-
 
                 if (nodeStatus == NodeStatus.DOWN) {
                     log.info("Node {} has come back up.", blockchainService.getNodeName());

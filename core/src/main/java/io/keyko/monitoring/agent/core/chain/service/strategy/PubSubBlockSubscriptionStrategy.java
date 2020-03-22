@@ -9,6 +9,8 @@ import io.keyko.monitoring.agent.core.chain.service.BlockchainException;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.service.AsyncTaskService;
 import io.keyko.monitoring.agent.core.service.EventStoreService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -18,15 +20,21 @@ import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.websocket.events.NewHead;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Optional;
 
+@Slf4j
 public class PubSubBlockSubscriptionStrategy extends AbstractBlockSubscriptionStrategy<NewHead> {
 
     private static final String PUB_SUB_EXECUTOR_NAME = "PUBSUB";
 
+
     private RetryTemplate retryTemplate;
 
     private AsyncTaskService asyncService;
+
+    @Value("${start.from.block:0}")
+    private long startFromBlock;
 
     public PubSubBlockSubscriptionStrategy(Web3j web3j,
                                            String nodeName,
@@ -41,7 +49,15 @@ public class PubSubBlockSubscriptionStrategy extends AbstractBlockSubscriptionSt
     public Disposable subscribe() {
         final Optional<LatestBlock> latestBlock = getLatestBlock();
 
-        if (latestBlock.isPresent()) {
+        if (startFromBlock > 0) {
+            log.debug("Starting from block " + startFromBlock + " by configuration");
+            final DefaultBlockParameter blockParam = DefaultBlockParameter.valueOf(BigInteger.valueOf(startFromBlock));
+
+            blockSubscription = web3j.replayPastBlocksFlowable(blockParam, true)
+                    .doOnComplete(() -> blockSubscription = subscribeToNewHeads())
+                    .subscribe(ethBlock -> triggerListeners(convertToEventeumBlock(ethBlock)));
+
+        } else if (latestBlock.isPresent()) {
             final DefaultBlockParameter blockParam = DefaultBlockParameter.valueOf(latestBlock.get().getNumber());
 
             //New heads can only start from latest block so we need to obtain missing blocks first
