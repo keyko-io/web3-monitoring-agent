@@ -114,6 +114,33 @@ Dynamically sized arrays are also supported by prefixing the type with `[]`
 }
 ```
 
+#### Getting all the events emitted by a Smart Contract
+
+It's possible to get all the events emitted by a Smart Contract using this kind of filter:
+
+
+-   **URL:** `/api/rest/v1/event-filter`    
+-   **Method:** `POST`
+-   **Headers:**  
+
+| Key | Value |
+| -------- | -------- |
+| content-type | application/json |
+
+-   **URL Params:** `N/A`
+-   **Body:**
+
+```json
+{
+ "id": "event_smartcontract_filter_id",
+ "contractAddress": "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5",
+ "eventSpecification": {
+  "contractName": "MyContract"
+ }
+}
+```
+
+
 #### Hard Coded Configuration
 Static events can be configured within the application.yml file of Eventeum.
 

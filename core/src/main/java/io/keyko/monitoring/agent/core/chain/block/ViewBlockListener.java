@@ -52,7 +52,7 @@ public class ViewBlockListener implements BlockListener {
 
     @Override
     public void onBlock(Block block) {
-        log.info(String.format("New block mined. Hash: %s, Number: %s, Filters: %s",
+        log.trace(String.format("New block mined. Hash: %s, Number: %s, Filters: %s",
                 block.getHash(), block.getNumber(), viewFilters.size()));
 
         // Foreach registered filter

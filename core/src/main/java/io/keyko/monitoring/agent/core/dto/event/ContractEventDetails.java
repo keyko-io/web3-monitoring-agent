@@ -8,10 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -29,14 +26,14 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContractEventDetails {
 
-    private String name;
+    private String name= "";
 
-    private String contractName;
+    private String contractName= "";
 
     @Id
     private String filterId;
 
-    private String nodeName;
+    private String nodeName= "default";
 
     @Lob
     // required because of https://stackoverflow.com/questions/43412517/sql-string-or-binary-data-would-be-truncated-error/43426863
@@ -65,5 +62,11 @@ public class ContractEventDetails {
 
     public String getId() {
         return transactionHash + "-" + blockHash + "-" + logIndex;
+    }
+
+    public String getName() {
+        if (name != null)
+            return name;
+        return "";
     }
 }

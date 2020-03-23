@@ -222,6 +222,7 @@ It can either be configured by:
 
 ### INFURA Support Configuration
 Connecting to an INFURA node is only supported if connecting via websockets (`wss://<...>` node url).  The blockstrategy must also be set to PUBSUB.
+Infura doesn't support event filters, so any filter configured will not get any event.
 
 ## Advanced
 ### Correlation Id Strategies (Kafka Broadcasting)

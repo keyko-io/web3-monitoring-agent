@@ -34,7 +34,7 @@ public class ContractEventFilter {
     private String node = Constants.DEFAULT_NODE_NAME;
 
     @Embedded
-    private ContractEventSpecification eventSpecification;
+    private ContractEventSpecification eventSpecification= new ContractEventSpecification();
 
     @Embedded
     private CorrelationIdStrategy correlationIdStrategy;

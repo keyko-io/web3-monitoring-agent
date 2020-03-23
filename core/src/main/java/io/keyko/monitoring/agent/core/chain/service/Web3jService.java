@@ -117,10 +117,10 @@ public class Web3jService implements BlockchainService {
                 new DefaultBlockParameterNumber(startBlock),
                 DefaultBlockParameterName.LATEST, eventFilter.getContractAddress());
 
-        if (eventFilter.getEventSpecification() != null) {
+        if (eventFilter.getEventSpecification() != null && eventFilter.getEventSpecification().getEventName() != null) {
             ethFilter = ethFilter.addSingleTopic(Web3jUtil.getSignature(eventSpec));
         }
-
+        
         final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
 
         final Disposable sub = flowable
@@ -149,8 +149,8 @@ public class Web3jService implements BlockchainService {
             throw new BlockchainException(String.format(
                     "Failed to subcribe for filter %s.  The subscription is disposed.", eventFilter.getId()));
         }
-
         return new EventFilterSubscription(eventFilter, sub, startBlock);
+
     }
 
     public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster){
