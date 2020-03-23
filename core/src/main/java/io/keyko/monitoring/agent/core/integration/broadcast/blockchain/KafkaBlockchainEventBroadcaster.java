@@ -58,7 +58,7 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     @Override
     public void broadcastNewBlock(io.keyko.monitoring.agent.core.dto.block.BlockDetails block) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.block.BlockDetails> message = createBlockEventMessage(block);
-        LOG.info("Sending block message: " + JSON.stringify(message));
+        LOG.trace("Sending block message: " + JSON.stringify(message));
 
         BlockDetailsRecord blockDetailsRecord = BlockDetailsRecord.newBuilder()
                 .setHash(message.getDetails().getHash())
@@ -80,7 +80,6 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     @Override
     public void broadcastContractEvent(io.keyko.monitoring.agent.core.dto.event.ContractEventDetails eventDetails) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.event.ContractEventDetails> message = createContractEventMessage(eventDetails);
-        LOG.info("Sending contract event message: " + JSON.stringify(message));
         EventDetailsRecord contractEventDetails = EventDetailsRecord.newBuilder()
                 .setAddress(message.getDetails().getAddress())
                 .setContractName(message.getDetails().getContractName())
@@ -90,13 +89,14 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
                 .setFilterId(message.getDetails().getFilterId())
                 .setId(message.getDetails().getId())
                 .setLogIndex(message.getDetails().getLogIndex().toString())
-                .setName(message.getDetails().getName())
                 .setNetworkName(message.getDetails().getNetworkName())
                 .setNodeName(message.getDetails().getNodeName())
                 .setNonIndexedParameters(convertParameters(message.getDetails().getNonIndexedParameters()))
                 .setIndexedParameters(convertParameters(message.getDetails().getIndexedParameters()))
+                .setName(message.getDetails().getName())
                 .setStatus(ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
                 .setTransactionHash(message.getDetails().getTransactionHash()).build();
+        LOG.info("Sending contract event message: " + JSON.stringify(message));
 
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.EventRecord.getClassSchema());
         genericRecord.put("id", message.getId());
