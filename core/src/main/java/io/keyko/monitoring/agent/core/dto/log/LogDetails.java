@@ -1,5 +1,6 @@
 package io.keyko.monitoring.agent.core.dto.log;
 
+import io.keyko.monitoring.agent.core.dto.event.ContractEventStatus;
 import lombok.Data;
 
 import javax.persistence.ElementCollection;
@@ -33,6 +34,8 @@ public class LogDetails {
     private String address;
 
     private String networkName;
+
+    private ContractEventStatus status = ContractEventStatus.UNCONFIRMED;
 
     public String getId() {
         return transactionHash + "-" + blockHash + "-" + logIndex;
