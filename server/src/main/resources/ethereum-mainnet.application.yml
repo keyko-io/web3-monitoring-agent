@@ -16,7 +16,7 @@ logging:
 
 spring:
   data:
-    mongodb.uri: "mongodb://localhost:27017/w3m-monitoring"
+    mongodb.uri: ${MONGO_DB_URI:mongodb://localhost:27017/w3m-monitoring}
   output:
   ansi:
     enabled: DETECT
