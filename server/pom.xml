@@ -4,12 +4,12 @@
 
     <groupId>io.keyko.monitoring.agent</groupId>
     <artifactId>server</artifactId>
-    <version>0.1.4</version>
+    <version>0.2.0</version>
 
     <parent>
         <groupId>io.keyko.monitoring</groupId>
         <artifactId>agent</artifactId>
-        <version>0.1.4</version>
+        <version>0.2.0</version>
     </parent>
 
     <properties>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>io.keyko.monitoring.agent</groupId>
             <artifactId>core</artifactId>
-            <version>0.1.4</version>
+            <version>0.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,7 +78,7 @@
     </dependencies>
 
     <build>
-        <finalName>web3-monitoring-agent-${project.version}</finalName>
+        <finalName>web3-monitoring-agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

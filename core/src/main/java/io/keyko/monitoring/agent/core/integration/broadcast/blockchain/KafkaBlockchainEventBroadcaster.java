@@ -58,19 +58,13 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     @Override
     public void broadcastNewBlock(io.keyko.monitoring.agent.core.dto.block.BlockDetails block) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.block.BlockDetails> message = createBlockEventMessage(block);
-        LOG.trace("Sending block message: " + JSON.stringify(message));
-
-        BlockDetailsRecord blockDetailsRecord = BlockDetailsRecord.newBuilder()
-                .setHash(message.getDetails().getHash())
-                .setNodeName(message.getDetails().getNodeName())
-                .setNumber(message.getDetails().getNumber().longValue())
-                .setTimestamp(AvroUtils.toLogicalTypeTimestamp(message.getDetails().getTimestamp()))
-                .build();
-
+        LOG.info("Sending block message: " + JSON.stringify(message));
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.BlockRecord.getClassSchema());
         genericRecord.put("id", message.getId());
-        genericRecord.put("type", message.getType());
-        genericRecord.put("details", blockDetailsRecord);
+        genericRecord.put("number", message.getDetails().getNumber().longValue());
+        genericRecord.put("hash", message.getDetails().getHash());
+        genericRecord.put("timestamp",AvroUtils.toLogicalTypeTimestamp(message.getDetails().getTimestamp()));
+        genericRecord.put("nodeName", message.getDetails().getNodeName());
         genericRecord.put("retries", message.getRetries());
 
 
@@ -80,30 +74,24 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     @Override
     public void broadcastContractEvent(io.keyko.monitoring.agent.core.dto.event.ContractEventDetails eventDetails) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.event.ContractEventDetails> message = createContractEventMessage(eventDetails);
-        EventDetailsRecord contractEventDetails = EventDetailsRecord.newBuilder()
-                .setAddress(message.getDetails().getAddress())
-                .setContractName(message.getDetails().getContractName())
-                .setBlockHash(message.getDetails().getBlockHash())
-                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
-                .setEventSpecificationSignature(message.getDetails().getEventSpecificationSignature())
-                .setFilterId(message.getDetails().getFilterId())
-                .setId(message.getDetails().getId())
-                .setLogIndex(message.getDetails().getLogIndex().toString())
-                .setNetworkName(message.getDetails().getNetworkName())
-                .setNodeName(message.getDetails().getNodeName())
-                .setNonIndexedParameters(convertParameters(message.getDetails().getNonIndexedParameters()))
-                .setIndexedParameters(convertParameters(message.getDetails().getIndexedParameters()))
-                .setName(message.getDetails().getName())
-                .setStatus(ContractEventStatus.valueOf(message.getDetails().getStatus().name()))
-                .setTransactionHash(message.getDetails().getTransactionHash()).build();
         LOG.info("Sending contract event message: " + JSON.stringify(message));
-
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.EventRecord.getClassSchema());
         genericRecord.put("id", message.getId());
-        genericRecord.put("type", message.getType());
-        genericRecord.put("details", contractEventDetails);
+        genericRecord.put("name",message.getDetails().getName());
+        genericRecord.put("contractName",message.getDetails().getContractName());
+        genericRecord.put("filterId", message.getDetails().getFilterId());
+        genericRecord.put("nodeName", message.getDetails().getNodeName());
+        genericRecord.put("indexedParameters", convertParameters(message.getDetails().getIndexedParameters()));
+        genericRecord.put("nonIndexedParameters", convertParameters(message.getDetails().getNonIndexedParameters()));
+        genericRecord.put("transactionHash", message.getDetails().getTransactionHash());
+        genericRecord.put("logIndex", message.getDetails().getLogIndex().toString());
+        genericRecord.put("blockNumber", message.getDetails().getBlockNumber().longValue());
+        genericRecord.put("blockHash", message.getDetails().getBlockHash());
+        genericRecord.put("address", message.getDetails().getAddress());
+        genericRecord.put("status",ContractEventStatus.valueOf(message.getDetails().getStatus().name()));
+        genericRecord.put("eventSpecificationSignature", message.getDetails().getEventSpecificationSignature());
+        genericRecord.put("networkName", message.getDetails().getNetworkName());
         genericRecord.put("retries", message.getRetries());
-
         kafkaTemplate.send(kafkaSettings.getContractEventsTopic(), message.getId(), genericRecord);
     }
 
@@ -111,25 +99,18 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
     public void broadcastContractView(io.keyko.monitoring.agent.core.dto.view.ContractViewDetails viewDetails) {
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.view.ContractViewDetails> message = createContractViewMessage(viewDetails);
         LOG.info("Sending contract view message: " + JSON.stringify(message));
-        ViewDetailsRecord contractViewDetails = ViewDetailsRecord.newBuilder()
-                .setAddress(message.getDetails().getAddress())
-                .setBlockHash(message.getDetails().getBlockHash())
-                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
-                .setId(message.getDetails().getId())
-                .setFilterId(message.getDetails().getFilterId())
-                .setName(message.getDetails().getName())
-                .setContractName(message.getDetails().getContractName())
-                .setNetworkName(message.getDetails().getNetworkName())
-                .setNodeName(message.getDetails().getNodeName())
-                .setOutput(convertParameters(message.getDetails().getOutput()))
-                .build();
-
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.ViewRecord.getClassSchema());
         genericRecord.put("id", message.getId());
-        genericRecord.put("type", message.getType());
-        genericRecord.put("details", contractViewDetails);
+        genericRecord.put("name", message.getDetails().getName());
+        genericRecord.put("contractName", message.getDetails().getContractName());
+        genericRecord.put("filterId", message.getDetails().getFilterId());
+        genericRecord.put("nodeName", message.getDetails().getNodeName());
+        genericRecord.put("output", convertParameters(message.getDetails().getOutput()));
+        genericRecord.put("blockNumber", message.getDetails().getBlockNumber().longValue());
+        genericRecord.put("blockHash", message.getDetails().getBlockHash());
+        genericRecord.put("address", message.getDetails().getAddress());
+        genericRecord.put("networkName", message.getDetails().getNetworkName());
         genericRecord.put("retries", message.getRetries());
-
         kafkaTemplate.send(kafkaSettings.getContractViewsTopic(), message.getId(), genericRecord);
 
     }
@@ -139,28 +120,22 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails> message = createTransactionEventMessage(transactionDetails);
         LOG.info("Sending transaction event message: " + JSON.stringify(message));
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.TransactionRecord.getClassSchema());
-
-        TransactionDetailsRecord transactionDetailsRecord = TransactionDetailsRecord.newBuilder()
-                .setBlockHash(message.getDetails().getBlockHash())
-                .setTransactionIndex(message.getDetails().getTransactionIndex())
-                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
-                .setContractAddress(message.getDetails().getContractAddress())
-                .setFrom(message.getDetails().getFrom())
-                .setHash(message.getDetails().getHash())
-                .setInput(message.getDetails().getInput())
-                .setNodeName(message.getDetails().getNodeName())
-                .setNonce(message.getDetails().getNonce())
-                .setRevertReason(message.getDetails().getRevertReason())
-                .setStatus(TransactionStatus.valueOf(message.getDetails().getStatus().name()))
-                .setTo(message.getDetails().getTo())
-                .setValue(message.getDetails().getValue())
-                .build();
-
         genericRecord.put("id", message.getId());
-        genericRecord.put("type", message.getType());
-        genericRecord.put("details", transactionDetailsRecord);
+        genericRecord.put("hash", message.getDetails().getHash());
+        genericRecord.put("nonce", message.getDetails().getNonce());
+        genericRecord.put("blockNumber", message.getDetails().getBlockNumber().longValue());
+        genericRecord.put("blockHash", message.getDetails().getBlockHash());
+        genericRecord.put("transactionIndex", message.getDetails().getTransactionIndex());
+        genericRecord.put("from", message.getDetails().getFrom());
+        genericRecord.put("to", message.getDetails().getTo());
+        genericRecord.put("value", message.getDetails().getValue());
+        genericRecord.put("nodeName", message.getDetails().getNodeName());
+        genericRecord.put("contractAddress", message.getDetails().getContractAddress());
+        genericRecord.put("input", message.getDetails().getInput());
+        genericRecord.put("revertReason", message.getDetails().getRevertReason());
+        genericRecord.put("status", TransactionStatus.valueOf(message.getDetails().getStatus().name()));
         genericRecord.put("retries", message.getRetries());
-        kafkaTemplate.send(kafkaSettings.getTransactionEventsTopic(), transactionDetailsRecord.getBlockHash(), genericRecord);
+        kafkaTemplate.send(kafkaSettings.getTransactionEventsTopic(), message.getId(), genericRecord);
     }
 
     @Override
@@ -168,25 +143,19 @@ public class KafkaBlockchainEventBroadcaster implements BlockchainEventBroadcast
         final EventeumMessage<io.keyko.monitoring.agent.core.dto.log.LogDetails> message = createLogMessage(logDetails);
         LOG.info("Sending log message: " + JSON.stringify(message));
         GenericRecord genericRecord = new GenericData.Record(io.keyko.monitoring.schemas.LogRecord.getClassSchema());
-
-        LogDetailsRecord logDetailsRecord = LogDetailsRecord.newBuilder()
-                .setBlockHash(message.getDetails().getBlockHash())
-                .setLogIndex(message.getDetails().getLogIndex().toString())
-                .setBlockNumber(message.getDetails().getBlockNumber().longValue())
-                .setAddress(message.getDetails().getAddress())
-                .setTransactionHash(message.getDetails().getTransactionHash())
-                .setTopics(convertTopics(message.getDetails().getTopics()))
-                .setNodeName(message.getDetails().getNodeName())
-                .setData(message.getDetails().getData())
-                .setNetworkName(message.getDetails().getNetworkName())
-                .setId(message.getId())
-                .build();
-
         genericRecord.put("id", message.getId());
-        genericRecord.put("type", message.getType());
-        genericRecord.put("details", logDetailsRecord);
+        genericRecord.put("nodeName", message.getDetails().getNodeName());
+        genericRecord.put("data",message.getDetails().getData());
+        genericRecord.put("topics", message.getDetails().getTopics());
+        genericRecord.put("transactionHash", message.getDetails().getTransactionHash());
+        genericRecord.put("logIndex", message.getDetails().getLogIndex().toString());
+        genericRecord.put("blockNumber", message.getDetails().getBlockNumber().longValue());
+        genericRecord.put("blockHash", message.getDetails().getBlockHash());
+        genericRecord.put("address", message.getDetails().getAddress());
+        genericRecord.put("networkName", message.getDetails().getNetworkName());
+        genericRecord.put("status", LogStatus.valueOf(message.getDetails().getStatus().name()));
         genericRecord.put("retries", message.getRetries());
-        kafkaTemplate.send(kafkaSettings.getLogsTopic(), logDetailsRecord.getBlockHash(), genericRecord);
+        kafkaTemplate.send(kafkaSettings.getLogsTopic(), message.getId(), genericRecord);
     }
 
     protected EventeumMessage<io.keyko.monitoring.agent.core.dto.block.BlockDetails> createBlockEventMessage(io.keyko.monitoring.agent.core.dto.block.BlockDetails blockDetails) {

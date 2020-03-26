@@ -5,7 +5,6 @@ import io.keyko.monitoring.agent.core.chain.contract.ContractEventListener;
 import io.keyko.monitoring.agent.core.chain.factory.ContractEventDetailsFactory;
 import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jBlock;
-import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jLog;
 import io.keyko.monitoring.agent.core.chain.service.domain.wrapper.Web3jTransactionReceipt;
 import io.keyko.monitoring.agent.core.chain.service.strategy.BlockSubscriptionStrategy;
 import io.keyko.monitoring.agent.core.chain.util.Web3jUtil;
@@ -29,7 +28,9 @@ import org.web3j.abi.FunctionReturnDecoder;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.abi.datatypes.Type;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.*;
+import org.web3j.protocol.core.DefaultBlockParameter;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.filters.FilterException;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.request.Transaction;
@@ -40,9 +41,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 /**
  * A BlockchainService implementating utilising the Web3j library.
@@ -120,7 +121,7 @@ public class Web3jService implements BlockchainService {
         if (eventFilter.getEventSpecification() != null && eventFilter.getEventSpecification().getEventName() != null) {
             ethFilter = ethFilter.addSingleTopic(Web3jUtil.getSignature(eventSpec));
         }
-        
+
         final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
 
         final Disposable sub = flowable
@@ -130,12 +131,12 @@ public class Web3jService implements BlockchainService {
                 .subscribe(theLog -> {
                     asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
                         ContractEventDetails eventDetails = eventDetailsFactory.createEventDetails(eventFilter, theLog);
-                        if (onlyConfirmed && !eventDetails.getStatus().equals(ContractEventStatus.CONFIRMED))   {
+                        if (onlyConfirmed && !eventDetails.getStatus().equals(ContractEventStatus.CONFIRMED)) {
                             log.debug(String.format(
                                     "Skipping not confirmed event: Block %s, logIndex %s", theLog.getBlockNumber(), theLog.getLogIndex()
                             ));
 
-                        }   else {
+                        } else {
                             log.debug("Dispatching log: {}", theLog);
                             eventListener.onEvent(eventDetails);
                         }
@@ -153,11 +154,36 @@ public class Web3jService implements BlockchainService {
 
     }
 
-    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster){
+    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster, Map<String, BlockchainService> blockchainService) {
         web3j.ethLogFlowable(new EthFilter()).subscribe(log -> {
             final LogDetails logDetails = eventDetailsFactory.createLogDetails(log);
-            broadcaster.broadcastLog(logDetails);
+            if (isSuccessTransaction(logDetails, blockchainService)) {
+                logDetails.setStatus(ContractEventStatus.CONFIRMED);
+                broadcaster.broadcastLog(logDetails);
+            } else {
+                broadcaster.broadcastLog(logDetails);
+            }
         });
+    }
+
+    private BlockchainService getBlockchainService(String nodeName, Map<String, BlockchainService> blockchainServices) {
+        return blockchainServices.get(nodeName);
+    }
+
+    private boolean isSuccessTransaction(LogDetails logDetails, Map<String, BlockchainService> blockchainService) {
+        final io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt receipt = getBlockchainService(logDetails.getNodeName(), blockchainService)
+                .getTransactionReceipt(logDetails.getTransactionHash());
+
+        if (receipt.getStatus() == null) {
+            // status is only present on Byzantium transactions onwards
+            return true;
+        }
+
+        if (receipt.getStatus().equals("0x0")) {
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -280,17 +306,17 @@ public class Web3jService implements BlockchainService {
     }
 
     @Override
-    public List<Type> executeReadCall(String contractAddress, Function function)    {
+    public List<Type> executeReadCall(String contractAddress, Function function) {
         return executeReadCall(contractAddress, function, DefaultBlockParameterName.LATEST);
     }
 
     @Override
-    public List<Type> executeReadCall(String contractAddress, Function function, BigInteger blockNumber)    {
+    public List<Type> executeReadCall(String contractAddress, Function function, BigInteger blockNumber) {
         return executeReadCall(contractAddress, function, DefaultBlockParameter.valueOf(blockNumber));
     }
 
     @Override
-    public List<Type> executeReadCall(String contractAddress, Function function, DefaultBlockParameter blockParameter)    {
+    public List<Type> executeReadCall(String contractAddress, Function function, DefaultBlockParameter blockParameter) {
 
         try {
             EthCall response = web3j.ethCall(
@@ -301,7 +327,7 @@ public class Web3jService implements BlockchainService {
             return FunctionReturnDecoder.decode(
                     response.getValue(), function.getOutputParameters());
 
-        } catch (ExecutionException | InterruptedException e)  {
+        } catch (ExecutionException | InterruptedException e) {
             log.error("Unable to execute remote call " + e.getMessage());
         }
         return new ArrayList<>();
