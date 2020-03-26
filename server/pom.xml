@@ -78,7 +78,7 @@
     </dependencies>
 
     <build>
-        <finalName>web3-monitoring-agent-${project.version}</finalName>
+        <finalName>web3-monitoring-agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
