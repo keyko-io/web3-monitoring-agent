@@ -9,7 +9,7 @@ COPY pom.xml /
 RUN mvn package
 
 ENV CONF ""
-ENV ETHEREUM_NODE_URL=wss://mainnet.infura.io/ws/v3/2506559572c14cb189af2e73ee09d794
+ENV ETHEREUM_NODE_URL=localhost:8545
 ENV ETHEREUM_CLIENT_ADDRESS=0x0
 ENV MONGO_DB_URI=mongodb://mongo:27017/w3m-monitoring
 ENV ZOOKEEPER_ADDRESS=zookeeper:2181
