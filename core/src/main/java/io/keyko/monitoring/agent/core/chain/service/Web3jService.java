@@ -154,10 +154,10 @@ public class Web3jService implements BlockchainService {
 
     }
 
-    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster, Map<String, BlockchainService> blockchainService) {
+    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster) {
         web3j.ethLogFlowable(new EthFilter()).subscribe(log -> {
             final LogDetails logDetails = eventDetailsFactory.createLogDetails(log);
-            if (isSuccessTransaction(logDetails, blockchainService)) {
+            if (isSuccessTransaction(logDetails)) {
                 logDetails.setStatus(ContractEventStatus.CONFIRMED);
                 broadcaster.broadcastLog(logDetails);
             } else {
@@ -166,13 +166,8 @@ public class Web3jService implements BlockchainService {
         });
     }
 
-    private BlockchainService getBlockchainService(String nodeName, Map<String, BlockchainService> blockchainServices) {
-        return blockchainServices.get(nodeName);
-    }
-
-    private boolean isSuccessTransaction(LogDetails logDetails, Map<String, BlockchainService> blockchainService) {
-        final io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt receipt = getBlockchainService(logDetails.getNodeName(), blockchainService)
-                .getTransactionReceipt(logDetails.getTransactionHash());
+    private boolean isSuccessTransaction(LogDetails logDetails) {
+        final io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt receipt = getTransactionReceipt(logDetails.getTransactionHash());
 
         if (receipt.getStatus() == null) {
             // status is only present on Byzantium transactions onwards

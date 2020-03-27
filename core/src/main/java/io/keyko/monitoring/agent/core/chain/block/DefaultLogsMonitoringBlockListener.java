@@ -21,7 +21,6 @@ public class DefaultLogsMonitoringBlockListener implements BlockListener {
 
     private Web3jService web3jService;
     private BlockchainEventBroadcaster broadcaster;
-    private Map<String, BlockchainService> blockchainServices;
 
 
     private Lock lock = new ReentrantLock();
@@ -29,20 +28,10 @@ public class DefaultLogsMonitoringBlockListener implements BlockListener {
     @Value("${fetch.all.events:false}")
     private boolean ALL_EVENTS;
 
-    public DefaultLogsMonitoringBlockListener(ChainServicesContainer chainServicesContainer,
-                                              Web3jService web3jService,
+    public DefaultLogsMonitoringBlockListener(Web3jService web3jService,
                                               BlockchainEventBroadcaster eventBroadcaster) {
         this.web3jService = web3jService;
         this.broadcaster = eventBroadcaster;
-
-        this.blockchainServices = new HashMap<>();
-
-        chainServicesContainer
-                .getNodeNames()
-                .forEach(nodeName -> {
-                    blockchainServices.put(nodeName,
-                            chainServicesContainer.getNodeServices(nodeName).getBlockchainService());
-                });
     }
 
     @Override
@@ -50,7 +39,7 @@ public class DefaultLogsMonitoringBlockListener implements BlockListener {
         lock.lock();
         try {
             if (ALL_EVENTS)
-                web3jService.broadcastAllEvents(broadcaster, blockchainServices);
+                web3jService.broadcastAllEvents(broadcaster);
         } finally {
             lock.unlock();
         }
