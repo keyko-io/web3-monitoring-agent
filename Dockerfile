@@ -12,5 +12,6 @@ RUN mv server/target/web3-monitoring-agent.jar web3-monitoring-agent.jar
 RUN mv server/docker-scripts/start-monitoring-agent.sh start-monitoring-agent.sh
 
 EXPOSE 8060
+
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["/start-monitoring-agent.sh"]
