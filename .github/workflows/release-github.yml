@@ -21,7 +21,7 @@ jobs:
         uses: xresloader/upload-to-github-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          file: "server/target/web3-monitoring-agent-*.jar"
+          file: "server/target/web3-monitoring-agent.jar"
           tags: true
           draft: false
           prerelease: false
