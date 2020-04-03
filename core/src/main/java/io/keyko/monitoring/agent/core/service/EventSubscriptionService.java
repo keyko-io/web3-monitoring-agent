@@ -1,7 +1,6 @@
 package io.keyko.monitoring.agent.core.service;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 

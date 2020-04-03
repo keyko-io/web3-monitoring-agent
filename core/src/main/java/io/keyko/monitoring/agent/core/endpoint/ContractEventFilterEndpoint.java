@@ -58,10 +58,10 @@ public class ContractEventFilterEndpoint {
      *
      * @param filterId the filterId to get
      * @param response the http response
-     * @return ContractViewFilter
+     * @return ContractEventFilter
      */
     @RequestMapping(value = "/{filterId}", method = RequestMethod.GET)
-    public ContractEventFilter getViewFilter(@PathVariable String filterId,
+    public ContractEventFilter getEventFilter(@PathVariable String filterId,
                                              HttpServletResponse response) {
 
         try {
