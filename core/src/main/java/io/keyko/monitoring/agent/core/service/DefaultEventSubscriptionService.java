@@ -13,8 +13,6 @@ import io.keyko.monitoring.agent.core.repository.ContractEventFilterRepository;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import io.keyko.monitoring.agent.core.utils.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -23,10 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -103,6 +98,18 @@ public class DefaultEventSubscriptionService implements EventSubscriptionService
     @Override
     public List<ContractEventFilter> listContractEventFilters() {
         return getFilterSubscriptions().stream().map((EventFilterSubscription f) -> f.getFilter()).collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ContractEventFilter getContractEventFilter(String filterId) throws NotFoundException {
+        Optional<ContractEventFilter> byId = eventFilterRepository.findById(filterId);
+        if (!byId.isPresent() || null == byId.get()) {
+            throw new NotFoundException(String.format("Filter with id %s, doesn't exist", filterId));
+        }
+        return byId.get();
     }
 
     /**

@@ -2,9 +2,9 @@ package io.keyko.monitoring.agent.core.endpoint;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.endpoint.response.AddEventFilterResponse;
+import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
-import io.keyko.monitoring.agent.core.service.EventSubscriptionService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +51,27 @@ public class ContractEventFilterEndpoint {
         response.setStatus(HttpServletResponse.SC_OK);
 
         return registeredFilters;
+    }
+
+    /**
+     * Get a event filter with the corresponding filter id.
+     *
+     * @param filterId the filterId to get
+     * @param response the http response
+     * @return ContractViewFilter
+     */
+    @RequestMapping(value = "/{filterId}", method = RequestMethod.GET)
+    public ContractEventFilter getViewFilter(@PathVariable String filterId,
+                                             HttpServletResponse response) {
+
+        try {
+            ContractEventFilter filter = filterService.getContractEventFilter(filterId);
+            response.setStatus(HttpServletResponse.SC_OK);
+            return filter;
+        } catch (NotFoundException e) {
+            //Rethrow endpoint exception with response information
+            throw new FilterNotFoundEndpointException();
+        }
     }
 
     /**
