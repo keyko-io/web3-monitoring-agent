@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.service;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.model.EventFilterSubscription;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 
@@ -48,6 +49,16 @@ public interface EventSubscriptionService {
      * @return The list of registered contract event filters
      */
     List<ContractEventFilter> listContractEventFilters();
+
+
+    /**
+     * Get a previously added contract event filter.
+     *
+     * @param filterId  The filter id of the event to return.
+     * @return ContractEventFilter
+     * @throws NotFoundException object not found
+     */
+    ContractEventFilter getContractEventFilter(String filterId) throws NotFoundException;
 
     /**
      * Unregisters a previously added contract event filter.
