@@ -4,6 +4,7 @@ import io.keyko.monitoring.agent.core.chain.block.tx.criteria.TransactionMatchin
 import io.keyko.monitoring.agent.core.chain.service.container.ChainServicesContainer;
 import io.keyko.monitoring.agent.core.chain.service.domain.Transaction;
 import io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.integration.broadcast.blockchain.BlockchainEventBroadcaster;
 import lombok.extern.slf4j.Slf4j;
 import io.keyko.monitoring.agent.core.chain.factory.TransactionDetailsFactory;
@@ -17,7 +18,6 @@ import io.keyko.monitoring.agent.core.dto.transaction.TransactionStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
-import org.web3j.utils.Numeric;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -124,9 +124,12 @@ public class DefaultTransactionMonitoringBlockListener implements TransactionMon
                 .forEach(tx -> {
                     final TransactionDetails txDetails = transactionDetailsFactory.createTransactionDetails(
                             tx, TransactionStatus.CONFIRMED, block.getNodeName());
-
                     if (txDetails.getStatus().equals(TransactionStatus.CONFIRMED)) {
                         broadcaster.broadcastTransaction(txDetails);
+                        getBlockchainService(block.getNodeName()).getTransactionReceipt(tx.getHash()).getLogs().forEach(log -> {
+                            final LogDetails logDetails = transactionDetailsFactory.createLogDetails(log, block.getNodeName());
+                            broadcaster.broadcastLog(logDetails);
+                        });
                     }
                 });
     }

@@ -1,6 +1,8 @@
 package io.keyko.monitoring.agent.core.chain.factory;
 
+import io.keyko.monitoring.agent.core.chain.service.domain.Log;
 import io.keyko.monitoring.agent.core.chain.service.domain.Transaction;
+import io.keyko.monitoring.agent.core.dto.log.LogDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionDetails;
 import io.keyko.monitoring.agent.core.dto.transaction.TransactionStatus;
 import org.modelmapper.ModelMapper;
@@ -38,5 +40,21 @@ public class DefaultTransactionDetailsFactory implements TransactionDetailsFacto
         }
 
         return transactionDetails;
+    }
+
+    @Override
+    public LogDetails createLogDetails(Log log, String nodeName) {
+        LogDetails logDetails = new LogDetails();
+        logDetails.setAddress(log.getAddress());
+        logDetails.setBlockHash(log.getBlockHash());
+        logDetails.setBlockNumber(log.getBlockNumber());
+        logDetails.setData(log.getData());
+        logDetails.setLogIndex(log.getLogIndex());
+        logDetails.setTopics(log.getTopics());
+        logDetails.setTransactionHash(log.getTransactionHash());
+        logDetails.setNetworkName(nodeName);
+        logDetails.setNodeName(nodeName);
+
+        return logDetails;
     }
 }

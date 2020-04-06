@@ -1,8 +1,7 @@
 package io.keyko.monitoring.agent.core.chain.factory;
 
-import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.dto.event.ContractEventDetails;
-import io.keyko.monitoring.agent.core.dto.log.LogDetails;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import org.web3j.protocol.core.methods.response.Log;
 
 /**
@@ -13,5 +12,4 @@ import org.web3j.protocol.core.methods.response.Log;
  */
 public interface ContractEventDetailsFactory {
     ContractEventDetails createEventDetails(ContractEventFilter eventFilter, Log log);
-    LogDetails createLogDetails(Log log);
 }

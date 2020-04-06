@@ -32,6 +32,7 @@ import org.web3j.protocol.core.DefaultBlockParameter;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.filters.FilterException;
+import org.web3j.protocol.core.filters.LogFilter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.*;
@@ -39,10 +40,7 @@ import org.web3j.protocol.core.methods.response.*;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -152,33 +150,6 @@ public class Web3jService implements BlockchainService {
         }
         return new EventFilterSubscription(eventFilter, sub, startBlock);
 
-    }
-
-    public void broadcastAllEvents(BlockchainEventBroadcaster broadcaster) {
-        web3j.ethLogFlowable(new EthFilter()).subscribe(log -> {
-            final LogDetails logDetails = eventDetailsFactory.createLogDetails(log);
-            if (isSuccessTransaction(logDetails)) {
-                logDetails.setStatus(ContractEventStatus.CONFIRMED);
-                broadcaster.broadcastLog(logDetails);
-            } else {
-                broadcaster.broadcastLog(logDetails);
-            }
-        });
-    }
-
-    private boolean isSuccessTransaction(LogDetails logDetails) {
-        final io.keyko.monitoring.agent.core.chain.service.domain.TransactionReceipt receipt = getTransactionReceipt(logDetails.getTransactionHash());
-
-        if (receipt.getStatus() == null) {
-            // status is only present on Byzantium transactions onwards
-            return true;
-        }
-
-        if (receipt.getStatus().equals("0x0")) {
-            return false;
-        }
-
-        return true;
     }
 
 
