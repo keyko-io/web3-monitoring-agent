@@ -185,8 +185,7 @@ It can either be configured by:
 | POLLING_INTERVAL | 5000 | The polling interval used by Web3j to get events from the blockchain. |
 | START_FROM_BLOCK | "" | The block from where start to sync. It takes preference over the block number existing in the event store database. |
 | ONLY_EVENTS_CONFIRMED | false | If is set to `true` will only process the events with CONFIRMED state.  |
-| FETCH_ALL_TRANSACTIONS | false | If is set to `true` the agent will process all the transactions included in a block, independently of the configuration |
-| FETCH_ALL_EVENTS | false | If is set to `true` the agent will process all the events emitted, independently of the configuration |
+| FETCH_ALL_TRANSACTIONS | false | If is set to `true` the agent will process all the transactions included in a block, independently of the configuration and send all the logs inside them|
 | EVENTSTORE_TYPE | DB | The type of eventstore used in Eventeum. (See the Advanced section for more details) |
 | BROADCASTER_TYPE | KAFKA | The broadcast mechanism to ruse.  (KAFKA or HTTP) |
 | BROADCASTER_CACHE_EXPIRATIONMILLIS | 6000000 | The eventeum broadcaster has an internal cache of sent messages, which ensures that duplicate messages are not broadcast.  This is the time that a message should live within this cache. |

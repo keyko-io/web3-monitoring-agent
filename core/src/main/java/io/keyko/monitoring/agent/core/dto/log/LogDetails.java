@@ -35,7 +35,7 @@ public class LogDetails {
 
     private String networkName;
 
-    private ContractEventStatus status = ContractEventStatus.UNCONFIRMED;
+    private ContractEventStatus status = ContractEventStatus.CONFIRMED;
 
     public String getId() {
         return transactionHash + "-" + blockHash + "-" + logIndex;

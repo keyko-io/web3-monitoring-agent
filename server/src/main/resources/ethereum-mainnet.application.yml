@@ -26,8 +26,8 @@ ethereum:
     address: "0xab9c2c7afe19b9491e654b3ca1f20aaf34776802"
   nodes:
   - name: default
-    url: ${ETHEREUM_NODE_URL:wss://mainnet.infura.io/ws/v3/YOUR_API_KEY}
-    blockStrategy: PUBSUB
+    url: ${ETHEREUM_NODE_URL:ws://localhost:8546}
+    blockStrategy: POLL
     pollInterval: 2000
     maxIdleConnections: 10
     keepAliveDuration: 15000
