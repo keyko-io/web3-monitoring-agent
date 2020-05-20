@@ -1,0 +1,106 @@
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8060
+
+logging:
+  level:
+    org.springframework.web: ERROR
+    org.web3j.protocol.core: DEBUG
+    io.keyko: DEBUG
+    io.keyko.monitoring.agent.core.configs: ERROR
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5p %c: %M - %m%n"
+  file: /logs/application.log
+
+spring:
+  data:
+    mongodb.uri: ${MONGO_DB_URI:mongodb://localhost:27017/w3m-monitoring}
+  output:
+  ansi:
+    enabled: DETECT
+
+ethereum:
+  client:
+    address: "0xab9c2c7afe19b9491e654b3ca1f20aaf34776802"
+  nodes:
+  - name: default
+    url: ${ETHEREUM_NODE_URL:ws://localhost:8546}
+    blockStrategy: POLL
+    pollInterval: 2000
+    maxIdleConnections: 10
+    keepAliveDuration: 15000
+    connectionTimeout: 8000
+    readTimeout: 35000
+    healthcheckInterval: 5000
+    addTransactionRevertReason: true
+    numBlocksToWait: 1
+    numBlocksToWaitBeforeInvalidating: 1
+    numBlocksToWaitForMissingTx: 1 
+  healthcheck:
+    pollInterval: 5000
+  blockStrategy: POLL
+
+
+eventStore:
+  type: DB
+  url: http://localhost:8081/api/rest/v1
+  eventPath: /event
+  latestBlockPath: /latestblock
+database:
+  type: MONGO
+
+broadcaster:
+  type: KAFKA
+  cache:
+    expirationMillis: 6000000
+  event:
+    confirmation:
+      numBlocksToWait: 12
+      numBlocksToWaitForMissingTx: 100
+      numBlocksToWaitBeforeInvalidating: 2
+  multiInstance: false
+  enableBlockNotifications: true
+
+# For Kafka
+zookeeper:
+  address: ${ZOOKEEPER_ADDRESS:localhost:2181}
+kafka:
+  bootstrap:
+    addresses: ${KAFKA_ADDRESSES:localhost:9092}
+  topic:
+    contractEvents: celo-w3m-contract-events
+    contractViews: celo-w3m-contract-views
+    blockEvents: celo-w3m-block-events
+    eventeumEvents: celo-w3m-eventeum-events
+    transactionEvents: celo-w3m-transaction-events
+    logs:  celo-w3m-logs
+
+    partitions: 1
+    replicationSets: 1
+  schemaRegistry:
+    url: ${KAFKA_SCHEMAREGISTRY_URL:http://localhost:18081}
+
+management:
+  endpoints:
+    web.base-path: /monitoring
+    enabled-by-default: false
+    web.exposure.include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    metrics:
+      enabled: false
+    prometheus:
+      enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: false
+
+
+eventFilters:
+
+
