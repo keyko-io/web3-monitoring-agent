@@ -70,12 +70,12 @@ kafka:
   bootstrap:
     addresses: ${KAFKA_ADDRESSES:localhost:9092}
   topic:
-    contractEvents: celo-w3m-contract-events
-    contractViews: celo-w3m-contract-views
-    blockEvents: celo-w3m-block-events
-    eventeumEvents: celo-w3m-eventeum-events
-    transactionEvents: celo-w3m-transaction-events
-    logs:  celo-w3m-logs
+    contractEvents: w3m-contract-events
+    contractViews: w3m-contract-views
+    blockEvents: w3m-block-events
+    eventeumEvents: w3m-eventeum-events
+    transactionEvents: w3m-transaction-events
+    logs:  w3m-logs
 
     partitions: 1
     replicationSets: 1
