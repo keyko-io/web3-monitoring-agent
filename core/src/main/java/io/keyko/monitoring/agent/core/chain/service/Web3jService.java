@@ -36,12 +36,14 @@ import org.web3j.protocol.core.filters.LogFilter;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.*;
+import rx.schedulers.TimeInterval;
 
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A BlockchainService implementating utilising the Web3j library.
@@ -111,45 +113,95 @@ public class Web3jService implements BlockchainService {
         final ContractEventSpecification eventSpec = eventFilter.getEventSpecification();
 
         final BigInteger startBlock = getStartBlockForEventFilter(eventFilter);
+        BigInteger lastBlockNumber = BigInteger.ZERO;
 
-        EthFilter ethFilter = new EthFilter(
-                new DefaultBlockParameterNumber(startBlock),
-                DefaultBlockParameterName.LATEST, eventFilter.getContractAddress());
-
-        if (eventFilter.getEventSpecification() != null && eventFilter.getEventSpecification().getEventName() != null) {
-            ethFilter = ethFilter.addSingleTopic(Web3jUtil.getSignature(eventSpec));
+        try {
+            EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().send();
+            lastBlockNumber = ethBlockNumber.getBlockNumber();
+        } catch (IOException e) {
+            log.error("Unable to get last block information: " + e.getMessage());
         }
 
-        final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
+        BigInteger blocksWindowSize = BigInteger.valueOf(50000);
+        boolean isFinished = false;
+        BigInteger blocksProcessed = BigInteger.ZERO;
 
-        final Disposable sub = flowable
-//                .doOnError(error -> {
-//                    log.error("Looks we are having a flowable error " + error.getMessage());
-//                })
-                .subscribe(theLog -> {
-                    asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
+        Disposable sub= null;
+        while (!isFinished) {
+            BigInteger firstBlockWindow = startBlock.add(blocksProcessed);
+            BigInteger lastBlockWindow = firstBlockWindow.add(blocksWindowSize);
+            if (lastBlockWindow.compareTo(lastBlockNumber) >= 0) {
+                lastBlockWindow = lastBlockNumber;
+                isFinished = true;
+            }
+
+            log.info(String.format("Reading events from %s to %s block", firstBlockWindow.toString(), lastBlockWindow.toString()));
+
+            EthFilter ethFilter = new EthFilter(
+                    new DefaultBlockParameterNumber(firstBlockWindow),
+                    new DefaultBlockParameterNumber(lastBlockWindow), eventFilter.getContractAddress());
+
+            if (eventFilter.getEventSpecification() != null && eventFilter.getEventSpecification().getEventName() != null) {
+                ethFilter = ethFilter.addSingleTopic(Web3jUtil.getSignature(eventSpec));
+            }
+
+            if (isFinished) { // We setup the flowable
+
+                final Flowable<Log> flowable = web3j.ethLogFlowable(ethFilter);
+
+                sub = flowable
+                        .subscribe(theLog -> {
+                            asyncTaskService.execute(ExecutorNameFactory.build(EVENT_EXECUTOR_NAME, eventFilter.getNode()), () -> {
+                                ContractEventDetails eventDetails = eventDetailsFactory.createEventDetails(eventFilter, theLog);
+                                if (onlyConfirmed && !eventDetails.getStatus().equals(ContractEventStatus.CONFIRMED)) {
+                                    Web3jService.log.debug(String.format(
+                                            "Skipping not confirmed event: Block %s, logIndex %s", theLog.getBlockNumber(), theLog.getLogIndex()
+                                    ));
+
+                                } else {
+                                    Web3jService.log.debug("Dispatching log: {}", theLog);
+                                    eventListener.onEvent(eventDetails);
+                                }
+                            });
+                        }, error -> {
+                            Web3jService.log.error("Flowable subscribe error: " + error.getMessage());
+                        });
+
+                if (sub.isDisposed()) {
+                    //There was an error subscribing
+                    throw new BlockchainException(String.format(
+                            "Failed to subcribe for filter %s.  The subscription is disposed.", eventFilter.getId()));
+                }
+
+            }   else    {
+
+                try {
+                    final EthLog logs = web3j.ethGetLogs(ethFilter).send();
+                    logs.getLogs().forEach( logResult -> {
+                        final Log theLog = (Log) logResult.get();
                         ContractEventDetails eventDetails = eventDetailsFactory.createEventDetails(eventFilter, theLog);
+
                         if (onlyConfirmed && !eventDetails.getStatus().equals(ContractEventStatus.CONFIRMED)) {
-                            log.debug(String.format(
+                            Web3jService.log.debug(String.format(
                                     "Skipping not confirmed event: Block %s, logIndex %s", theLog.getBlockNumber(), theLog.getLogIndex()
                             ));
 
                         } else {
-                            log.debug("Dispatching log: {}", theLog);
+                            Web3jService.log.debug("Dispatching log: {}", theLog);
                             eventListener.onEvent(eventDetails);
                         }
+
                     });
-                }, error -> {
-                    log.error("Flowable subscribe error: " + error.getMessage());
-                });
+                } catch (IOException e) {
+                    log.error(String.format("Error reading logs from %s to %s block", firstBlockWindow.toString(), lastBlockWindow.toString()));
+                    log.error(e.getMessage());
+                }
+            }
 
-        if (sub.isDisposed()) {
-            //There was an error subscribing
-            throw new BlockchainException(String.format(
-                    "Failed to subcribe for filter %s.  The subscription is disposed.", eventFilter.getId()));
+            blocksProcessed = blocksProcessed.add(blocksWindowSize);
         }
-        return new EventFilterSubscription(eventFilter, sub, startBlock);
 
+        return new EventFilterSubscription(eventFilter, sub, startBlock);
     }
 
 
