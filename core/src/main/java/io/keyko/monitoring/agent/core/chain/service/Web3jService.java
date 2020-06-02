@@ -61,6 +61,9 @@ public class Web3jService implements BlockchainService {
     @Value("${only.events.confirmed:false}")
     private boolean onlyConfirmed;
 
+    @Value("${ethereum.blocks.windowSize:50000}")
+    private BigInteger blocksWindowSize;
+
     @Getter
     private String nodeName;
 
@@ -122,7 +125,7 @@ public class Web3jService implements BlockchainService {
             log.error("Unable to get last block information: " + e.getMessage());
         }
 
-        BigInteger blocksWindowSize = BigInteger.valueOf(50000);
+//        BigInteger blocksWindowSize = BigInteger.valueOf(50000);
         boolean isFinished = false;
         BigInteger blocksProcessed = BigInteger.ZERO;
 
