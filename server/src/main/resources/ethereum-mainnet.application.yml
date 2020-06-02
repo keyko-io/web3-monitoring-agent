@@ -16,7 +16,7 @@ logging:
 
 spring:
   data:
-    mongodb.uri: ${MONGO_DB_URI:mongodb://localhost:27017/w3m-monitoring}
+    mongodb.uri: ${MONGO_DB_URI:mongodb://localhost:27017/test}
   output:
   ansi:
     enabled: DETECT
@@ -28,18 +28,18 @@ ethereum:
   - name: default
     url: ${ETHEREUM_NODE_URL:ws://localhost:8546}
     blockStrategy: POLL
-    pollInterval: 2000
+    pollInterval: 1000
     maxIdleConnections: 10
     keepAliveDuration: 15000
     connectionTimeout: 8000
-    readTimeout: 35000
+    readTimeout: 120000
     healthcheckInterval: 5000
     addTransactionRevertReason: true
     numBlocksToWait: 1
     numBlocksToWaitBeforeInvalidating: 1
     numBlocksToWaitForMissingTx: 1 
   healthcheck:
-    pollInterval: 5000
+    pollInterval: 3000
   blockStrategy: POLL
 
 
