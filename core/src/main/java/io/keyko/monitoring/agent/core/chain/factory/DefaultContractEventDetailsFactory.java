@@ -61,7 +61,7 @@ public class DefaultContractEventDetailsFactory implements ContractEventDetailsF
 
         if (log.isRemoved()) {
             eventDetails.setStatus(ContractEventStatus.INVALIDATED);
-        } else if (log.getType().equals("mined")||
+        } else if ( (log.getType() != null && log.getType().equals("mined") )||
                 (node.getBlocksToWaitForConfirmation().equals(BigInteger.ZERO)) ) {
             //Set to confirmed straight away if set to zero confirmations
             eventDetails.setStatus(ContractEventStatus.CONFIRMED);
