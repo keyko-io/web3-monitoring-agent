@@ -15,6 +15,8 @@ logging:
   file: /logs/application.log
 
 spring:
+  data:
+    mongodb.uri: ${MONGO_DB_URI:mongodb://localhost:27017/test}
   output:
   ansi:
     enabled: DETECT
@@ -28,6 +30,7 @@ ethereum:
     blockStrategy: POLL
     syncingThreshold: 100
     healthcheckInterval: 3000
+    readTimeout: 120000
   healthcheck:
     pollInterval: 2000
   blockStrategy: POLL
