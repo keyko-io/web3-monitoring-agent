@@ -134,12 +134,15 @@ It's possible to get all the events emitted by a Smart Contract using this kind 
 {
  "id": "event_smartcontract_filter_id",
  "contractAddress": "0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5",
+ "startBlock": "7000000",
  "eventSpecification": {
   "contractName": "MyContract"
  }
 }
 ```
 
+If the `startBlock` parameter is given, the agent will reply the old events emitted since the block specified.
+This feature requires to be connected to an **archive node**.
 
 #### Hard Coded Configuration
 Static events can be configured within the application.yml file of Eventeum.
@@ -262,6 +265,7 @@ The server exposes a REST api that can be used to register views that should be 
 		"outputParameterDefinitions": [
 		  {"position": 0, "type": "BYTES32", "name": "result"}]
     },
+	"startBlock": "9500000",
     "pollingStrategy": {
         "blockInterval": 1
     }
@@ -273,6 +277,7 @@ The server exposes a REST api that can be used to register views that should be 
 | contractAddress | String | yes |  | The address of the smart contract exposing the public method or view. |
 | contractName | String | yes |  | The name of the smart contract |
 | methodSpecification | json | yes |  | The method specification |
+| startBlock | String | no |  | If is given the agent will replay the state of view doing contract calls since the block given |
 | pollingStrategy | json | no | null | Define the polling strategy for querying the Smart Contract. It allows to specify the frequency of the polling (in each block confirmed, each 5 blocks, etc.) |
 
 **methodSpecification**:
@@ -309,6 +314,9 @@ Currently supported parameter types: `UINT8-256`, `INT8-256`, `ADDRESS`, `BYTES1
     "id": "view-identifier"
 }
 ```
+
+If the `startBlock` parameter is given, the agent will reply the state of the blockchain doing contract calls since the block specified.
+This feature requires to be connected to an **archive node**.
 
 #### Hard Coded Configuration
 
