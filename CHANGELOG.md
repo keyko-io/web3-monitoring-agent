@@ -4,7 +4,7 @@ History
 0.2.2 (2020-06)
 ------------------
 
-* Fixing problem avoiding to ingest old events
+* [#31](https://github.com/keyko-io/web3-monitoring-agent/pull/31) Fixing problem avoiding to ingest old events
 
 0.1.3 (2020-02)
 ------------------

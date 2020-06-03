@@ -83,9 +83,14 @@ public class DefaultEventBlockManagementService implements EventBlockManagementS
             }
         }
 
+        if ( (null != eventFilter.getStartBlock()) && (eventFilter.getStartBlock().longValue() >0) ) {
+            log.debug("Block number for event {} forced by event filter, starting at blockNumber configured for the event: {}",
+                    eventFilter.getId(), eventFilter.getStartBlock());
+            return eventFilter.getStartBlock();
+        }
 
         if (startFromBlock > 0)  {
-            log.debug("Block number for event {} forced by configuration, starting at blockNumber configured for the event: {}",
+            log.debug("Block number for event {} forced by agent configuration, starting at blockNumber configured for the event: {}",
                     eventFilter.getId(), startFromBlock);
             return BigInteger.valueOf(startFromBlock);
         }

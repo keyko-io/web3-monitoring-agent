@@ -61,8 +61,8 @@ public class Web3jService implements BlockchainService {
     @Value("${only.events.confirmed:false}")
     private boolean onlyConfirmed;
 
-    @Value("${ethereum.blocks.windowSize: 50000}")
-    private Integer blocksWindowSize= 50000;
+    @Value("${ethereum.blocks.windowSize: 100000}")
+    private Integer blocksWindowSize= 100000;
 
     @Getter
     private String nodeName;
