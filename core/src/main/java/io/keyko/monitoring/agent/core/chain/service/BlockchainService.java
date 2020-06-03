@@ -65,7 +65,14 @@ public interface BlockchainService {
      * @param fullTransactionObjects If full transaction details should be populated
      * @return The block for the specified hash or nothing if a block with the specified hash does not exist.
      */
-    public Optional<Block> getBlock(String blockHash, boolean fullTransactionObjects);
+    Optional<Block> getBlock(String blockHash, boolean fullTransactionObjects);
+
+    /**
+     * @param blockNumber            The number of the block to retrieve
+     * @param fullTransactionObjects If full transaction details should be populated
+     * @return The block for the specified number or nothing if a block with the specified hash does not exist.
+     */
+    Optional<Block> getBlock(BigInteger blockNumber, boolean fullTransactionObjects);
 
     /**
      * Obtain the transaction receipt for a specified transaction id.

@@ -61,8 +61,8 @@ public class Web3jService implements BlockchainService {
     @Value("${only.events.confirmed:false}")
     private boolean onlyConfirmed;
 
-    @Value("${ethereum.blocks.windowSize: 50000}")
-    private Integer blocksWindowSize= 50000;
+    @Value("${ethereum.blocks.windowSize: 100000}")
+    private Integer blocksWindowSize= 100000;
 
     @Getter
     private String nodeName;
@@ -295,6 +295,23 @@ public class Web3jService implements BlockchainService {
             return Optional.of(new Web3jBlock(blockResponse.getBlock(), nodeName));
         } catch (IOException e) {
             throw new BlockchainException("Error when obtaining block with hash: " + blockHash, e);
+        }
+
+    }
+
+    public Optional<Block> getBlock(BigInteger blockNumber, boolean fullTransactionObjects) {
+        try {
+
+            final EthBlock blockResponse = web3j.ethGetBlockByNumber(
+                    DefaultBlockParameter.valueOf(blockNumber), fullTransactionObjects).send();
+
+            if (blockResponse.getBlock() == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new Web3jBlock(blockResponse.getBlock(), nodeName));
+        } catch (IOException e) {
+            throw new BlockchainException("Error when obtaining block with number: " + blockNumber.toString(), e);
         }
 
     }
