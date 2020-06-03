@@ -18,7 +18,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.web3j.protocol.core.methods.response.EthBlockNumber;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -85,22 +88,30 @@ public class DefaultViewSubscriptionService implements ViewSubscriptionService {
     private ContractViewFilter doRegister(ContractViewFilter filter, boolean broadcast) throws NotFoundException {
         populateIdIfMissing(filter);
 
-//        if (!isFilterRegistered(filter)) {
-
-            saveContractViewFilter(filter);
-            viewBlockListener.addViewFilter(filter);
-
-            filterSubscriptions.put(filter.getId(), new ViewFilterSubscription(filter));
-
-            if (broadcast) {
-                broadcastContractEventFilterAdded(filter);
+        // Checking if we need to rewind old contract views
+        try {
+            if (null != filter.getStartBlock() && filter.getStartBlock().compareTo(BigInteger.ZERO) > 0 )  {
+                // We need to catch previous views
+                EthBlockNumber blockNumber = chainServices.getNodeServices(filter.getNode()).getWeb3j().ethBlockNumber().send();
+                if (filter.getStartBlock().compareTo(blockNumber.getBlockNumber()) < 0)   {
+                    viewBlockListener.processPreviousBlockViews(filter, filter.getStartBlock(), blockNumber.getBlockNumber());
+                }
             }
+        } catch (IOException e) {
+            log.error("Unable to replay views: " + e.getMessage());
+        }
 
-            return filter;
-//        } else {
-//            log.info("Already registered contract event filter with id: " + filter.getId());
-//            return viewBlockListener.getViewFilter(filter.getId());
-//        }
+        saveContractViewFilter(filter);
+        viewBlockListener.addViewFilter(filter);
+
+        filterSubscriptions.put(filter.getId(), new ViewFilterSubscription(filter));
+
+        if (broadcast) {
+            broadcastContractEventFilterAdded(filter);
+        }
+
+        return filter;
+
     }
 
 

@@ -299,6 +299,23 @@ public class Web3jService implements BlockchainService {
 
     }
 
+    public Optional<Block> getBlock(BigInteger blockNumber, boolean fullTransactionObjects) {
+        try {
+
+            final EthBlock blockResponse = web3j.ethGetBlockByNumber(
+                    DefaultBlockParameter.valueOf(blockNumber), fullTransactionObjects).send();
+
+            if (blockResponse.getBlock() == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(new Web3jBlock(blockResponse.getBlock(), nodeName));
+        } catch (IOException e) {
+            throw new BlockchainException("Error when obtaining block with number: " + blockNumber.toString(), e);
+        }
+
+    }
+
     @Override
     public boolean isConnected() {
         return blockSubscriptionStrategy != null && blockSubscriptionStrategy.isSubscribed();

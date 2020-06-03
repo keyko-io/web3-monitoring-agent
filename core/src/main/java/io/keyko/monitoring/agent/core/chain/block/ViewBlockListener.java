@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A block listener that manage the view requests after blocks are mined
@@ -80,12 +81,24 @@ public class ViewBlockListener implements BlockListener {
             viewFilters.put(filter.getId(), filter);
     }
 
+    public boolean processPreviousBlockViews(ContractViewFilter filter, BigInteger startBlock, BigInteger endBlock)  {
+        BigInteger readingPosition = startBlock;
+
+        while (readingPosition.compareTo(endBlock) < 0)  {
+            final Optional<Block> optionalBlock = blockchainService.getBlock(readingPosition, true);
+            if (optionalBlock.isPresent())
+                processViewMessage(filter, optionalBlock.get());
+            readingPosition = readingPosition.add(BigInteger.valueOf(filter.getPollingStrategy().getBlockInterval()));
+        }
+        return true;
+    }
+
     public boolean processViewMessage(ContractViewFilter filter, Block block)  {
         try {
             // Compose message
             Function _func= composeFunction(filter);
-            log.debug("Processing message for filter " + filter.getId()
-                    + " and function " + _func.getName());
+            log.debug(String.format("Block %s - Processing message for filter %s and function %s",
+                    block.getNumber().toString(), filter.getId(), _func.getName()));
 
             // 3. Call the contract
             List<Type> result = blockchainService.executeReadCall(
