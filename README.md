@@ -8,6 +8,8 @@
 ![W3M Agent Build](https://github.com/keyko-io/web3-monitoring-agent/workflows/W3M%20Agent%20Build/badge.svg)
 ![Release - Maven](https://github.com/keyko-io/web3-monitoring-agent/workflows/Release%20-%20Maven/badge.svg)
 ![Release - Github](https://github.com/keyko-io/web3-monitoring-agent/workflows/Release%20-%20Github/badge.svg)
+[![javadoc](https://javadoc.io/badge2/io.keyko.monitoring.agent/core/javadoc.svg)](https://javadoc.io/doc/io.keyko.monitoring.agent/core)
+
 
 ---
 
@@ -39,8 +41,6 @@ Keyko Web3 Monitoring agent provides an intelligent software able to ingest bloc
 It listens for specified event emissions from the Ethereum network, and broadcasts these events into your middleware layer. 
 It's also prepared to ingest network blocks and transactions. 
 This provides a distinct separation of concerns and means that your microservices do not have to subscribe to events directly to an Ethereum node.
-
-![W3M Agent Build](https://github.com/keyko-io/web3-monitoring-agent/workflows/W3M%20Agent%20Build/badge.svg)
 
 ## Features
 
