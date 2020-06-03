@@ -1,7 +1,15 @@
+[![banner](https://raw.githubusercontent.com/keyko-io/assets/master/images/logo/small/keyko_logo@2x-100.jpg)](https://keyko.io)
+
 # Keyko Web3 Monitoring Agent
 
-Table of Contents
-=================
+> The Keyko Web3 agent in charge of fetching information from a blockchain networks
+> [keyko.io](https://keyko.io)
+
+![W3M Agent Build](https://github.com/keyko-io/web3-monitoring-agent/workflows/W3M%20Agent%20Build/badge.svg)
+![Release - Maven](https://github.com/keyko-io/web3-monitoring-agent/workflows/Release%20-%20Maven/badge.svg)
+![Release - Github](https://github.com/keyko-io/web3-monitoring-agent/workflows/Release%20-%20Github/badge.svg)
+
+---
 
    * [Keyko Web3 Monitoring Agent](#keyko-web3-monitoring-agent)
    * [Table of Contents](#table-of-contents)
