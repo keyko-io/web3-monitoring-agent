@@ -5,12 +5,12 @@
 
     <groupId>io.keyko.monitoring.agent</groupId>
     <artifactId>core</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
 
     <parent>
         <groupId>io.keyko.monitoring</groupId>
         <artifactId>agent</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
     </parent>
 
 
@@ -132,6 +132,12 @@
             <artifactId>modelmapper</artifactId>
             <version>1.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>io.keyko</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>${common-utils.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.keyko.monitoring</groupId>
             <artifactId>schemas</artifactId>

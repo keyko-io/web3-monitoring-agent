@@ -1,4 +1,4 @@
-package io.keyko.monitoring.agent.core.endpoint;
+package io.keyko.monitoring.agent.core.endpoint.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

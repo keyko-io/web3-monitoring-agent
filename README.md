@@ -335,12 +335,14 @@ The endpoint is: GET /monitoring/prometheus
 
 ## Attribution
 
-This project is based in the fantastic [Consensys Eventeum](https://github.com/consensys/eventeum) project. In Keyko we started from Eventeum 0.7 adding some additional functionalities.
+This project is based in the fantastic [Consensys Eventeum](https://github.com/consensys/eventeum) project. 
+In Keyko we started from Eventeum v0.7 adding some additional functionalities.
+This tool keeps the same Open Source Apache License in a whole package including the software developed by Eventeum & Keyko.
 
 ## License
 
 ```
-Copyright 2020 Keyko GmbH
+Copyright 2020 Keyko AG
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

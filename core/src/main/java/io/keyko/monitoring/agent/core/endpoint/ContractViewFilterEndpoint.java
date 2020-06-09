@@ -2,6 +2,7 @@ package io.keyko.monitoring.agent.core.endpoint;
 
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractViewFilter;
 import io.keyko.monitoring.agent.core.endpoint.response.AddViewFilterResponse;
+import io.keyko.monitoring.agent.core.endpoint.response.FilterNotFoundEndpointException;
 import io.keyko.monitoring.agent.core.service.ViewSubscriptionService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
