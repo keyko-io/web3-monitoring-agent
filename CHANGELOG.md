@@ -1,6 +1,13 @@
 History
 =======
 
+
+0.2.3 (2020-06)
+------------------
+
+* [#33](https://github.com/keyko-io/web3-monitoring-agent/pull/33) Adding the `/api/rest/v1/abi-importer` for registering events & views given an ABI
+
+
 0.2.2 (2020-06)
 ------------------
 

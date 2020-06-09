@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.core.endpoint;
 
 import io.keyko.monitoring.agent.core.endpoint.response.MonitorTransactionsResponse;
+import io.keyko.monitoring.agent.core.endpoint.response.TransactionNotFoundEndpointException;
 import io.keyko.monitoring.agent.core.model.TransactionMonitoringSpec;
 import io.keyko.monitoring.agent.core.service.TransactionMonitoringService;
 import io.keyko.monitoring.agent.core.service.exception.NotFoundException;

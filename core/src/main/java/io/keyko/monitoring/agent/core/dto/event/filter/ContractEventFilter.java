@@ -40,4 +40,6 @@ public class ContractEventFilter {
     private CorrelationIdStrategy correlationIdStrategy;
 
     private BigInteger startBlock;
+
+
 }
