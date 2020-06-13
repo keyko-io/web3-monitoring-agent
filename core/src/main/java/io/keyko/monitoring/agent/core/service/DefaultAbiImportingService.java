@@ -112,7 +112,7 @@ public class DefaultAbiImportingService implements AbiImportingService {
             }
         });
         eventSpecification.setIndexedParameterDefinitions(indexedParameterDefinitions);
-        eventSpecification.setIndexedParameterDefinitions(nonIndexedParameterDefinitions);
+        eventSpecification.setNonIndexedParameterDefinitions(nonIndexedParameterDefinitions);
 
         eventFilter.setEventSpecification(eventSpecification);
         return eventFilter;
