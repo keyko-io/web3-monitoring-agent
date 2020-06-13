@@ -1,6 +1,7 @@
 package io.keyko.monitoring.agent.server.eventeumserver.integrationtest;
 
 import io.keyko.common.helpers.AbiParser;
+import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.endpoint.AbiImporterEndpoint;
 import io.keyko.monitoring.agent.core.endpoint.ContractEventFilterEndpoint;
 import io.keyko.monitoring.agent.core.endpoint.response.AbiImportResponse;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -44,4 +44,50 @@ public class AbiImportIT {
                             eventFilterResponse.getId(), new MockHttpServletResponse()).getId(), eventFilterResponse.getId());//
         });
     }
+
+    @Test
+    public void abiMakerOldImport() throws IOException {
+
+        final AbiParser abiParser = AbiParser.loadFromFile("src/test/resources/artifacts/Maker_DSChief_old.json");
+        abiParser.get().toJson();
+
+        Integer startBlock = 0; // Integer startBlock = 4749330;
+        Integer blockInterval = 1000;
+
+        final AbiImportResponse importedResponse = importerEndpoint.importAbiFilters(
+                abiParser.get().toJson(), "events", blockInterval, startBlock);
+
+        assertEquals(4, importedResponse.getListEventFilters().size());
+
+        importedResponse.getListEventFilters().forEach( eventFilterResponse -> {
+            final ContractEventFilter eventFilter = eventFilterEndpoint.getEventFilter(
+                    eventFilterResponse.getId(), new MockHttpServletResponse());
+
+            assertEquals(eventFilter.getId(), eventFilterResponse.getId());
+            assertTrue(eventFilter.getEventSpecification().getIndexedParameterDefinitions().size() > 0);
+        });
+    }
+
+
+    @Test
+    public void abiMakerNewImport() throws IOException {
+
+        final AbiParser abiParser = AbiParser.loadFromFile("src/test/resources/artifacts/Maker_DSChief_new.json");
+        abiParser.get().toJson();
+
+        Integer startBlock = 0; // Integer startBlock = 7707860;
+        Integer blockInterval = 1000;
+
+        final AbiImportResponse importedResponse = importerEndpoint.importAbiFilters(
+                abiParser.get().toJson(), "events", blockInterval, startBlock);
+
+        assertEquals(4, importedResponse.getListEventFilters().size());
+
+        importedResponse.getListEventFilters().forEach( eventFilterResponse -> {
+            assertEquals(
+                    eventFilterEndpoint.getEventFilter(
+                            eventFilterResponse.getId(), new MockHttpServletResponse()).getId(), eventFilterResponse.getId());//
+        });
+    }
+
 }
