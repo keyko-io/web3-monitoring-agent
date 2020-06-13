@@ -42,7 +42,7 @@ public class AbiImporterEndpoint {
      * @return AbiImportResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    public AbiImportResponse importAbiFilters(@RequestParam String abi,
+    public AbiImportResponse importAbiFilters(@RequestBody String abi,
                                             @RequestParam(required = false, defaultValue = "events") String filterType,
                                             @RequestParam(required = false, defaultValue = "100") Integer blockInterval,
                                             @RequestParam(required = false, defaultValue = "-1") Integer startBlock) {
