@@ -277,7 +277,6 @@ public class Web3jService implements BlockchainService {
     public BigInteger getCurrentBlockNumber() {
         try {
             final EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().send();
-
             return ethBlockNumber.getBlockNumber();
         } catch (IOException e) {
             throw new BlockchainException("Error when obtaining the current block number", e);

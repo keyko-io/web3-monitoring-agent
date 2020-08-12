@@ -4,6 +4,7 @@ import io.keyko.common.helpers.AbiParser;
 import io.keyko.monitoring.agent.core.dto.event.filter.ContractEventFilter;
 import io.keyko.monitoring.agent.core.endpoint.AbiImporterEndpoint;
 import io.keyko.monitoring.agent.core.endpoint.ContractEventFilterEndpoint;
+import io.keyko.monitoring.agent.core.endpoint.ContractViewFilterEndpoint;
 import io.keyko.monitoring.agent.core.endpoint.response.AbiImportResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,9 @@ public class AbiImportIT {
 
     @Autowired
     ContractEventFilterEndpoint eventFilterEndpoint;
+
+    @Autowired
+    ContractViewFilterEndpoint viewFilterEndpoint;
 
     @Test
     public void abiImport() throws IOException {
@@ -87,6 +91,25 @@ public class AbiImportIT {
             assertEquals(
                     eventFilterEndpoint.getEventFilter(
                             eventFilterResponse.getId(), new MockHttpServletResponse()).getId(), eventFilterResponse.getId());//
+        });
+    }
+
+    @Test
+    public void abiImportCompoundViews() throws IOException {
+
+        final AbiParser abiParser = AbiParser.loadFromFile("src/test/resources/artifacts/Compound_cETH_only_views.json");
+        abiParser.get().toJson();
+
+        final AbiImportResponse importedResponse = importerEndpoint.importAbiFilters(
+                abiParser.get().toJson(), "views", 1000, 0);
+
+        assertEquals(4, importedResponse.getListViewFilters().size());
+
+        importedResponse.getListViewFilters().forEach( viewFilterResponse -> {
+
+            assertEquals(
+                    viewFilterEndpoint.getViewFilter(viewFilterResponse.getId(), new MockHttpServletResponse()),
+                    viewFilterResponse.getId());//
         });
     }
 

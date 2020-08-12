@@ -4,6 +4,7 @@ import io.keyko.monitoring.agent.core.chain.service.domain.Block;
 import io.keyko.monitoring.agent.core.chain.service.domain.Transaction;
 import io.keyko.monitoring.agent.core.utils.ModelMapperFactory;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.web3j.crypto.Keys;
 import org.web3j.protocol.core.methods.response.EthBlock;
@@ -12,6 +13,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Data
 public class Web3jBlock implements Block {
 
@@ -45,18 +47,24 @@ public class Web3jBlock implements Block {
                 EthBlock.Block.class, Web3jBlock.class)
                 .addMappings(mapper -> {
                     mapper.skip(Web3jBlock::setTransactions);
-                    if (web3jBlock.getDifficultyRaw() == null) {
-                        mapper.skip(Web3jBlock::setDifficulty);
-                    }
-                    if (web3jBlock.getGasLimitRaw() == null) {
-                        mapper.skip(Web3jBlock::setGasLimit);
-                    }
-                    //Nonce can be null which throws exception in web3j when
-                    //calling getNonce (because of attempted hex conversion)
-                    if (web3jBlock.getNonceRaw() == null) {
-                        mapper.skip(Web3jBlock::setNonce);
+                    try {
+                        if (web3jBlock.getDifficultyRaw() == null) {
+                            mapper.skip(Web3jBlock::setDifficulty);
+                        }
+                        if (web3jBlock.getGasLimitRaw() == null) {
+                            mapper.skip(Web3jBlock::setGasLimit);
+                        }
+                        //Nonce can be null which throws exception in web3j when
+                        //calling getNonce (because of attempted hex conversion)
+                        if (web3jBlock.getNonceRaw() == null) {
+                            mapper.skip(Web3jBlock::setNonce);
+                        }
+                    } catch (Exception ex)  {
+                        log.error("Unable to get info from block: " + ex.getMessage());
+                        return;
                     }
                 });
+
 
         modelMapper.map(web3jBlock, this);
 

@@ -27,7 +27,7 @@ ethereum:
   nodes:
   - name: default
     url: ${ETHEREUM_NODE_URL:ws://localhost:8546}
-    blockStrategy: POLL
+    blockStrategy: PUBSUB
     pollInterval: 1000
     maxIdleConnections: 10
     keepAliveDuration: 15000
@@ -40,7 +40,7 @@ ethereum:
     numBlocksToWaitForMissingTx: 1 
   healthcheck:
     pollInterval: 3000
-  blockStrategy: POLL
+  blockStrategy: PUBSUB
 
 
 eventStore:
